@@ -1,32 +1,36 @@
 #include "Camino.h"
+#include "Statistics.h"
 
-std::tuple<int, int> static Camino::greedy(int metros, const std::vector<int> &distancias) {
+int Camino::greedy(int metros, const std::vector<int> &distancias) {
+    Timer timer("Path Timer");
+
     int i = 0; // Comienzo del mejor camino
     int j = 0; // Fin del mejor camino
-
     int k = 0; // Comienzo del camino actual
 
     for (int m = 0; m < distancias.size(); ++m) {
         if (distancias[m] - distancias[k] > metros) {
-            // Terminamos con este camino, porque no podemos agregar mas ciudades.
-
-            if ((m - k) >= (j - i)) {
-                // Si este camino es mejor que el que ya teniamos, lo guardamos.
-                i = k;
-                j = m;
-            }
-
             // Borro cualquier cantidad de greedy que sean necesarias para poder continuar buscando.
-            while (k < m && distancias[m] - distancias[k] > metros) {
+            while (distancias[m] - distancias[k] > metros && k < m) {
                 ++k;
             }
 
-        } else {
-            // Encontramos un mejor camino, extendiendo el que ya teniamos
+        }
+
+        // Encontramos un mejor camino, extendiendo el que ya teniamos
+
+        // Si este camino es mejor que el que ya teniamos, lo guardamos.
+        if ((m - k) > (j - i)) {
             i = k;
             j = m;
         }
     }
 
-    return std::make_pair(i, j);
+    int output = 0;
+
+    if (i != j) {
+        output = j - i + 1;
+    }
+
+    return output;
 }

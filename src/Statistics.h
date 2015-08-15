@@ -25,7 +25,7 @@ public:
     void dump(std::string file);
 private:
     void set(std::string name, long long x);
-    void reset(std::string name, long long x = 0);
+    void reset(std::string name, long long x);
 
     Statistics();
     Statistics(Statistics const&) = delete;
@@ -39,7 +39,7 @@ private:
  **********************************************************************************************************************/
 class Counter {
 public:
-    Counter(std::string name, long long i = 0);
+    Counter(std::string name, long long i);
     std::string inline getName() const;
     operator long long() const;
     Counter & operator+=(const Counter &m);
@@ -60,7 +60,7 @@ class Timer {
 public:
     Timer(std::string name);
     std::string inline getName() const;
-    void reset(bool write = false);
+    void reset(bool write);
     void stop();
     ~Timer();
 private:

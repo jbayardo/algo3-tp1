@@ -7,7 +7,7 @@
 /***********************************************************************************************************************
  * Statistics
  **********************************************************************************************************************/
-Statistics static &Statistics::getInstance() {
+Statistics &Statistics::getInstance() {
     static Statistics instance;
     return instance;
 }

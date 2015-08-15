@@ -26,12 +26,12 @@ int main(int argc, char * argvs[]) {
 
 	switch(atoi(argvs[1])){
 		case 1:{
-			Camino ej1;
 			while (!input.eof()){
 				int metros;
-				vector<int> cities;				
+				vector<int> cities;
 				input >> metros;
 				input.ignore();
+                cities.push_back(0);
 				cout << "Metros= "<< metros << endl;
 				while ( input.peek() != std::char_traits<char>::to_int_type('\r') && !input.eof()){
 					int km;
@@ -40,9 +40,8 @@ int main(int argc, char * argvs[]) {
 					cout << km << " ";
 				}
 				cout << endl;
-				tuple<int,int> res = ej1.greedy(metros, cities);
-				output << get<0>(res) -  get<1>(res) << endl;
-				cout << get<0>(res) << " - " << get<1>(res) << endl << endl;
+				int res = Camino::greedy(metros, cities);
+				output << res << endl;
 			}
 			break;}
 		case 2:{

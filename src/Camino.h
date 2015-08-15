@@ -6,7 +6,7 @@
 
 class Camino {
 public:
-    static std::tuple<int, int> greedy(int metros, const std::vector<int> &distancias);
+    static int greedy(int metros, const std::vector<int> &distancias);
 };
 
 
