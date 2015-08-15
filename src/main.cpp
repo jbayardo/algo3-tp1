@@ -33,16 +33,16 @@ int main(int argc, char * argvs[]) {
 				input >> metros;
 				input.ignore();
 				cout << "Metros= "<< metros << endl;
-				while ((( input.peek() != '\n' ) || ( input.peek() != '\r' )) && !input.eof()){
+				while ( input.peek() != std::char_traits<char>::to_int_type('\r') && !input.eof()){
 					int km;
 					input >> km;
 					cities.push_back(km);
 					cout << km << " ";
 				}
 				cout << endl;
-				int res = ej1.greedy(metros, cities);
-				output << res << endl;
-				cout << res << endl << endl;
+				tuple<int,int> res = ej1.greedy(metros, cities);
+				output << get<0>(res) -  get<1>(res) << endl;
+				cout << get<0>(res) << " - " << get<1>(res) << endl << endl;
 			}
 			break;}
 		case 2:{
