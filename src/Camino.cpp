@@ -1,6 +1,6 @@
 #include "Camino.h"
 
-std::tuple<int, int> static Camino::greedy(int metros, const std::vector<int> &distancias) {
+std::tuple<int, int> Camino::greedy(int metros, const std::vector<int> &distancias) {
     int i = 0; // Comienzo del mejor camino
     int j = 0; // Fin del mejor camino
 
