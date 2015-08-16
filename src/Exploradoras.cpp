@@ -1,77 +1,105 @@
 #include "Exploradoras.h"
-#include <iostream>
-#include <algorithm>
 
-static std::tuple<int, string> Exploradoras::backtracking(texto) {
-	int minFriendship = -1;
-	char res[];
-	char girls[] = {'a', 'b', 'c', 'd', 'e'};
+ std::pair<int, std::string> Exploradoras::backtracking(std::vector<std::pair<char, std::vector<char>>> explorers_relations) {
 
-	int n = leer primera linea;
+	unsigned int letters = 26;
 
-	for (int i = 0; i < n!; i++) {
-		//complejidad e!
-		int minFriendshipAux = 0;
-		for(int j = 0; j < n; j++) {
-			//recorro toda la lista y voy sumando en la salida parcial cuando encuentro amigas de j
-			//complejidad e
-			char friends[] = leer amigas de j en girls[j];
-			int lower = j - 1;
-			int upper = j + 1;
-			int distance = 1;
+	std::vector<std::vector<bool>> friendship_table(letters, std::vector<bool>(letters, false));
 
-			while (lower >= 0 || upper < n) {
-				//complejidad e
-				if (lower >= 0 && girls[lower] in friends[j]) {
-					//complejidad a
-					minFriendshipAux = minFriendshipAux + distance;
-				}
-				if (upper < n && girls[upper] in friends[j]) {
-					//complejidad a
-					minFriendshipAux = minFriendshipAux + distance;
-				}
-				lower = lower - 1;
-				upper++;
-				distance++;
-			}
+
+	std::string explorers(explorers_relations.size(), 0);
+
+	int e = 0;
+
+	for (auto i = explorers_relations.begin(); i != explorers_relations.end(); i++, e++) {
+		char explorer = std::get<0>(*i);
+        std::vector<char> friends = std::get<1>(*i);
+
+		explorers[e] = explorer;
+
+		for (auto j = friends.begin(); j != friends.end(); ++j) {
+			friendship_table[explorer - 'a'][*j - 'a'] = true;
+			friendship_table[*j - 'a'][explorer - 'a'] = true;
 		}
-		if (minFriendship == -1 || minFriendshipAux < minFriendship) {
-			minFriendship = minFriendshipAux;
-			res = girls;
-		}
-
-	//hago la siguiente permutación 
-	//complejidad e
-	std::next_permutation(girls, girls + girls.count());
-
 	}
 
-	return std::make_pair(minFriendship, res);
+	std::sort(explorers.begin(), explorers.end());
 
+	auto min_distance = INTMAX_MAX;
+	std::string best_seats;
+
+	do {
+
+		for (e = 0; e < explorers.size(); e++) {
+			unsigned int current_distance = 0;
+			int left = (e-1) < 0 ? explorers.size()-1 : e-1;
+			int right = (e+1) == explorers.size() ? 0 : e+1;
+			unsigned int stride = 1;
+
+			for (; left != right; stride++) {
+				current_distance += friendship_table[explorers[e]-'a'][explorers[left]-'a'] * stride;
+				current_distance += friendship_table[explorers[e]-'a'][explorers[right]-'a'] * stride;
+
+				left = (left-1) < 0 ? explorers.size()-1 : left-1;
+				right = (right+1) == ((int)explorers.size()) ? 0 : right+1;
+			}
+
+			current_distance += friendship_table[explorers[e]-'a'][explorers[left]-'a'] * (stride+1);
+
+			if (current_distance < min_distance) {
+				min_distance = current_distance;
+				best_seats = explorers;
+			}
+
+		}
+
+	} while (next_permutation(explorers));
+
+	return std::make_pair(min_distance, best_seats);
 }
+
+
+#define SWAP(a, b)  {auto temp = a; a = b; b = temp;}
+
+bool Exploradoras::next_permutation(std::string perm){
+
+	auto n = perm.size();
+	auto i = 0;
+	bool next_p = false;
+
+	for(; i < n - 1; i++){
+		if (perm[i] < perm[i+1]){
+            next_p = true;
+            break;
+        }
+	}
+
+    if (!next_p){
+        return false;
+    }
+
+    i = n - 1;
+
+    for(; perm[i-1] >= perm[i]; i--);
+	auto j = n;
+
+    for(; perm[j-1] >= perm[i-1]; j--);
+
+    SWAP(perm[i-1], perm[j-1]);
+
+    i++;
+	j = n;
+
+    for(; i < j; i++, j--){
+        SWAP(perm[i-1], perm[j-1]);
+    }
+	return next_p;
+}
+
+
 
 /*
 COMPLEJIDAD TOTAL:
 e! . (e . e . a  + e) = e!. e2.a + e
 */
 
-/*
-esto imprime todas las permutaciones, tengo que retocarlo 
-para que devuelva la siguiente, y despues pasar a iterativo.
-da para sacar el next_permutation por nuestra version de esto.
-*/
-void permute(char *a, int l, int r) {
-   int i;
-   if (l == r)
-     printf("%s\n", a);
-   else
-   {
-       for (i = l; i <= r; i++)
-       {
-          swap((a+l), (a+i));
-          permute(a, l+1, r);
-          swap((a+l), (a+i)); //backtrack
-       }
-
-   }
-}
