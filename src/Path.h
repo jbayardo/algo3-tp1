@@ -3,10 +3,12 @@
 
 #include <tuple>
 #include <vector>
+#include <iostream>
+#include <fstream>
 
-class Camino {
+class Path {
 public:
-    static int greedy(int metros, const std::vector<int> &distancias);
+    static int greedy(int meters, const std::vector<int> &distances);
 };
 
 
