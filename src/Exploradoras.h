@@ -9,7 +9,7 @@
 class Exploradoras {
 
 public:
-    std::pair<int, std::string> backtracking(std::vector<std::pair<char, std::vector<char>>> explorers_relations);
+    std::pair<int, std::string> backtracking(std::vector<std::pair<char, std::string>> explorers_relations);
     bool next_permutation(std::string perm);
 
 };
