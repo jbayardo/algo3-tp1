@@ -2,25 +2,25 @@
 
  std::pair<int, std::string> Exploradoras::backtracking(std::vector<std::pair<char, std::vector<char>>> explorers_relations) {
 
-	unsigned int letters = 26;
+	 unsigned int letters = 26;
 
-	std::vector<std::vector<bool>> friendship_table(letters, std::vector<bool>(letters, false));
+     std::vector<std::vector<bool>> friendship_table(letters, std::vector<bool>(letters, false));
+     std::vector<std::vector<bool>> visited(letters, std::vector<bool>(letters, false));
 
+	 std::string explorers(explorers_relations.size(), 0);
 
-	std::string explorers(explorers_relations.size(), 0);
+	 int e = 0;
 
-	int e = 0;
-
-	for (auto i = explorers_relations.begin(); i != explorers_relations.end(); i++, e++) {
-		char explorer = std::get<0>(*i);
+	 for (auto i = explorers_relations.begin(); i != explorers_relations.end(); i++, e++) {
+        char explorer = std::get<0>(*i);
         std::vector<char> friends = std::get<1>(*i);
 
-		explorers[e] = explorer;
+        explorers[e] = explorer;
 
-		for (auto j = friends.begin(); j != friends.end(); ++j) {
-			friendship_table[explorer - 'a'][*j - 'a'] = true;
-			friendship_table[*j - 'a'][explorer - 'a'] = true;
-		}
+        for (auto j = friends.begin(); j != friends.end(); ++j) {
+            friendship_table[explorer - 'a'][*j - 'a'] = true;
+            friendship_table[*j - 'a'][explorer - 'a'] = true;
+            }
 	}
 
 	std::sort(explorers.begin(), explorers.end());
@@ -37,8 +37,17 @@
 			unsigned int stride = 1;
 
 			for (; left != right; stride++) {
-				current_distance += friendship_table[explorers[e]-'a'][explorers[left]-'a'] * stride;
-				current_distance += friendship_table[explorers[e]-'a'][explorers[right]-'a'] * stride;
+                bool is_friend_left = friendship_table[explorers[e]-'a'][explorers[left]-'a'];
+                bool is_friend_right = friendship_table[explorers[e]-'a'][explorers[right]-'a'];
+
+                bool checked_left = visited[explorers[e]-'a'][explorers[left]-'a'];
+                bool checked_right = visited[explorers[e]-'a'][explorers[right]-'a'];
+
+				current_distance += (!checked_left) * is_friend_left * stride;
+				current_distance +=  (!checked_right) * is_friend_right * stride;
+
+                visited[explorers[e]-'a'][explorers[left]-'a'] = visited[explorers[left]-'a'][explorers[e]-'a'] = true;
+                visited[explorers[e]-'a'][explorers[right]-'a'] = visited[explorers[right]-'a'][explorers[e]-'a'] = true;
 
 				left = (left-1) < 0 ? explorers.size()-1 : left-1;
 				right = (right+1) == ((int)explorers.size()) ? 0 : right+1;
@@ -52,6 +61,12 @@
 			}
 
 		}
+
+        for (int i = 0; i < letters; ++i) {
+            for (int j = 0; j < letters; ++j) {
+                visited[i][j] = false;
+            }
+        }
 
 	} while (next_permutation(explorers));
 
