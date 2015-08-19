@@ -4,6 +4,7 @@
 #include <list>
 #include <queue>
 #include <vector>
+#include <functional>
 
 class Median {
 public:
