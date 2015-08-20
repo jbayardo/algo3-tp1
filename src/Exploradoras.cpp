@@ -14,14 +14,11 @@ std::pair<int, std::string> Exploradoras::backtracking() {
         i++;
     }
 
-    std::sort(explorers.begin(), explorers.end());
-
     int min_distance = -1;
     std::string best_seats;
     auto max_pair = 0;
 
     do {
-
         auto current_distance = 0;
         auto max_d_pair = 0;
 
@@ -50,7 +47,7 @@ bool Exploradoras::is_friend(char a_explorer, char other)
     if (res == explorers_relations.end()) {
         return false;
     }
-    std::set<char>& friends = res->second;
+    auto friends = res->second;
     auto found = friends.find(other);
     return (found != friends.end());
 }
