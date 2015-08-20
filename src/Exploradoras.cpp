@@ -1,6 +1,6 @@
 #include "Exploradoras.h"
 
-Exploradoras::Exploradoras(const std::unordered_map<char, std::string>& explorers_relations) {
+Exploradoras::Exploradoras(const std::map<char, std::string>& explorers_relations) {
     this->explorers_relations = explorers_relations;
 }
 
@@ -9,7 +9,7 @@ std::pair<int, std::string> Exploradoras::backtracking() {
     unsigned int letters = 26;
 
     std::vector<std::vector<bool>> friendship_table(letters, std::vector<bool>(letters, false));
-    std::string explorers(explorers_relations.size(), 0); 
+    std::string explorers(explorers_relations.size(), 0);
 
     std::size_t i = 0;
     for (auto it = explorers_relations.cbegin(); it != explorers_relations.cend(); it++) {
@@ -19,27 +19,31 @@ std::pair<int, std::string> Exploradoras::backtracking() {
 
     std::sort(explorers.begin(), explorers.end());
 
-    auto min_distance = INTMAX_MAX;
+    int min_distance = -1;
     std::string best_seats;
+    auto max_pair = 0;
 
     do {
 
         for (int e = 0; e < explorers.size(); e++) {
-            unsigned int current_distance = 0;
-
+            auto current_distance = 0;
+            auto max_d_pair = 0;
             for (int start = e + 1; start < explorers.size(); ++start) {
-                bool friendship_status = is_friend(explorers[e], explorers[start]);
-                current_distance = std::min(start, ((int)explorers.size()) - start) * friendship_status;
+                int distance = std::min(start - e, (int)explorers.size() - start);
+                bool friendship = is_friend(explorers[e], explorers[start]);
+                current_distance += distance * 2 * friendship;
+                max_d_pair = std::max(max_d_pair, distance);
             }
 
-            if (current_distance < min_distance) {
+            if ((current_distance < min_distance) || (min_distance < 0)) {
                 min_distance = current_distance;
                 best_seats = explorers;
+                max_pair = max_d_pair;
             }
         }
     } while (next_permutation(explorers));
 
-    return std::make_pair(min_distance, best_seats);
+    return std::make_pair(max_pair, best_seats);
 }
 
 bool Exploradoras::is_friend(char a_explorer, char other)
@@ -57,7 +61,7 @@ bool Exploradoras::is_friend(char a_explorer, char other)
 
 #define SWAP(a, b)  {auto temp = a; a = b; b = temp;}
 
-bool Exploradoras::next_permutation(std::string perm) {
+bool Exploradoras::next_permutation(std::string& perm) {
 
     auto n = (int)perm.size();
     auto i = 0;
@@ -76,20 +80,28 @@ bool Exploradoras::next_permutation(std::string perm) {
 
     i = n - 1;
 
-    for (; perm[i - 1] >= perm[i]; i--);
+    while (perm[i - 1] >= perm[i]) {
+        i = i - 1;
+    }
+
     auto j = n;
 
-    for (; perm[j - 1] >= perm[i - 1]; j--);
+    while (perm[j - 1] <= perm[i - 1]) {
+        j = j - 1;
+    }
 
     SWAP(perm[i - 1], perm[j - 1]);
 
     i++;
     j = n;
 
-    for (; i < j; i++, j--) {
+    while (i < j) {
         SWAP(perm[i - 1], perm[j - 1]);
+        i++;
+        j--;
     }
-    return next_p;
+
+    return true;
 }
 
 
