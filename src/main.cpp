@@ -10,17 +10,14 @@
 using namespace std;
 
 int main(int argc, char * argvs[]) {
-    //argc = 4;
     if (argc != 4) {
         cout << "usage: " << argvs[0] << " numeroDeEjercicio, archivoEntrada, archivoSalida" << endl;
         return 0;
     }
 
     ifstream input;
-    //input.open("C:\\Users\\EzequielDario\\Documents\\Visual Studio 2015\\Projects\\algo3tp1_win\\x64\\Debug\\in3.in", ifstream::in);
     input.open(argvs[2], ifstream::in);
     ofstream output;
-    //output.open("C:\\Users\\EzequielDario\\Documents\\Visual Studio 2015\\Projects\\algo3tp1_win\\x64\\Debug\\out3.out", ofstream::out);
     output.open(argvs[3], ofstream::out);
 
     if (!input.is_open()) {
@@ -28,8 +25,7 @@ int main(int argc, char * argvs[]) {
         return 0;
     }
 
-    //switch (atoi(argvs[1])) {
-        switch (3) {
+    switch (atoi(argvs[1])) {
         case 1:
         {
             while (!input.eof()) {
