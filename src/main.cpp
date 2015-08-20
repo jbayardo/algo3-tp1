@@ -10,15 +10,17 @@
 using namespace std;
 
 int main(int argc, char * argvs[]) {
-
+    //argc = 4;
     if (argc != 4) {
         cout << "usage: " << argvs[0] << " numeroDeEjercicio, archivoEntrada, archivoSalida" << endl;
         return 0;
     }
 
     ifstream input;
+    //input.open("C:\\Users\\EzequielDario\\Documents\\Visual Studio 2015\\Projects\\algo3tp1_win\\x64\\Debug\\in3.in", ifstream::in);
     input.open(argvs[2], ifstream::in);
     ofstream output;
+    //output.open("C:\\Users\\EzequielDario\\Documents\\Visual Studio 2015\\Projects\\algo3tp1_win\\x64\\Debug\\out3.out", ofstream::out);
     output.open(argvs[3], ofstream::out);
 
     if (!input.is_open()) {
@@ -26,7 +28,8 @@ int main(int argc, char * argvs[]) {
         return 0;
     }
 
-    switch (atoi(argvs[1])) {
+    //switch (atoi(argvs[1])) {
+        switch (3) {
         case 1:
         {
             while (!input.eof()) {
@@ -72,17 +75,25 @@ int main(int argc, char * argvs[]) {
         {
             string line;
             while (getline(input, line)) {
-                map<char, string> exploradoras;
+                map<char, set<char>> exploradoras;
                 istringstream line(line);
-                string friendship;
-                while (getline(line, friendship, ';')) {
-                    char exploradora = friendship.front();
-                    friendship.erase(0, 2);
-                    exploradoras.insert(make_pair(exploradora, friendship));
+                string data;
+                while (getline(line, data, ';')) {
+                    char exploradora = data.front();
+                    data.erase(0, 2);
+                    set<char> friendship(data.begin(), data.end());
+                    exploradoras[exploradora] = friendship;
+                    for (size_t i = 0; i < data.length(); i++) {
+                        char c = data[i];
+                        if (exploradoras.find(c) == exploradoras.end()) {
+                            exploradoras[data[i]] = set<char>();
+                        } 
+                        exploradoras[data[i]].insert(exploradora);
+                    }
                 }
                 Exploradoras ej3(exploradoras);
                 pair<int, string> res = ej3.backtracking();
-                output << res.second << endl;
+                output << res.first <<" "<< res.second << endl;
             }
             break;
         }

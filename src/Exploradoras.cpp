@@ -1,14 +1,11 @@
 #include "Exploradoras.h"
 
-Exploradoras::Exploradoras(const std::map<char, std::string>& explorers_relations) {
+Exploradoras::Exploradoras(const std::map<char, std::set<char>>& explorers_relations) {
     this->explorers_relations = explorers_relations;
 }
 
 
 std::pair<int, std::string> Exploradoras::backtracking() {
-    unsigned int letters = 26;
-
-    std::vector<std::vector<bool>> friendship_table(letters, std::vector<bool>(letters, false));
     std::string explorers(explorers_relations.size(), 0);
 
     std::size_t i = 0;
@@ -25,21 +22,21 @@ std::pair<int, std::string> Exploradoras::backtracking() {
 
     do {
 
+        auto current_distance = 0;
+        auto max_d_pair = 0;
+
         for (int e = 0; e < explorers.size(); e++) {
-            auto current_distance = 0;
-            auto max_d_pair = 0;
             for (int start = e + 1; start < explorers.size(); ++start) {
-                int distance = std::min(start - e, (int)explorers.size() - start);
+                int distance = std::min(start - e, (int)explorers.size() - start + e);
                 bool friendship = is_friend(explorers[e], explorers[start]);
                 current_distance += distance * 2 * friendship;
                 max_d_pair = std::max(max_d_pair, distance);
             }
-
-            if ((current_distance < min_distance) || (min_distance < 0)) {
-                min_distance = current_distance;
-                best_seats = explorers;
-                max_pair = max_d_pair;
-            }
+        }
+        if ((current_distance < min_distance) || (min_distance < 0)) {
+            min_distance = current_distance;
+            best_seats = explorers;
+            max_pair = max_d_pair;
         }
     } while (next_permutation(explorers));
 
@@ -53,9 +50,9 @@ bool Exploradoras::is_friend(char a_explorer, char other)
     if (res == explorers_relations.end()) {
         return false;
     }
-    std::string& friends = res->second;
-    std::size_t found = friends.find(other);
-    return (found != std::string::npos);
+    std::set<char>& friends = res->second;
+    auto found = friends.find(other);
+    return (found != friends.end());
 }
 
 
@@ -64,7 +61,7 @@ bool Exploradoras::is_friend(char a_explorer, char other)
 bool Exploradoras::next_permutation(std::string& perm) {
 
     auto n = (int)perm.size();
-    auto i = 0;
+    int i = 0;
     bool next_p = false;
 
     for (; i < n - 1; i++) {
@@ -84,7 +81,7 @@ bool Exploradoras::next_permutation(std::string& perm) {
         i = i - 1;
     }
 
-    auto j = n;
+    int j = n;
 
     while (perm[j - 1] <= perm[i - 1]) {
         j = j - 1;
