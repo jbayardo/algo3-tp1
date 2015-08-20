@@ -49,14 +49,14 @@ int main(int argc, char * argvs[]) {
         }
         case 2:
         {
-            while (!input.eof()) {
+			string line;
+			while (getline(input, line)) {
                 Median ej2;
                 list<int> numbers;
-
-                while (input.peek() != std::char_traits<char>::to_int_type('\r') && !input.eof()) {
-                    int number;
-                    input >> number;
-                    numbers.push_back(number);
+				istringstream line(line);
+				string number;
+				while (getline(line, number, ' ')) {
+                    numbers.push_back(stoi(number));
                 }
 
                 list<int> res = ej2.insert(numbers);

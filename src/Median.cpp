@@ -38,11 +38,11 @@ void Median::insertSingle(int x) {
         left.push(x);
     } else if (right.size() == 0) {
         if (left.top() < x) {
-            right.push(left.top());
-            left.pop();
-            left.push(x);
+			right.push(x);
         } else {
-            right.push(x);
+			right.push(left.top());
+			left.pop();
+			left.push(x);
         }
     } else if (left.size() == right.size()) {
         if (x > right.top()) {
