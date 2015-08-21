@@ -19,17 +19,9 @@ std::pair<int, std::string> Exploradoras::backtracking() {
     auto max_pair = 0;
 
     do {
-        auto current_distance = 0;
-        auto max_d_pair = 0;
-
-        for (int e = 0; e < explorers.size(); e++) {
-            for (int start = e + 1; start < explorers.size(); ++start) {
-                int distance = std::min(start - e, (int)explorers.size() - start + e);
-                bool friendship = is_friend(explorers[e], explorers[start]);
-                current_distance += distance * 2 * friendship;
-                max_d_pair = std::max(max_d_pair, distance);
-            }
-        }
+        auto res = calculate_distance(explorers);
+        auto current_distance = res.first;
+        auto max_d_pair = res.second;
         if ((current_distance < min_distance) || (min_distance < 0)) {
             min_distance = current_distance;
             best_seats = explorers;
@@ -38,6 +30,22 @@ std::pair<int, std::string> Exploradoras::backtracking() {
     } while (next_permutation(explorers));
 
     return std::make_pair(max_pair, best_seats);
+}
+
+std::pair<int, int> Exploradoras::calculate_distance(const std::string & explorers)
+{
+    auto current_distance = 0;
+    auto max_d_pair = 0;
+
+    for (int e = 0; e < explorers.size(); e++) {
+        for (int start = e + 1; start < explorers.size(); ++start) {
+            int distance = std::min(start - e, (int)explorers.size() - start + e);
+            bool friendship = is_friend(explorers[e], explorers[start]);
+            current_distance += distance * 2 * friendship;
+            max_d_pair = std::max(max_d_pair, distance);
+        }
+    }
+    return std::make_pair(current_distance, max_d_pair);
 }
 
 bool Exploradoras::is_friend(char a_explorer, char other)

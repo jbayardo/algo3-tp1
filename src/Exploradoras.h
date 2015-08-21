@@ -16,6 +16,7 @@ private:
 public:
 	Exploradoras(const std::map<char, std::set<char>> &explorers_relations);
     std::pair<int, std::string> backtracking();
+    std::pair<int, int> calculate_distance(const std::string& explorers);
 	bool is_friend(char a_explorer, char other);
     bool next_permutation(std::string& perm);
 };
