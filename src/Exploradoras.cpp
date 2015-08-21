@@ -56,7 +56,7 @@ std::pair<int, int> Exploradoras::calculateDistance(const std::string &seats) {
     for (auto &it : explorers_relations) {
         std::size_t position = seats.find_first_of(it.first);
 
-        for (const char &friends : it.second) {
+        for (auto &friends : it.second) {
             std::size_t friendPosition = seats.find_first_of(friends);
 
             int distance = std::min(
