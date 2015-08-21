@@ -1,31 +1,41 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include "Path.h"
 #include "Median.h"
 #include "Exploradoras.h"
-#include <tuple>
-#include <sstream>
+#include "Statistics.h"
 
+int main(int argc, char *argv[]) {
+    using namespace std;
 
-using namespace std;
-
-int main(int argc, char * argvs[]) {
     if (argc != 4) {
-        cout << "usage: " << argvs[0] << " numeroDeEjercicio, archivoEntrada, archivoSalida" << endl;
+        cout << "Usage: " << argv[0] << " problem input output" << endl;
         return 0;
     }
 
     ifstream input;
-    input.open(argvs[2], ifstream::in);
-    ofstream output;
-    output.open(argvs[3], ofstream::out);
+    input.open(argv[2], ifstream::in);
 
     if (!input.is_open()) {
-        cout << "File not found" << endl;
-        return 0;
+        cout << "Input file not found" << endl;
+
+        input.close();
+        return -1;
     }
 
-    switch (atoi(argvs[1])) {
+    ofstream output;
+    output.open(argv[3], ofstream::out);
+
+    if (!output.is_open()) {
+        cout << "Output file not found" << endl;
+
+        input.close();
+        output.close();
+        return -1;
+    }
+
+    switch (atoi(argv[1])) {
         case 1:
         {
             while (!input.eof()) {
@@ -36,7 +46,7 @@ int main(int argc, char * argvs[]) {
                 input.ignore();
                 cities.push_back(0);
 
-                while (input.peek() != std::char_traits<char>::to_int_type('\r') && !input.eof()) {
+                while (input.peek() != char_traits<char>::to_int_type('\r') && !input.eof()) {
                     int km;
                     input >> km;
                     cities.push_back(km);
@@ -50,19 +60,23 @@ int main(int argc, char * argvs[]) {
         case 2:
         {
 			string line;
+
 			while (getline(input, line)) {
                 Median ej2;
                 list<int> numbers;
-				istringstream line(line);
+				istringstream stream(line);
 				string number;
-				while (getline(line, number, ' ')) {
+
+				while (getline(stream, number, ' ')) {
                     numbers.push_back(stoi(number));
                 }
 
                 list<int> res = ej2.insert(numbers);
+
                 for (auto it : res) {
-                    output << it << " ";	//Ver si no jode el ultimo espacio
+                    output << it << ' ';
                 }
+
                 output << endl;
             }
             break;
@@ -70,32 +84,49 @@ int main(int argc, char * argvs[]) {
         case 3:
         {
             string line;
+
             while (getline(input, line)) {
                 map<char, set<char>> exploradoras;
-                istringstream line(line);
+                istringstream stream(line);
                 string data;
-                while (getline(line, data, ';')) {
+
+                while (getline(stream, data, ';')) {
                     char exploradora = data.front();
-                    data.erase(0, 2);
                     set<char> friendship(data.begin(), data.end());
+
+                    data.erase(0, 2);
                     exploradoras[exploradora] = friendship;
+
                     for (size_t i = 0; i < data.length(); i++) {
                         char c = data[i];
+
                         if (exploradoras.find(c) == exploradoras.end()) {
                             exploradoras[data[i]] = set<char>();
-                        } 
+                        }
+
                         exploradoras[data[i]].insert(exploradora);
                     }
                 }
+
                 Exploradoras ej3(exploradoras);
-                pair<int, string> res = ej3.backtracking();
-                output << res.first <<" "<< res.second << endl;
+                pair<int, string> res = ej3.exhaustive(exploradoras);
+                output << res.first << " " << res.second << endl;
             }
             break;
         }
         default:
-            cout << "usage: " << argvs[0] << " numeroDeEjercicio(1, 2, 3)" << endl;
+            cout << "Usage: " << argv[0] << " problem input output" << endl;
             break;
     }
+
+    input.close();
+    output.close();
+
+    std::string path = std::string(argv[3]);
+    std::size_t dot = path.find_last_of('.');
+    std::string name = path.substr(0, dot);
+
+    Statistics::getInstance().dump(name + ".sts");
+
     return 0;
 }

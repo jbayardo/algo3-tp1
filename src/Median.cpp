@@ -1,5 +1,5 @@
-#include "Median.h"
 #include "Statistics.h"
+#include "Median.h"
 
 /*
  * TODO: preguntar sobre Vector y costo amortizado. La idea es que si no podemos pasar un parametro y hacer un alloc del vector antes.

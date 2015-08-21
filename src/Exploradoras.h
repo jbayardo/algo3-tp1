@@ -1,19 +1,17 @@
 #ifndef ALGO3_TP1_EXPLORADORAS_H
 #define ALGO3_TP1_EXPLORADORAS_H
 
-#include <string>
 #include <map>
 #include <set>
 
 class Exploradoras {
-private:
-    std::map<char, std::set<char>> explorers_relations;
-
-	std::pair<int, int> Exploradoras::calculateDistance(const std::string &seats);
 public:
-	Exploradoras(const std::map<char, std::set<char>> &explorers_relations);
-    std::pair<int, std::string> backtracking();
-    bool next_permutation(std::string& perm);
+    Exploradoras(const std::map<char, std::set<char>> &relations);
+    std::pair<int, std::string> exhaustive(const std::map<char, std::set<char>> &explorers_relations);
+private:
+    std::pair<int, int> calculateDistance(const std::string &seats);
+
+    std::map<char, std::set<char>> explorers_relations;
 };
 
 

@@ -1,5 +1,5 @@
-#include "Path.h"
 #include "Statistics.h"
+#include "Path.h"
 
 int Path::greedy(int meters, const std::vector<int> &distances) {
     Timer timer("Path Timer");
