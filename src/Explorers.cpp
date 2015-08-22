@@ -1,5 +1,5 @@
 #include "Statistics.h"
-#include "Exploradoras.h"
+#include "Explorers.h"
 #include <algorithm>
 
 #define SWAP(a, b)  {auto temp = a; a = b; b = temp;}
@@ -46,14 +46,14 @@ bool next_permutation(std::string &perm) {
     return true;
 }
 
-Exploradoras::Exploradoras(const std::map<char, std::set<char>> &relations)
-        : explorers_relations(relations) { };
+Explorers::Explorers(const std::map<char, std::set<char>> &relations)
+        : relations(relations) { };
 
-std::pair<int, int> Exploradoras::calculateDistance(const std::string &seats) {
+std::pair<int, int> Explorers::calculateDistance(const std::string &seats) {
     int sumDistance = 0;
     int maxDistance = -1;
 
-    for (auto &it : explorers_relations) {
+    for (auto &it : relations) {
         std::size_t position = seats.find_first_of(it.first);
 
         for (auto &friends : it.second) {
@@ -78,12 +78,12 @@ std::pair<int, int> Exploradoras::calculateDistance(const std::string &seats) {
     return std::make_pair(sumDistance, maxDistance);
 }
 
-std::pair<int, std::string> Exploradoras::exhaustive(const std::map<char, std::set<char>> &explorers_relations) {
-    Timer timer("Exploradoras Exhaustive Search Timer");
+std::pair<int, std::string> Explorers::exhaustive() {
+    Timer timer("Explorers Exhaustive Search Timer");
 	// ASSERT: la cantidad de exploradoras es mayor a 0
 	std::string exploradores;
 
-	for (auto &it : explorers_relations) {
+	for (auto &it : relations) {
 		exploradores += it.first;
 	}
 
@@ -106,4 +106,39 @@ std::pair<int, std::string> Exploradoras::exhaustive(const std::map<char, std::s
 	} while (next_permutation(exploradores));
 
 	return std::make_pair(maxDistance, bestSeats);
+}
+
+Bracelet Explorers::backtracking() {
+    Timer timer("Explorers Backtracking Search Timer");
+    // TODO: crear comparador, el de arriba de todo tiene que ser el de menor suma, menor distancia.
+    // TODO: además, al imprimirse debe hacerlo de la forma que le de el menor orden lexicografico posible.
+    std::set<Bracelet> processing;
+    Bracelet empty;
+
+    // El primer elemento a procesar es el brazalete vacio
+    processing.insert(empty);
+
+    while (!processing.empty()) {
+        // Obtenemos el brazalete de menor suma, menor distancia entre pares, y menor orden lexicográfico.
+        auto it = processing.end();
+        --it;
+        Bracelet current = *it;
+        processing.erase(it);
+
+        // Si tenemos la solución del problema, devolvemos eso.
+        if (current.complete(this->relations)) {
+            return current;
+        }
+
+        // Si no, generamos todas las formas de insertar lo que falte, y lo metemos en la cola de procesamiento.
+        for (auto &explorer : current.missing(this->relations)) {
+            for (std::size_t i = 0; i < current.size() - 1; ++i) {
+                Bracelet generated(current);
+                generated.insert(explorer, i);
+
+                // TODO: filtrar, así como está todo, esto es un DFS nomás.
+                processing.insert(generated);
+            }
+        }
+    }
 }

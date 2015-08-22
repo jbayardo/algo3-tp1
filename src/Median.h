@@ -1,15 +1,30 @@
 #ifndef ALGO3_TP1_MEDIANA_H
 #define ALGO3_TP1_MEDIANA_H
 
-#include <list>
+#include "Statistics.h"
 #include <queue>
 #include <vector>
 #include <functional>
+#include <list>
 
 class Median {
 public:
     Median();
-    std::list<int> insert(const std::list<int> &elements);
+
+    template<class Iterator>
+    std::list<int> insert(Iterator elements) {
+        Timer timer("Median Insertion Timer");
+
+        std::list<int> output;
+
+        for (auto &x : elements) {
+            this->insertSingle(x);
+            output.push_back(this->get());
+        }
+
+        return output;
+    }
+
     int get();
 private:
     void insertSingle(int x);

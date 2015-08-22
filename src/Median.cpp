@@ -1,25 +1,9 @@
-#include "Statistics.h"
 #include "Median.h"
 
 /*
  * TODO: preguntar sobre Vector y costo amortizado. La idea es que si no podemos pasar un parametro y hacer un alloc del vector antes.
  */
-Median::Median() {
-
-}
-
-std::list<int> Median::insert(const std::list<int> &elements) {
-    Timer timer("Median Insertion Timer");
-
-    std::list<int> output;
-
-    for (auto &x : elements) {
-        this->insertSingle(x);
-        output.push_back(this->get());
-    }
-
-    return output;
-}
+Median::Median() {  }
 
 int Median::get() {
     Timer timer("Median Get Timer");

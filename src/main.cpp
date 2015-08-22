@@ -3,7 +3,7 @@
 #include <sstream>
 #include "Path.h"
 #include "Median.h"
-#include "Exploradoras.h"
+#include "Explorers.h"
 #include "Statistics.h"
 
 int main(int argc, char *argv[]) {
@@ -52,8 +52,7 @@ int main(int argc, char *argv[]) {
                     cities.push_back(km);
                 }
 
-                int res = Path::greedy(metros, cities);
-                output << res << endl;
+                output << Path::greedy(metros, cities) << endl;
             }
             break;
         }
@@ -71,9 +70,7 @@ int main(int argc, char *argv[]) {
                     numbers.push_back(stoi(number));
                 }
 
-                list<int> res = ej2.insert(numbers);
-
-                for (auto it : res) {
+                for (auto &it : ej2.insert(numbers)) {
                     output << it << ' ';
                 }
 
@@ -108,8 +105,8 @@ int main(int argc, char *argv[]) {
                     }
                 }
 
-                Exploradoras ej3(exploradoras);
-                pair<int, string> res = ej3.exhaustive(exploradoras);
+                Explorers ej3(exploradoras);
+                pair<int, string> res = ej3.exhaustive();
                 output << res.first << " " << res.second << endl;
             }
             break;
