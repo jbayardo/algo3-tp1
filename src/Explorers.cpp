@@ -111,15 +111,16 @@ std::pair<int, std::string> Explorers::exhaustive() {
 	return std::make_pair(maxDistance, bestSeats);
 }
 
-Bracelet Explorers::backtracking() {
+Bracelet Explorers::backtracking(BraceletFilter &filter) {
     Timer timer("Explorers Backtracking Search Timer");
     // TODO: crear comparador, el de arriba de todo tiene que ser el de menor suma, menor distancia.
     // TODO: además, al imprimirse debe hacerlo de la forma que le de el menor orden lexicografico posible.
     std::set<Bracelet> processing;
-    Bracelet empty;
+    Bracelet initial;
 
-    // El primer elemento a procesar es el brazalete vacio
-    processing.insert(empty);
+    // El primer elemento a procesar es el brazalete con el menor elemento lexicografico unicamente
+    initial.insert(initial.missing(this->relations), 0);
+    processing.insert(initial);
 
     while (!processing.empty()) {
         // Obtenemos el brazalete de menor suma, menor distancia entre pares, y menor orden lexicográfico.
@@ -133,13 +134,17 @@ Bracelet Explorers::backtracking() {
             return current;
         }
 
-        // Si no, generamos todas las formas de insertar lo que falte, y lo metemos en la cola de procesamiento.
-        for (auto &explorer : current.missing(this->relations)) {
-            for (std::size_t i = 0; i < current.size() - 1; ++i) {
-                Bracelet generated(current);
-                generated.insert(explorer, i);
+        // Si no, tomamos alguno de los que falte, y generamos todas las formas de insertarlo.
+        char explorer = current.missing(this->relations);
 
-                // TODO: filtrar, así como está todo, esto es un DFS nomás.
+        // Probamos hasta el - 1 porque agregar al final es lo mismo que agregar al principio.
+        for (std::size_t i = 0; i < current.size() - 1; ++i) {
+            // TODO: constructor por copia.
+            Bracelet generated(current);
+            generated.insert(explorer, i);
+
+            // Borramos las partes del árbol que no nos sirvan.
+            if (!filter(generated)) {
                 processing.insert(generated);
             }
         }

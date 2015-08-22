@@ -19,39 +19,34 @@ public:
 
     }
 
+    // Tiene que ser O(1)
     bool complete(const std::map<char, std::set<char>> &relations) const {
-        for (auto &relation : relations) {
-            if (!relation.first) {
-                return false;
-            }
-        }
-
-        return true;
+        return comp;
     }
 
-    std::string missing(const std::map<char, std::set<char>> &relations) const {
+    // Tiene que ser O(1)
+    char missing(const std::map<char, std::set<char>> &relations) const {
         // TODO: verificar si no tenemos que generar esto ordenado
-        std::string output;
-
-        for (auto &relation : relations) {
-            if (!relation.first) {
-                output += relation.first;
-            }
-        }
-
-        return output;
+        return 'c';
     }
 
     virtual ~Bracelet() { }
 private:
+    bool comp;
     std::size_t sz;
+};
+
+// Cuanta menor complejidad sea posible, mejor.
+class BraceletFilter {
+public:
+    virtual bool operator()(const Bracelet &) { }
 };
 
 class Explorers {
 public:
-    Explorers(const std::map<char, std::set<char>> &relations);
+    Explorers(const std::map<char, std::set<char>> &);
     std::pair<int, std::string> exhaustive();
-    Bracelet backtracking();
+    Bracelet backtracking(BraceletFilter &);
 private:
     std::pair<int, int> calculateDistance(const std::string &seats);
 
