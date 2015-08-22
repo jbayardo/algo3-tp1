@@ -97,7 +97,10 @@ std::pair<int, std::string> Exploradoras::exhaustive(const std::map<char, std::s
 	do {
 		auto distances = calculateDistance(exploradores);
 
-        if (distances.first < minSum || !hasSolution) {
+        if (distances.first <= minSum &&
+            ((hasSolution && distances.second < maxDistance) ||
+             !hasSolution)
+        {
             bestSeats = exploradores;
             maxDistance = distances.second;
             minSum = distances.first;
