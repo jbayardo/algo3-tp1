@@ -4,6 +4,7 @@
 #include <map>
 #include <set>
 #include <iterator>
+#include <string>
 
 class Bracelet {
 public:
@@ -18,6 +19,11 @@ public:
     void insert(char c, std::size_t index) {
 
     }
+
+	friend bool operator<(const Bracelet& b1, const Bracelet& b2) {
+		//TODO: hacerlo bien, esto es para que compile
+		return b1.sz < b2.sz;
+	}
 
     // Tiene que ser O(1)
     bool complete(const std::map<char, std::set<char>> &relations) const {
