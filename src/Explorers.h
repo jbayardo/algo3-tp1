@@ -3,49 +3,112 @@
 
 #include <map>
 #include <set>
-#include <iterator>
+#include <bitset>
 #include <string>
 
 class Bracelet {
 public:
-    Bracelet()
-            : sz(0)
+    Bracelet(const std::map<char, std::set<char>> &relations)
+        : relations(relations)
     { }
 
-    Bracelet(const Bracelet &c) { }
+    // TODO: crear comparador, el de arriba de todo tiene que ser el de menor suma, menor distancia.
+    // TODO: además, al imprimirse debe hacerlo de la forma que le de el menor orden lexicografico posible.
+    Bracelet(const Bracelet &c)
+        : relations(c.relations), left(c.left), bracelet(c.bracelet)
+    { }
 
-    inline std::size_t size() const { return this->sz; }
+    Bracelet(Bracelet &&c)
+        : relations(relations) {
 
+    }
+
+    /*! Devuelve la cantidad de exploradoras presentes en el bracelet
+     */
+    inline std::size_t size() const noexcept {
+        return this->bracelet.length();
+    }
+
+    /*! Inserta una exploradora en el bracelet
+     */
     void insert(char c, std::size_t index) {
-
+        this->bracelet.insert(this->bracelet.begin() + index, c);
     }
 
-	friend bool operator<(const Bracelet& b1, const Bracelet& b2) {
-		//TODO: hacerlo bien, esto es para que compile
-		return b1.sz < b2.sz;
-	}
+    /*! Compara dos bracelets
+     */
+    friend bool operator<(const Bracelet &b1, const Bracelet &b2) const noexcept {
+        if (b1.size() < b2.size()) {
+            return true;
+        }
 
-    // Tiene que ser O(1)
-    bool complete(const std::map<char, std::set<char>> &relations) const {
-        return comp;
+        if (b1.sum < b2.sum) {
+            return true;
+        }
+
+        if (b1.sum == b2.sum) {
+            if (b1.distance < b2.distance) {
+                return true;
+            }
+
+            // TODO: aca hay un problema con los ordenes lexicograficos.
+            if (b1.distance == b2.distance && b1.bracelet < b2.bracelet) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    // Tiene que ser O(1)
-    char missing(const std::map<char, std::set<char>> &relations) const {
-        // TODO: verificar si no tenemos que generar esto ordenado
-        return 'c';
+    /*! Devuelve true cuando el bracelet está completo y no hay nada más que agregar
+     */
+    inline bool complete() const noexcept {
+        return this->left.length() == 0;
+    }
+
+    /*! Devuelve una exploradora que falte insertar en el bracelet para ser completo. Además, de todas las que falten,
+     * siempre es la menor lexicograficamente
+     */
+    char missing() throw(std::out_of_range) {
+        if (this->left.length() > 0) {
+            char r = this->left.back();
+            this->left.pop_back();
+            return r;
+        } else {
+            throw std::out_of_range("No more missing characters");
+        }
     }
 
     virtual ~Bracelet() { }
 private:
-    bool comp;
-    std::size_t sz;
+    /*! Mapa de relaciones entre las exploradoras. Asumimos que hay una entrada por cada exploradora que deba estar en
+     * la ronda final
+     */
+    const std::map<char, std::set<char>> &relations;
+
+    /*! Guarda el bracelet actual, es decir, las exploradoras que estan en la ronda
+     */
+    std::string bracelet;
+
+    /*! Las que faltan, en orden lexicografico inverso.
+     */
+    std::string left;
+
+    /*! Suma de las distancias entre amistades
+     */
+    std::size_t sum;
+
+    /*! Distancia maxima entre amistades
+     */
+    std::size_t distance;
 };
 
 // Cuanta menor complejidad sea posible, mejor.
 class BraceletFilter {
 public:
-    virtual bool operator()(const Bracelet &) { }
+    /*! Si devuelve true, se guarda el bracelet, si no, se purga.
+     */
+    virtual bool operator()(const Bracelet &) { return true; }
 };
 
 class Explorers {

@@ -1,6 +1,7 @@
 #include "Statistics.h"
 #include "Explorers.h"
 #include <algorithm>
+#include <bits/stl_queue.h>
 
 #define SWAP(a, b)  {auto temp = a; a = b; b = temp;}
 
@@ -109,42 +110,40 @@ std::pair<int, std::string> Explorers::exhaustive() {
 	return std::make_pair(maxDistance, bestSeats);
 }
 
-Bracelet Explorers::backtracking(BraceletFilter &filter) {
+Bracelet Explorers::backtracking(BraceletFilter &keep) {
     Timer timer("Explorers Backtracking Search Timer");
-    // TODO: crear comparador, el de arriba de todo tiene que ser el de menor suma, menor distancia.
-    // TODO: además, al imprimirse debe hacerlo de la forma que le de el menor orden lexicografico posible.
-    std::set<Bracelet> processing;
-    Bracelet initial;
+    std::priority_queue<Bracelet> processing;
+    Bracelet initial(this->relations);
 
     // El primer elemento a procesar es el brazalete con el menor elemento lexicografico unicamente
-    initial.insert(initial.missing(this->relations), 0);
-    processing.insert(initial);
+    initial.insert(initial.missing(), 0);
+    processing.push(initial);
 
     while (!processing.empty()) {
         // Obtenemos el brazalete de menor suma, menor distancia entre pares, y menor orden lexicográfico.
-        auto it = processing.end();
-        --it;
-        Bracelet current = *it;
-        processing.erase(it);
+        Bracelet current = processing.top();
+        processing.pop();
 
         // Si tenemos la solución del problema, devolvemos eso.
-        if (current.complete(this->relations)) {
-            return current;
+        if (current.complete() && initial < current) {
+            initial = current;
         }
 
         // Si no, tomamos alguno de los que falte, y generamos todas las formas de insertarlo.
-        char explorer = current.missing(this->relations);
+        char explorer = current.missing();
 
         // Probamos hasta el - 1 porque agregar al final es lo mismo que agregar al principio.
         for (std::size_t i = 0; i < current.size() - 1; ++i) {
-            // TODO: constructor por copia.
             Bracelet generated(current);
             generated.insert(explorer, i);
 
             // Borramos las partes del árbol que no nos sirvan.
-            if (!filter(generated)) {
-                processing.insert(generated);
+            if (keep(generated)) {
+                processing.push(generated);
             }
         }
     }
+
+    // TODO:
+    return initial;
 }
