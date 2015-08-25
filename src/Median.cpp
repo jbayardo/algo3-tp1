@@ -20,7 +20,7 @@ void Median::insertSingle(int x) {
 
     if (left.size() == 0) {
         left.push(x);
-    } else if (right.size() == 0) {
+    } else if (left.size() != right.size()) {
         if (left.top() < x) {
 			right.push(x);
         } else {
@@ -28,22 +28,13 @@ void Median::insertSingle(int x) {
 			left.pop();
 			left.push(x);
         }
-    } else if (left.size() == right.size()) {
+    } else {
         if (x > right.top()) {
             left.push(right.top());
             right.pop();
             right.push(x);
         } else {
             left.push(x);
-        }
-    } else {
-        // El lado izquierdo tiene 1 elemento mas
-        if (x < left.top()) {
-            right.push(left.top());
-            left.pop();
-            left.push(x);
-        } else {
-            right.push(x);
         }
     }
 }
