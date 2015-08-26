@@ -1,7 +1,7 @@
 #include "Statistics.h"
 #include "Explorers.h"
 #include <algorithm>
-#include <bits/stl_queue.h>
+#include <queue>
 
 #define SWAP(a, b)  {auto temp = a; a = b; b = temp;}
 
