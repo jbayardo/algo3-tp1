@@ -135,7 +135,7 @@ private:
 // Cuanta menor complejidad sea posible, mejor.
 class BraceletFilter {
 public:
-    /*! Si devuelve true, se guarda el bracelet, si no, se purga.
+    /*! Si devuelve true, se guarda el bracelet, si no, se purga. Por defecto no realizamos purga.
      */
     virtual bool operator()(const Bracelet &) { return true; }
 };
