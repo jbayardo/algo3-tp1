@@ -1,10 +1,15 @@
 #ifndef ALGO3_TP1_EXPLORADORAS_H
 #define ALGO3_TP1_EXPLORADORAS_H
 
+#ifdef _NOEXCEPT
+#define noexcept _NOEXCEPT
+#endif
+
 #include <map>
 #include <set>
 #include <string>
 #include <sstream>
+#include <algorithm>
 
 template<typename T>
 inline T abs_diff(T a, T b) {
