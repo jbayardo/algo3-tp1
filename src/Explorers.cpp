@@ -115,31 +115,38 @@ Bracelet Explorers::backtracking(BraceletFilter &keep) {
     std::priority_queue<Bracelet> processing;
     Bracelet initial(this->relations);
 
+#ifdef EJ3_DISCARD_REFLEXTIONS
+    // TODO: caso manual de e=3, para descartar reflexiones
+#else
     // El primer elemento a procesar es el brazalete con el menor elemento lexicografico unicamente
     initial.insert(initial.missing(), 0);
     processing.push(initial);
+#endif
 
     while (!processing.empty()) {
         // Obtenemos el brazalete de menor suma, menor distancia entre pares, y menor orden lexicográfico.
         Bracelet current = processing.top();
         processing.pop();
 
-        // Si tenemos la solución del problema, devolvemos eso.
-        if (current.complete() && initial < current) {
-            initial = current;
-        }
+        if (current.complete()) {
+            // Si tenemos la solución del problema, nos fijamos si es la mejor!.
+            if (initial < current) {
+                initial = current;
+            }
+        } else {
+            // Si no, tomamos alguno de los que falte, y generamos todas las formas de insertarlo.
+            char explorer = current.missing();
 
-        // Si no, tomamos alguno de los que falte, y generamos todas las formas de insertarlo.
-        char explorer = current.missing();
+            // Empezamos insertando al final (que es el menor elemento lexicografico) y vamos hasta el casi primer caso,
+            // ya que insertar en la posición 0 es lo mismo que insertar al final.
+            for (std::size_t i = current.size(); i >= 1; --i) {
+                Bracelet generated(current);
+                generated.insert(explorer, i);
 
-        // Probamos hasta el - 1 porque agregar al final es lo mismo que agregar al principio.
-        for (std::size_t i = 0; i < current.size() - 1; ++i) {
-            Bracelet generated(current);
-            generated.insert(explorer, i);
-
-            // Borramos las partes del árbol que no nos sirvan.
-            if (keep(generated)) {
-                processing.push(generated);
+                // Borramos las partes del árbol que no nos sirvan.
+                if (keep(generated)) {
+                    processing.push(generated);
+                }
             }
         }
     }

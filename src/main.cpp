@@ -106,8 +106,10 @@ int main(int argc, char *argv[]) {
                 }
 
                 Explorers ej3(exploradoras);
-                pair<int, string> res = ej3.exhaustive();
-                output << res.first << " " << res.second << endl;
+                BraceletFilter filter;
+                Bracelet res = ej3.backtracking(filter);
+                output << res << endl;
+                //output << res.first << " " << res.second << endl;
             }
             break;
         }

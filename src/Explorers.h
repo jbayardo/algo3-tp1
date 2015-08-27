@@ -3,17 +3,22 @@
 
 #include <map>
 #include <set>
-#include <bitset>
 #include <string>
+#include <sstream>
+
+template<typename T>
+inline T abs_diff(T a, T b) {
+    return a > b ? a - b : b - a;
+}
 
 class Bracelet {
 public:
     Bracelet(const std::map<char, std::set<char>> &relations)
         : relations(relations), sum(0), distance(0) {
 
-        // Inicializamos el arreglo con todas las relaciones posibles
-        for (auto &relation : this->relations) {
-            this->left.push_back(relation.first);
+        // Inicializamos el arreglo con todos los nombres de exploradoras, en orden lexicografico inverso
+        for (auto relation = this->relations.crbegin(); relation != this->relations.crend(); ++relation) {
+            this->left.push_back(relation->first);
         }
     }
 
@@ -29,21 +34,49 @@ public:
 
     /*! Inserta una exploradora en el bracelet. El indice se mide desde el nodo inicial.
      */
+    // TODO: ver si es noexcept
     void insert(char c, std::size_t index) {
         // ASSERT: index < size, index >= 0
-        // Avanzamos hasta que index sea 0 (o sea, hasta que no haya que movernos más)
-        for (auto it = this->bracelet.begin(); it != this->bracelet.end(); ++it, --index) {
-            if (index == 0) {
-                // Insertamos en esta posición el caracter que falta
-                this->bracelet.insert(it, c);
-                it++;
-            } else {
-                // Aca vamos a caer siempre que estemos antes o despues de donde hay que insertar
-                // el abs de index nos dice a que distancia estamos de donde insertamos al nuevo caracter
-                // TODO: actualizar las sumas.
-                it++;
+
+#ifdef EJ3_FAST_INSERTION
+        // TODO:
+        throw std::runtime_error("Not implemented yet");
+#else
+        this->bracelet.insert(this->bracelet.begin() + index, c);
+
+        this->distance = 0;
+        this->sum = 0;
+
+        // Recorremos las entradas del mapa
+        for (auto &iterator : this->relations) {
+            std::size_t position = this->bracelet.find_first_of(iterator.first);
+
+            // El elemento podría no estar todavía en el bracelet!
+            if (position != std::string::npos) {
+                // Recorremos los amigos, y calculamos los datos necesarios para el problema
+                for (auto &friends : iterator.second) {
+                    std::size_t friendPosition = this->bracelet.find_first_of(friends);
+
+                    // Las relaciones del elemento podrían no estar todavía en el bracelet!
+                    if (friendPosition != std::string::npos) {
+                        std::size_t friendDistance = std::min(
+                                abs_diff(position, friendPosition),
+                                abs_diff(position + this->bracelet.length(), friendPosition));
+
+                        friendDistance = std::min(
+                                friendDistance,
+                                abs_diff(friendPosition + this->bracelet.length(), position));
+
+                        this->sum += friendDistance;
+
+                        if (friendDistance > this->distance) {
+                            this->distance = friendDistance;
+                        }
+                    }
+                }
             }
         }
+#endif
     }
 
     Bracelet &operator=(const Bracelet &r) throw(std::runtime_error) {
@@ -64,6 +97,14 @@ public:
         return *this;
     }
 
+    // TODO: ver si es noexcept
+    friend std::ostream &operator<<(std::ostream &stream, const Bracelet &bracelet) {
+        std::stringstream output;
+        output << bracelet.distance << " " << bracelet.bracelet;
+        stream << output.str();
+        return stream;
+    }
+
     /*! Compara dos bracelets
      */
     bool operator<(const Bracelet &r) const noexcept {
@@ -71,22 +112,36 @@ public:
             return true;
         }
 
-        if (this->sum < r.sum) {
+        if (this->size() > r.size()) {
+            return false;
+        }
+
+        if (this->sum > r.sum) {
+            // Tamaños iguales, suma mayor
             return true;
-        }
-
-        if (this->sum == r.sum) {
-            if (this->distance < r.distance) {
+        } else if (this->sum == r.sum) {
+            // Tamaños iguales, sumas iguales
+            if (this->distance > r.distance) {
+                // Tamaños iguales, sumas iguales, mayor distancia
                 return true;
-            }
+            } else if (this->distance == r.distance) {
+                // Tamaños iguales, sumas iguales, distancias iguales
 
-            // TODO: aca hay un problema con los ordenes lexicograficos.
-            if (this->distance == r.distance && this->bracelet < r.bracelet) {
-                return true;
+                if (this->bracelet < r.bracelet) {
+                    return false;
+                } else if (this->bracelet != r.bracelet) {
+                    return true;
+                }
+
+                return false;
+            } else {
+                // Tamaños iguales, sumas iguales, menor distancia
+                return false;
             }
+        } else {
+            // Tamaños iguales, suma menor
+            return false;
         }
-
-        return false;
     }
 
     /*! Devuelve true cuando el bracelet está completo y no hay nada más que agregar
