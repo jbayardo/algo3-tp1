@@ -168,6 +168,9 @@ public:
         }
     }
 
+	std::size_t MaxDistance() const { return this->distance; }
+	std::size_t RelationsSum() const { return this->sum; }
+
     virtual ~Bracelet() { }
 private:
     /*! Mapa de relaciones entre las exploradoras. Asumimos que hay una entrada por cada exploradora que deba estar en
@@ -195,9 +198,35 @@ private:
 // Cuanta menor complejidad sea posible, mejor.
 class BraceletFilter {
 public:
+	BraceletFilter() : sum(std::numeric_limits<int>().max()), distance(std::numeric_limits<int>().max()) {}
     /*! Si devuelve true, se guarda el bracelet, si no, se purga. Por defecto no realizamos purga.
      */
-    virtual bool operator()(const Bracelet &) { return true; }
+    virtual bool operator()(const Bracelet &b) { 
+		if (b.RelationsSum() > this->sum) {
+			return false;
+		} else if (b.RelationsSum() == this->sum) {
+			if (b.MaxDistance() > this->distance) {
+				return false;
+			} else if (b.MaxDistance() < this->distance) {
+				if (b.complete()) {
+					this->sum = b.RelationsSum();
+					this->distance = b.MaxDistance();
+				}
+				return true;
+			} else {
+				return true;
+			}
+		} else {
+			if (b.complete()) {
+				this->sum = b.RelationsSum();
+				this->distance = b.MaxDistance();
+			}
+			return true;
+		}
+	}
+private:
+	std::size_t sum;
+	std::size_t distance;
 };
 
 class Explorers {

@@ -5,6 +5,7 @@
 #include "Median.h"
 #include "Explorers.h"
 #include "Statistics.h"
+#include <ctime>
 
 int main(int argc, char *argv[]) {
     using namespace std;
@@ -104,11 +105,14 @@ int main(int argc, char *argv[]) {
                         exploradoras[data[i]].insert(exploradora);
                     }
                 }
-
+				clock_t begin = clock();
                 Explorers ej3(exploradoras);
                 BraceletFilter filter;
                 Bracelet res = ej3.backtracking(filter);
+				clock_t end = clock();
+				double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
                 output << res << endl;
+				cout << elapsed_secs << endl;
                 //output << res.first << " " << res.second << endl;
             }
             break;
@@ -127,5 +131,6 @@ int main(int argc, char *argv[]) {
 
     Statistics::getInstance().dump(name + ".sts");
 
+	cin.ignore();
     return 0;
 }
