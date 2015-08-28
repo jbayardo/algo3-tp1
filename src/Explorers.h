@@ -43,10 +43,6 @@ public:
     void insert(char c, std::size_t index) {
         // ASSERT: index < size, index >= 0
 
-#ifdef EJ3_FAST_INSERTION
-        // TODO:
-        throw std::runtime_error("Not implemented yet");
-#else
         this->bracelet.insert(this->bracelet.begin() + index, c);
 
         this->distance = 0;
@@ -81,7 +77,6 @@ public:
                 }
             }
         }
-#endif
     }
 
     Bracelet &operator=(const Bracelet &r) throw(std::runtime_error) {

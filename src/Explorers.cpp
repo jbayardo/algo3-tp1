@@ -115,13 +115,14 @@ Bracelet Explorers::backtracking(BraceletFilter &keep) {
     std::priority_queue<Bracelet> processing;
     Bracelet initial(this->relations);
 
-#ifdef EJ3_DISCARD_REFLEXTIONS
-    // TODO: caso manual de e=3, para descartar reflexiones
-#else
     // El primer elemento a procesar es el brazalete con el menor elemento lexicografico unicamente
-    initial.insert(initial.missing(), 0);
-    processing.push(initial);
-#endif
+	for (int i = 0; !initial.complete() && i < 3; i++) {
+		initial.insert(initial.missing(), i);
+	}
+	if (initial.complete()) {
+		return initial;
+	}
+	processing.push(initial);
 
     while (!processing.empty()) {
         // Obtenemos el brazalete de menor suma, menor distancia entre pares, y menor orden lexicográfico.
