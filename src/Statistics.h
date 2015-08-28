@@ -4,28 +4,127 @@
 #include <list>
 #include <map>
 #include <chrono>
+#include <fstream>
 
+class Value;
 class Counter;
 class Timer;
+
+typedef std::size_t Number;
+typedef long Time;
 
 /***********************************************************************************************************************
  * Statistics
  **********************************************************************************************************************/
 class Statistics {
+    friend class Value;
     friend class Counter;
     friend class Timer;
 public:
-    static Statistics & getInstance();
-    void dump(std::string file);
+    static Statistics &getInstance() {
+        static Statistics instance;
+        return instance;
+    }
+
+    void dump(std::string file) {
+        std::fstream output(file, std::ios_base::out);
+
+        for (auto &keypair : this->values) {
+            output << keypair.first << "\t\t\t" << keypair.second << std::endl;
+        }
+
+        for (auto &keypair : this->series) {
+            output << keypair.first << "\t\t\t";
+
+            for (auto number = keypair.second.begin(); number != keypair.second.end(); ++number) {
+                if (number != keypair.second.begin()) {
+                    output << ",";
+                }
+
+                output << *number;
+            }
+
+            output << std::endl;
+        }
+
+        for (auto &keypair : this->timers) {
+            output << keypair.first << "\t\t\t";
+
+            for (auto number = keypair.second.begin(); number != keypair.second.end(); ++number) {
+                if (number != keypair.second.begin()) {
+                    output << ",";
+                }
+
+                output << *number;
+            }
+
+            output << std::endl;
+        }
+
+        output.close();
+    }
 private:
-    void set(std::string name, long long x);
-    void reset(std::string name, long long x);
+    Statistics() { }
+    Statistics(Statistics const &) = delete;
+    void operator=(Statistics const &) = delete;
 
-    Statistics();
-    Statistics(Statistics const&) = delete;
-    void operator=(Statistics const&)  = delete;
+    std::map<std::string, Number> values;
+    std::map<std::string, std::list<Number>> series;
+    std::map<std::string, std::list<Time>> timers;
+};
 
-    std::map<std::string, std::list<long long>> counters;
+/***********************************************************************************************************************
+ * Value
+ **********************************************************************************************************************/
+class Value {
+public:
+    Value(std::string name)
+            : name(name), value(Statistics::getInstance().values[name]) { };
+
+    std::string inline getName() const noexcept {
+        return this->name;
+    }
+
+    operator Number() const noexcept {
+        return this->value;
+    }
+
+    Value &operator+=(const Value &m) noexcept {
+        this->value += m.value;
+        return *this;
+    };
+
+    Value &operator-=(const Value &m) noexcept {
+        this->value -= m.value;
+        return *this;
+    };
+
+    Value &operator++() noexcept {
+        ++this->value;
+        return *this;
+    };
+
+    Value &operator--() noexcept {
+        --this->value;
+        return *this;
+    };
+
+    template<typename T>
+    Value &operator+=(const T &m) {
+        this->value += m;
+        return *this;
+    }
+
+    template<typename T>
+    Value &operator-=(const T &m) {
+        this->value -= m;
+        return *this;
+    }
+
+    ~Value() { }
+private:
+    std::string name;
+    Number &value;
 };
 
 /***********************************************************************************************************************
@@ -33,18 +132,56 @@ private:
  **********************************************************************************************************************/
 class Counter {
 public:
-    Counter(std::string name, long long i);
-    std::string inline getName() const;
-    operator long long() const;
-    Counter & operator+=(const Counter &m);
-    Counter & operator-=(const Counter &m);
-    Counter & operator++();
-    Counter & operator--();
-    void set(long long x);
-    ~Counter();
+    Counter(std::string name)
+            : name(name), serie(Statistics::getInstance().series[name]) { };
+
+    std::string inline getName() const noexcept {
+        return this->name;
+    }
+
+    operator Number() const noexcept {
+        return this->value;
+    }
+
+    Counter &operator+=(const Counter &m) noexcept {
+        this->value += m.value;
+        return *this;
+    };
+
+    Counter &operator-=(const Counter &m) noexcept {
+        this->value -= m.value;
+        return *this;
+    };
+
+    Counter &operator++() noexcept {
+        ++this->value;
+        return *this;
+    };
+
+    Counter &operator--() noexcept {
+        --this->value;
+        return *this;
+    };
+
+    template<typename T>
+    Counter &operator+=(const T &m) {
+        this->value += m;
+        return *this;
+    }
+
+    template<typename T>
+    Counter &operator-=(const T &m) {
+        this->value -= m;
+        return *this;
+    }
+
+    ~Counter() {
+        serie.push_back(value);
+    }
 private:
     std::string name;
-    long long i;
+    std::list<Number> &serie;
+    Number value;
 };
 
 /***********************************************************************************************************************
@@ -52,13 +189,44 @@ private:
  **********************************************************************************************************************/
 class Timer {
 public:
-    Timer(std::string name);
-    std::string inline getName() const;
-    void reset(bool write);
-    void stop();
-    ~Timer();
+    Timer(std::string name)
+        : name(name), timers(Statistics::getInstance().timers[name]),
+          start(std::chrono::steady_clock::now()), end(std::chrono::steady_clock::now()), stopped(false) { }
+
+    std::string inline getName() const noexcept {
+        return this->name;
+    }
+
+    void stop() throw(std::runtime_error) {
+        if (!stopped) {
+            stopped = true;
+            end = std::chrono::steady_clock::now();
+        } else {
+            throw std::runtime_error("Tried to double stop timer");
+        }
+    }
+
+    void mark() throw(std::runtime_error) {
+        if (!stopped) {
+            end = std::chrono::steady_clock::now();
+            timers.push_back(std::chrono::duration_cast<std::chrono::microseconds>(this->end - this->start).count());
+            start = end;
+        } else {
+            throw std::runtime_error("Tried to double stop timer");
+        }
+    }
+
+    ~Timer() {
+        if (!stopped) {
+            end = std::chrono::steady_clock::now();
+        }
+
+        timers.push_back(std::chrono::duration_cast<std::chrono::microseconds>(this->end - this->start).count());
+    }
 private:
     std::string name;
+    std::list<Time> &timers;
+
     std::chrono::steady_clock::time_point start;
     std::chrono::steady_clock::time_point end;
     bool stopped;
