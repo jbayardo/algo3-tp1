@@ -5,6 +5,11 @@
 #include <map>
 #include <chrono>
 #include <fstream>
+#include <string>
+
+#ifdef _NOEXCEPT
+#define noexcept _NOEXCEPT
+#endif
 
 class Value;
 class Counter;
