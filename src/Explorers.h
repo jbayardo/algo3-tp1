@@ -18,153 +18,50 @@ inline T abs_diff(T a, T b) {
 
 class Bracelet {
 public:
-    Bracelet(const std::map<char, std::set<char>> &relations)
-        : relations(relations), sum(0), distance(0) {
+    /*! Constructor por defecto
+     */
+    Bracelet(const std::map<char, std::set<char>> &relations);
 
-        // Inicializamos el arreglo con todos los nombres de exploradoras, en orden lexicografico inverso
-        for (auto relation = this->relations.crbegin(); relation != this->relations.crend(); ++relation) {
-            this->left.push_back(relation->first);
-        }
-    }
-
-    Bracelet(const Bracelet &c)
-        : relations(c.relations), bracelet(c.bracelet), left(c.left), sum(c.sum), distance(c.distance)
-    { }
+    /*! Constructor por copia
+     */
+    Bracelet(const Bracelet &c);
 
     /*! Devuelve la cantidad de exploradoras presentes en el bracelet
      */
-    inline std::size_t size() const noexcept {
-        return this->bracelet.length();
-    }
+    std::size_t inline size() const;
 
     /*! Inserta una exploradora en el bracelet. El indice se mide desde el nodo inicial.
      */
-    // TODO: ver si es noexcept
-    void insert(char c, std::size_t index) {
-        // ASSERT: index < size, index >= 0
+    void insert(char c, std::size_t index);
 
-        this->bracelet.insert(this->bracelet.begin() + index, c);
+    /*! Asigna un bracelet a otro
+     */
+    Bracelet & operator=(const Bracelet &r);
 
-        this->distance = 0;
-        this->sum = 0;
-
-        // Recorremos las entradas del mapa
-        for (auto &iterator : this->relations) {
-            std::size_t position = this->bracelet.find_first_of(iterator.first);
-
-            // El elemento podría no estar todavía en el bracelet!
-            if (position != std::string::npos) {
-                // Recorremos los amigos, y calculamos los datos necesarios para el problema
-                for (auto &friends : iterator.second) {
-                    std::size_t friendPosition = this->bracelet.find_first_of(friends);
-
-                    // Las relaciones del elemento podrían no estar todavía en el bracelet!
-                    if (friendPosition != std::string::npos) {
-                        std::size_t friendDistance = std::min(
-                                abs_diff(position, friendPosition),
-                                abs_diff(position + this->bracelet.length(), friendPosition));
-
-                        friendDistance = std::min(
-                                friendDistance,
-                                abs_diff(friendPosition + this->bracelet.length(), position));
-
-                        this->sum += friendDistance;
-
-                        if (friendDistance > this->distance) {
-                            this->distance = friendDistance;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    Bracelet &operator=(const Bracelet &r) throw(std::runtime_error) {
-        // Si no estamos asignandonos a nosotros mismos
-        if (this != &r) {
-            // No podemos asignar un bracelet con otro que no se trate de las mismas relaciones
-            // Más todavía, debe ser el mismo objeto en memoria.
-            if (&this->relations != &r.relations) {
-                throw std::runtime_error("Bracelets must be bound to the same relationship graph");
-            }
-
-            this->bracelet = r.bracelet;
-            this->left = r.left;
-            this->sum = r.sum;
-            this->distance = r.distance;
-        }
-
-        return *this;
-    }
-
-    // TODO: ver si es noexcept
-    friend std::ostream &operator<<(std::ostream &stream, const Bracelet &bracelet) {
-        std::stringstream output;
-        output << bracelet.distance << " " << bracelet.bracelet;
-        stream << output.str();
-        return stream;
-    }
+    /*! Imprime un bracelet
+     */
+    friend std::ostream & operator<<(std::ostream &stream, const Bracelet &bracelet);
 
     /*! Compara dos bracelets
      */
-    bool operator<(const Bracelet &r) const noexcept {
-        if (this->size() < r.size()) {
-            return true;
-        }
-
-        if (this->size() > r.size()) {
-            return false;
-        }
-
-        if (this->sum > r.sum) {
-            // Tamaños iguales, suma mayor
-            return true;
-        } else if (this->sum == r.sum) {
-            // Tamaños iguales, sumas iguales
-            if (this->distance > r.distance) {
-                // Tamaños iguales, sumas iguales, mayor distancia
-                return true;
-            } else if (this->distance == r.distance) {
-                // Tamaños iguales, sumas iguales, distancias iguales
-
-                if (this->bracelet < r.bracelet) {
-                    return false;
-                } else if (this->bracelet != r.bracelet) {
-                    return true;
-                }
-
-                return false;
-            } else {
-                // Tamaños iguales, sumas iguales, menor distancia
-                return false;
-            }
-        } else {
-            // Tamaños iguales, suma menor
-            return false;
-        }
-    }
+    bool operator<(const Bracelet &r) const;
 
     /*! Devuelve true cuando el bracelet está completo y no hay nada más que agregar
      */
-    inline bool complete() const noexcept {
-        return this->left.length() == 0;
-    }
+    bool inline complete() const;
 
     /*! Devuelve una exploradora que falte insertar en el bracelet para ser completo. Además, de todas las que falten,
      * siempre es la menor lexicograficamente
      */
-    char missing() throw(std::out_of_range) {
-        if (this->left.length() > 0) {
-            char r = this->left.back();
-            this->left.pop_back();
-            return r;
-        } else {
-            throw std::out_of_range("No more missing characters");
-        }
-    }
+    char missing();
 
-	std::size_t MaxDistance() const { return this->distance; }
-	std::size_t RelationsSum() const { return this->sum; }
+    /*! Devuelve la maxima distancia entre dos amistades
+     */
+    std::size_t getDistance() const;
+
+    /*! Devuelve la suma de las distancias entre todas las amistades
+     */
+    std::size_t getSum() const;
 
     virtual ~Bracelet() { }
 private:
@@ -190,48 +87,69 @@ private:
     std::size_t distance;
 };
 
-// Cuanta menor complejidad sea posible, mejor.
 class BraceletFilter {
 public:
-	BraceletFilter() : sum(std::numeric_limits<int>().max()), distance(std::numeric_limits<int>().max()) {}
     /*! Si devuelve true, se guarda el bracelet, si no, se purga. Por defecto no realizamos purga.
      */
-    virtual bool operator()(const Bracelet &b) { 
-		if (b.RelationsSum() > this->sum) {
-			return false;
-		} else if (b.RelationsSum() == this->sum) {
-			if (b.MaxDistance() > this->distance) {
-				return false;
-			} else if (b.MaxDistance() < this->distance) {
-				if (b.complete()) {
-					this->sum = b.RelationsSum();
-					this->distance = b.MaxDistance();
-				}
-				return true;
-			} else {
-				return true;
-			}
-		} else {
-			if (b.complete()) {
-				this->sum = b.RelationsSum();
-				this->distance = b.MaxDistance();
-			}
-			return true;
-		}
+    virtual bool operator()(const Bracelet &b) noexcept {
+        return true;
 	}
+};
+
+class PruningFilter : public BraceletFilter {
+public:
+    PruningFilter()
+            : sum(std::numeric_limits<std::size_t>().max()), distance(std::numeric_limits<std::size_t>().max())
+    { }
+
+    bool operator()(const Bracelet &b) noexcept {
+        if (b.getSum() > this->sum) {
+            return false;
+        } else if (b.getSum() == this->sum) {
+            if (b.getDistance() > this->distance) {
+                return false;
+            } else if (b.getDistance() < this->distance) {
+                if (b.complete()) {
+                    this->sum = b.getSum();
+                    this->distance = b.getDistance();
+                }
+
+                return true;
+            } else {
+                return true;
+            }
+        } else {
+            if (b.complete()) {
+                this->sum = b.getSum();
+                this->distance = b.getDistance();
+            }
+
+            return true;
+        }
+    }
 private:
-	std::size_t sum;
-	std::size_t distance;
+    std::size_t sum;
+    std::size_t distance;
 };
 
 class Explorers {
 public:
-    Explorers(const std::map<char, std::set<char>> &);
+    /*! Constructor de una instancia del problema
+     */
+    Explorers(const std::map<char, std::set<char>> &relations);
+
+    /*! Resolución utilizando el algoritmo de fuerza bruta
+     */
     std::pair<int, std::string> exhaustive();
-    Bracelet backtracking(BraceletFilter &);
+
+    /*! Resolución utilizando el algoritmo de backtracking
+     */
+    Bracelet backtracking(BraceletFilter keep);
 private:
     std::pair<int, int> calculateDistance(const std::string &seats);
 
+    /*! Mapa de relaciones. Guarda las exploradoras que hay que distribuir, y quiénes son sus amigas
+     */
     std::map<char, std::set<char>> relations;
 };
 
