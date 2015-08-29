@@ -115,7 +115,6 @@ std::pair<int, std::string> Explorers::exhaustive() {
 /******************************************************************************
  * Solución por backtracking
  *****************************************************************************/
-
 Bracelet::Bracelet(const std::map<char, std::set<char>> &relations) : relations(relations), sum(0), distance(0) {
 
     // Inicializamos el arreglo con todos los nombres de exploradoras, en orden lexicografico inverso
@@ -231,7 +230,7 @@ bool Bracelet::operator<(const Bracelet &r) const {
     }
 }
 
-bool inline Bracelet::complete() const {
+inline bool Bracelet::complete() const {
     return this->left.length() == 0;
 }
 

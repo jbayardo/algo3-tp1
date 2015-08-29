@@ -81,30 +81,30 @@ public:
     Value(std::string name)
             : name(name), value(Statistics::getInstance().values[name]) { };
 
-    std::string inline getName() const noexcept {
+    std::string inline getName() const {
         return this->name;
     }
 
-    operator Number() const noexcept {
+    operator Number() const {
         return this->value;
     }
 
-    Value &operator+=(const Value &m) noexcept {
+    Value &operator+=(const Value &m) {
         this->value += m.value;
         return *this;
     };
 
-    Value &operator-=(const Value &m) noexcept {
+    Value &operator-=(const Value &m) {
         this->value -= m.value;
         return *this;
     };
 
-    Value &operator++() noexcept {
+    Value &operator++() {
         ++this->value;
         return *this;
     };
 
-    Value &operator--() noexcept {
+    Value &operator--() {
         --this->value;
         return *this;
     };
@@ -135,30 +135,30 @@ public:
     Counter(std::string name)
             : name(name), serie(Statistics::getInstance().series[name]) { };
 
-    std::string inline getName() const noexcept {
+    std::string inline getName() const {
         return this->name;
     }
 
-    operator Number() const noexcept {
+    operator Number() const {
         return this->value;
     }
 
-    Counter &operator+=(const Counter &m) noexcept {
+    Counter &operator+=(const Counter &m) {
         this->value += m.value;
         return *this;
     };
 
-    Counter &operator-=(const Counter &m) noexcept {
+    Counter &operator-=(const Counter &m) {
         this->value -= m.value;
         return *this;
     };
 
-    Counter &operator++() noexcept {
+    Counter &operator++() {
         ++this->value;
         return *this;
     };
 
-    Counter &operator--() noexcept {
+    Counter &operator--() {
         --this->value;
         return *this;
     };
@@ -193,7 +193,7 @@ public:
         : name(name), timers(Statistics::getInstance().timers[name]),
           start(std::chrono::steady_clock::now()), end(std::chrono::steady_clock::now()), stopped(false) { }
 
-    std::string inline getName() const noexcept {
+    std::string inline getName() const {
         return this->name;
     }
 
