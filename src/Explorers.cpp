@@ -116,12 +116,7 @@ Bracelet Explorers::backtracking(BraceletFilter &keep) {
     Bracelet initial(this->relations);
 
     // El primer elemento a procesar es el brazalete con el menor elemento lexicografico unicamente
-	for (int i = 0; !initial.complete() && i < 3; i++) {
-		initial.insert(initial.missing(), i);
-	}
-	if (initial.complete()) {
-		return initial;
-	}
+	initial.insert(initial.missing(), 0);
 	processing.push(initial);
 
     while (!processing.empty()) {
