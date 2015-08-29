@@ -26,7 +26,7 @@ public:
         return instance;
     }
 
-    void dump(std::string file) {
+    void dump(std::string file) const {
         std::fstream output(file, std::ios_base::out);
 
         for (auto &keypair : this->values) {

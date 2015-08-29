@@ -116,13 +116,10 @@ Bracelet Explorers::backtracking(BraceletFilter &keep) {
     Bracelet initial(this->relations);
 
     // El primer elemento a procesar es el brazalete con el menor elemento lexicografico unicamente
-	for (int i = 0; !initial.complete() && i < 3; i++) {
-		initial.insert(initial.missing(), i);
-	}
-	if (initial.complete()) {
-		return initial;
-	}
-	processing.push(initial);
+    initial.insert(initial.missing(), 0);
+    processing.push(initial);
+
+    // Tomamos como referencia para la purga a un brazalete completo.
 
     while (!processing.empty()) {
         // Obtenemos el brazalete de menor suma, menor distancia entre pares, y menor orden lexicográfico.
@@ -152,6 +149,5 @@ Bracelet Explorers::backtracking(BraceletFilter &keep) {
         }
     }
 
-    // TODO:
     return initial;
 }
