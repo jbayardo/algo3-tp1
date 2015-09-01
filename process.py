@@ -9,11 +9,21 @@ dataset = []
 files = map(lambda x: 'experiments/'+x, os.listdir('experiments'))
 
 for fname in files:
+    if fname[-2:] != 'in':
+        continue
+
+    matches = re.match(r"^experiments\/test_([1-3])(.*)$", fname)
+
+    method = matches.group(1).strip()
+    outf = fname[:-2] + 'out'
+
+    os.system('./tp1 {method} {fname} {outf}'.format(method=method, fname=fname, outf=outf))
+
+for fname in files:
     if fname[-3:] != 'sts':
         continue
 
-    matches = re.match(r"^experiments\/test_([0-9]+)_?([0-9]+)?\.sts$", fname)
-
+    matches = re.match(r"^experiments\/test_([1-3])_?(.*)?\.out\.sts$", fname)
     method = matches.group(1).strip()
     name = matches.group(2).strip()
 
