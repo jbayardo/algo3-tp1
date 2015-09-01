@@ -9,7 +9,6 @@
 #include <set>
 #include <string>
 #include <sstream>
-#include <algorithm>
 
 template<typename T>
 inline T abs_diff(T a, T b) {
@@ -18,7 +17,8 @@ inline T abs_diff(T a, T b) {
 
 class Bracelet {
 public:
-    /*! Constructor por defecto
+    /*! Constructor por defecto, cabe destacar que cada bracelet está asociado
+     * a un único grafo de relaciones.
      */
     Bracelet(const std::map<char, std::set<char>> &relations);
 

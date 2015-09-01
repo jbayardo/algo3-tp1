@@ -1,6 +1,7 @@
 #include "Statistics.h"
 #include "Explorers.h"
-#include <queue>
+#include <stack>
+#include <algorithm>
 
 Explorers::Explorers(const std::map<char, std::set<char>> &relations)
         : relations(relations) { };
@@ -166,8 +167,7 @@ void Bracelet::insert(char c, std::size_t index) {
             }
         }
     }
-	//TODO: Ver si va, es lo mesmo
-	//this->sum /= 2;
+
 }
 
 Bracelet &Bracelet::operator=(const Bracelet &r) {
@@ -256,7 +256,7 @@ std::size_t Bracelet::getSum() const {
 
 Bracelet Explorers::backtracking(BraceletFilter keep) {
     Timer timer("Explorers Backtracking Search Timer");
-    std::priority_queue<Bracelet> processing;
+    std::stack<Bracelet> processing;
     Bracelet initial(this->relations);
 
     // El primer elemento a procesar es el brazalete con el menor elemento lexicografico unicamente
