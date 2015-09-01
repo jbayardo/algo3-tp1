@@ -81,44 +81,27 @@ Finalmente, obtenemos las posiciones donde se inicia y se termina el mejor camin
 $Nat$ \\ 
 Dado un natural (Meters) y una lista de distancias entre ciudades (Distances), devuelve la cantidad máxima de ciudades que se pueden recorrer con esta cantidad de metros. \\ 
 
-\begin{tabular}{rp{17cm}}
-1: & maxCantDeCiudades ($meters$: $Nat$, $distances$: $Vector<Nat>$)\ \{\\
-2: & \hspace{0,5cm} \asignar{bestStart}{0} \\
-3: & \hspace{0,5cm} \asignar{bestEnd}{0} \\ 
-4: & \hspace{0,5cm} \asignar{start}{0} \\
-5: & \hspace{0,5cm} $\forall$ end $\in$ distances \{\\
-6: & \hspace{1cm} $\textbf{si}$ distances[end] - distances[start] $>$ meters \{\\
-7: & \hspace{1,5cm} $\mientras$ distances[end] - distances[start] $>$ meters $\wedge$ start $<$ end \{\\
-8: & \hspace{2cm} start++ \\
-9: & \hspace{1,5cm} \}\\
-10: & \hspace{1cm} \}\\
-11: & \hspace{1cm} $\textbf{si}$ end - start $>$ bestEnd - bestStart \{\\
-12: & \hspace{1,5cm} bestStart = start \\
-13: & \hspace{1,5cm} bestEnd = end \\
-14: & \hspace{1cm} \}\\
-15: & \hspace{0,5cm} \asignar{output}{0} \\
-16: & \hspace{0,5cm} $\textbf{si}$ bestStart $\neq$ bestEnd \{\\
-17: & \hspace{1cm} \asignar{output}{bestEnd - bestStart + 1} \\ 
-18: & \hspace{0,5cm} \}\\
-19: & \hspace{0,5cm} \devolver output \\
-20: & \}\\
- 
-\end{tabular}
-
 \begin{algorithmic}[1]
 \Procedure{maxCantDeCiudades}{$meters: Nat$, $distances: Vector<Nat>$}
-\State bestStart = 0
-\State $bestEnd\gets 0$
-\State $start\gets 0$
+\State $bestStart\gets 0$\Comment{$O(1)$}
+\State $bestEnd\gets 0$\Comment{$O(1)$}
+\State $start\gets 0$\Comment{$O(1)$}
 \For {$end = 0$ , $end < tamaño(distances)$ , $end = end + 1$}
-\If {$distances[end] - distances[start] > meters$}
+\If {$distances[end] - distances[start] > meters$}\Comment{$O(1)$}
 \While{$distances[end] - distances[start] > meters$ $\wedge$ $start < end$}
-\State start++
-\EndWhile\label{euclidendwhile}
+\State start++\Comment{$O(1)$}
+\EndWhile
 \EndIf
-\If {end - start}
+\If {end - start $>$ bestEnd - bestStart}\Comment{$O(1)$}
+\State bestStart $\gets$ start\Comment{$O(1)$}
+\State bestEnd $\gets$ end\Comment{$O(1)$}
+\EndIf
 \EndFor
-\State \textbf{return} $b$\Comment{The gcd is b}
+\State output $\gets$ 0\Comment{$O(1)$}
+\If {bestStart $\neq$ bestEnd}\Comment{$O(1)$}
+\State output $\gets$ bestEnd - bestStart + 1\Comment{$O(1)$}
+\EndIf
+\State \textbf{return} output
 \EndProcedure
 \end{algorithmic}
 
@@ -186,21 +169,21 @@ en cuyo caso, al llegar i = j, $\mathcal{V}_j$ - $\mathcal{V}_i$ = 0, lo cuál e
 
 b) Notemos que la guarda del ciclo chequea si $\mathcal{V}_j$ - $\mathcal{V}_i$ $>$ m $\wedge$ i $<$ j, y que i aumenta de a uno. \\
 (Es la segunda parte del o bien anterior. )
-c) Idem al c) del CASO 1.\\
+c) Ídem al c) del CASO 1.\\
 
 Por CASO 1 y CASO 2, vale P(j).\\
 
 Ahora sabemos que los caminos generados en cada iteración son válidos, pero lo que nos falta probar es que en cada iteración, nos quedamos con el más largo de todos hasta el momento. \\
 Quiero ver que $\forall$ j $\in$ \{1..n\}, en la j-ésima iteración, el algoritmo se queda con el camino válido más largo hasta j. \\
 
-P(j) = en la j-ésima iteración, el algoritmo se queda con el camino válio más largo hasta j. \\
+P(j) = en la j-ésima iteración, el algoritmo se queda con el camino válido más largo hasta j. \\
 
 Caso Base: \\
 P(1) = No hay camino válido con una sola ciudad, con lo cual me quedo con el camino válido nulo, que siendo el único, es el más largo. \\
 
 Paso Inductivo: \\
 Quiero ver que $\forall$ j $\in$ \{2..n\}, P(j - 1) $\Rightarrow$ P(j) \\
-Hipótesis Inductiva: Vale P(j - 1), es decir, para la j-1-ésima iteración, el algoritmo se queda con el camino vñalido más largo hasta j - 1. \\
+Hipótesis Inductiva: Vale P(j - 1), es decir, para la j-1-ésima iteración, el algoritmo se queda con el camino válido más largo hasta j - 1. \\
 
 Quedan dos casos a evaluar en la iteración j: \\
 CASO 1: \\
@@ -214,12 +197,25 @@ Como el $\vert$camino válido(j)$\vert$ es menor o igual al de j - 1, no modific
 CASO 2:
 Acá se cumple la guarda del condicional y nos quedamos con el camino válido(j). Y como por HI valía que hasta j - 1 nos habíamos quedado con el camino válido más largo (hasta j - 1), y en j encontramos uno más largo que ese, entonces vale que en particular el camino j es el más largo hasta j. \\
 
-Como probamos P(j) para el CASO 1 y el CASO 2, y ambos son exhaustivos, vale P para todo j, es decir, el algoritmo siempre se queda con el camino vñalido más largo hasta j. \\
+Como probamos P(j) para el CASO 1 y el CASO 2, y ambos son exhaustivos, vale P para todo j, es decir, el algoritmo siempre se queda con el camino válido más largo hasta j. \\
 
 Por ambas demostraciones, probamos que el algoritmo genera un camino válido en cada iteración, y además se queda con el más largo hasta el momento. \\
 
 
 \subsection{Complejidad}
+Como el algoritmo descripto en la descripción de este problema es el único algoritmo que se utiliza en la resolución de este problema, y como se puede ver en el pseudocódigo, las complejidades de las operaciones se pueden apreciar, lo único que falta para analizar la complejidad de todo el algoritmo es analizar los ciclos que contiene.
+Se puede ver que el algoritmo contiene un ciclo $for$ principal que siempre va a realizar $tamaño(distancia)$ iteraciones. Luego dentro de este $for$ hay dos bloques condicionales $if$, que para analizar la complejidad total vamos a descartarlos y hacer de cuenta que siempre se entra en ambos bloques.
+Como podemos ver, el primer bloque contiene un ciclo $while$, este va a chequear que:
+\begin{enumerate}
+\item La sub-secuencia actual entre en los metros de cable dados por entrada.
+\item La sub-secuencia sea de 0 o mas elementos.
+\end{enumerate}
+
+La primera condición es mas débil que la segunda, por lo tanto va a volverse $falsa$ antes o al mismo tiempo que la segunda sin excepción. Por lo tanto podemos descartarla a la hora de analizar la cota superior de complejidad. 
+La segunda condición va a volverse $falsa$ en el momento que $start$ sea igual a $end$, ya que en cualquier estado del programa al que se pueda llegar desde el estado inicial, $start$ nunca sera mayor a $end$.
+Lo importante de esta condición, al contemplarse dentro del contexto en el que se encuentra, es que, como $end$ siempre incrementa en 1 en cada iteración del $for$ y $start$ nunca decrementa, e incrementa solo cuando se haga una iteración de este ciclo $while$, y como este se ingresa a este ciclo solo mientras $start < end$, este ciclo solo hará $tamaño(distance)$ iteraciones en toda la ejecucion de este algoritmo, ya que $tamaño(distance)$ es el valor máximo que puede tomar $end$ y por lo tanto también $start$.
+
+Por lo tanto, teniendo en cuenta que todas las operaciones realizadas además de los ciclos son operaciones básicas con complejidad uniforme $\theta(1)$, todo el algoritmo pertenece a $O(tamaño(distances))$
 
 \subsection{Análisis}
 
@@ -389,6 +385,59 @@ Mediana(L, R) devuelve la mediana de un conjunto ordenado resultado de la unión
 
 \subsection{Complejidad}
 
+Definimos una estructura Median = (left: max-heap$<$int$>$, right: min-heap$<$int$>$, output: list$<$int$>$), y la siguientes funciones: \\ 
+
+Las funciones top, push y pop son funciones de la librería estándar, las cuales devuelven el tope de un heap, agregan un elemento al heap, y eliminan la cabeza del heap respectivamente. \\ \\ \\
+
+\begin{algorithmic}
+\Procedure{get}{m: Median}
+\If{tamaño(m.left) = tamaño(m.right)}\Comment{$O(1)$}
+\State \textbf{return} (top(m.left) + top(m.right))/2 \Comment{$O(log(n))$}
+\Else
+\State \textbf{return} top(m.left) \Comment{$O(log(n))$}
+\EndIf
+\EndProcedure \\
+\end{algorithmic}
+
+\begin{algorithmic}
+\Procedure{insertSingle}{m: Median, x:int}
+\If{tamaño(m.left) = 0}\Comment{O(1)}
+    \State push(m.left, x)\Comment{O(log(n))}
+\ElsIf{tamaño(m.left) $\neq$ tamaño(m.right}\Comment{O(1)}
+    \If{top(m.left) $>$ x}\Comment{O(1)}
+        \State push(m.right, x)\Comment{O(log(n))}
+    \Else
+        \State push(m.right, top(m.left))\Comment{O(log(n))}
+        \State pop(m.left)\Comment{O(log(n))}
+        \State push(m.left, x)\Comment{O(log(n))}
+    \EndIf
+\Else
+    \If{x $>$ top(m.right)}\Comment{O(1)}
+        \State push(m.left, top(m.right))\Comment{O(log(n))}
+        \State pop(m.right)\Comment{O(log(n))}
+        \State push(m.right, x)\Comment{O(log(n))}
+    \Else
+        \State push(m.left, x)\Comment{O(log(n))}
+    \EndIf
+\EndIf
+\EndProcedure \\
+\end{algorithmic}
+
+\begin{algorithmic}
+\Procedure{insert}{m: Median, elements: Iterator<int>}
+\For{e in elements} \Comment{O(n)}
+    \State insertSingle(m, e) \Comment{O(log(n))}
+    \State push\_back(m.output, get(m)) \Comment{O(1) + O(log(n))}
+\EndFor
+\State \textbf{return} m.output
+\EndProcedure \\ \\
+\end{algorithmic}
+
+Como las operaciones push y pop tienen complejidad O(log(n)) por ser left y right heaps, la complejidad de get así como la de insertSingle es O(log(n)), siendo n = tamaño(left) + tamaño(right). \\
+La complejidad de insert, por otro lado, es O(n*log(n)), ya que se inserta cada elemento de elements en m, siendo n el tamaño de elements. Debido a que cada vez que se inserta un elemento, el tamaño de left o right crece en 1, y cada inserción cuesta O(log(i)), siendo i el tamaño del heap en particular, para cuando se inserte el último elemento, el costo de haber insertado todos los elementos en los heaps es O(2*($\frac{n}{2} * log(\frac{n}{2}$)) = O(n*log(n)). 
+El costo de la función push\_back es O(1), ya que output es una lista.
+
+
 \subsection{Análisis}
 
 \section{Problema 3}
@@ -404,12 +453,12 @@ Para comenzar, cabe destacar que si tenemos el conjunto de posibles soluciones (
 %% TODO: insertar un grafico explicativo
 
 \begin{lemma}
-El algoritmo expuesto genera todas las permutaciones de $n$ elementos.
+El algoritmo expuesto genera todas las permutaciones de $n$ elementos, a partir de todas las permutaciones de $n-1$ elementos.
 \label{ej3:generador}
 \end{lemma}
 
 \begin{proof}
-Sea $M_n = \{1, .., n\}$, además, sea $S_n = \{ f : M_n \to M_n / \text{f es biyectiva}\}$ el conjunto de permutaciones de $M_n$ elementos. Quiero ver que la función $g : S_n \times M_n \to S_{n+1}$ determinada por
+Sea $M_n = \{1, .., n\}$, además, sea $S_n = \{ f : M_n \to M_n / \text{f es biyectiva}\}$ el conjunto de permutaciones $M_n$ elementos. Quiero ver que la función $g : S_n \times M_n \to S_{n+1}$ determinada por
 
 $$g((\sigma_1, .., \sigma_n), k) = (\sigma_1, .., \sigma_{k-1}, n+1, \sigma_k, .., \sigma_n)$$
 
@@ -421,7 +470,9 @@ Quiero ver que $k = l \wedge \sigma = \alpha$. Pero observemos que esto implica 
 
 $$(\sigma_1, .., \sigma_{k-1}, n+1, \sigma_k, .., \sigma_n) = (\alpha_1, .., \alpha_{l-1}, n+1, \alpha_l, .., \alpha_n)$$
 
-Es decir, $\sigma_k = n + 1 = \sigma_l$. Como cada elemento aparece una única vez, $k = l$, implicando entonces que $\sigma_i = \alpha_i \forall i \in M_n$, pues de otra forma la igualdad no se cumple. Veamos ahora que es sobreyectiva, sea $\alpha \in S_{n+1}$, sabemos que $\exists l \in M_{n+1} : \alpha_l = n+1$, tomemos entonces $\sigma = (\alpha_1, .., \alpha_{l-1}, \alpha_{l+1}, .., \alpha_{l+1})$, evaluar $g(\sigma, l)$ da el resultado esperado.
+Es decir, $\sigma_k = n + 1 = \sigma_l$. Como cada elemento aparece una única vez, $k = l$, implicando entonces que $\sigma_i = \alpha_i \forall i \in M_n$, pues de otra forma la igualdad no se cumple.
+
+Veamos ahora que es sobreyectiva, sea $\alpha \in S_{n+1}$, sabemos que $\exists l \in M_{n+1} : \alpha_l = n+1$, tomemos entonces $\sigma = (\alpha_1, .., \alpha_{l-1}, \alpha_{l+1}, .., \alpha_{l+1})$, evaluar $g(\sigma, l)$ da el resultado esperado.
 
 Observemos que la función $g$ es precisamente la que intercala al elemento $n+1$ en la permutación para cada una de las posiciones, implicando que un algoritmo que haga exactamente eso va a generar todas las permutaciones.
 \end{proof}
@@ -484,7 +535,7 @@ Cabe destacar que, de cualquier forma, las cotas aplicadas en este corolario no 
 \end{proof}
 
 \begin{definition}
-Una permutación es menor a otra cuando la suma de las distancias entre amistades es menor. En caso de que la mismas sean iguales, consideramos que es menor si la máxima distancia entre amistades es menor. En caso de que estas ultimas sean iguales, decimos que es menor si es menor lexicográficamente (es decir, posición a posición de la permutación). 
+Una permutación es menor a otra cuando su longitud es menor. Si la longitud es igual, es menor si la suma de las distancias entre amistades es menor. En caso de que la mismas sean iguales, consideramos que es menor si la máxima distancia entre amistades es menor. En caso de que estas ultimas sean iguales, decimos que es menor si es menor lexicográficamente (es decir, posición a posición de la permutación). 
 \end{definition}
 
 \begin{definition}
@@ -499,13 +550,43 @@ Dada una permutación completa al problema, cualquier permutación parcial mayor
 Observemos que al insertar un nuevo elemento, la suma de las distancias entre amistades de la solución parcial solo puede aumentar, llegando entonces a una permutación cuya suma de distancias va a ser mayor estricta que la que ya tenemos, y que por lo tanto no puede ser la solución del problema.
 \end{proof}
 
-Es decir, una vez que tenemos una permutación completa generada podemos comenzar a purgar todas las ramas que generen alguna permutación mayor a la que ya tenemos, y esa purga no va a borrar ninguna solución valida. Con esto, tenemos todas las ideas fundamentales para construir nuestro algoritmo de backtracking: comenzando con la solución para una sola exploradora, podemos ir generando las soluciones para cada vez más exploradoras, hasta llegar al final del árbol de estados. Más todavía, podemos ir generando las permutaciones de una forma inteligente, tal que exploremos el árbol primero en profundidad y, al llegar la primera solución completa, comenzar a purgar las ramas todavía no exploradas. Pensando en esto, proponemos el siguiente algoritmo como solución al problema:
+Es decir, una vez que tenemos una permutación completa generada podemos comenzar a purgar todas las ramas que generen alguna permutación mayor a la que ya tenemos, y esa purga no va a borrar ninguna solución valida. Con esto, tenemos todas las ideas fundamentales para construir nuestro algoritmo de backtracking: comenzando con la solución para una sola exploradora, podemos ir generando las soluciones para cada vez más exploradoras, hasta llegar al final del árbol de estados. Más todavía, podemos comenzar con una primera solución completa al problema, por más mala que sea, y utilizarla como cota superior para purgar ramas del espacio de soluciones, mejorándola a medida que vamos descubriendo nuevas soluciones completas. Pensando en esto, proponemos el siguiente algoritmo como solución al problema:
 
 %% TODO: el puto pseudocodigo.
+\nuevoAlgo{Algoritmo 3}{backtracking()} $\rightarrow$ $res$ :
+$Nat$ x $Ronda$\\ 
+
+\begin{algorithmic}[1]
+\Procedure{backtracking}{}
+\State processing $\gets$ colaVacia\Comment{$O(1)$}
+\State inicial = nuevaRonda
+\State inicial.insertarExploradora(siguienteExploradoraFaltante(inicial), 0)
+\State processing.push(inicial)
+\While{!esVacia(processing)}
+\State rondaActual $\gets$ processing.top()
+\State processing.pop()
+\If{esCompleta(rondaActual)}
+\If{inicial < rondaActual}
+\State inicial $\gets$ rondaActual
+\EndIf
+\Else
+\State exploradora = siguienteExploradoraFaltante(rondaActual)
+\For{i = tamaño(rondaActual), i $>=$ 1, i$--$}
+\State rondaNueva = rondaActual
+\State rondaNueva.insertarExploradora(exploradora, i)
+\If{!noSePoda(rondaNueva)}
+\State processing.push(rondaNueva)
+\EndIf
+\EndFor
+\EndIf
+\EndWhile
+\State \textbf{return} inicial
+\EndProcedure
+\end{algorithmic}
 
 \subsection{Correctitud}
 
-Como vimos anteriormente, las ideas de trasfondo en el algoritmo son efectivamente correctas, ya que generan todo el espacio de soluciones posibles. Por lo tanto, consideramos que lo único que estaría faltando ver es que realmente el algoritmo realmente se corresponde con esto.
+Como vimos anteriormente, las ideas de trasfondo en el algoritmo son efectivamente correctas, ya que generan todo el espacio de soluciones posibles. Por lo tanto, consideramos que lo único que estaría faltando ver es que el algoritmo realmente se corresponde con esto.
 
 \subsection{Complejidad}
 
