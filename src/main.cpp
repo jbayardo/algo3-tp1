@@ -89,10 +89,9 @@ int main(int argc, char *argv[]) {
 
                 while (getline(stream, data, ';')) {
                     char exploradora = data.front();
-                    set<char> friendship(data.begin(), data.end());
-
                     data.erase(0, 2);
-                    exploradoras[exploradora] = friendship;
+					
+					exploradoras[exploradora].insert(data.begin(), data.end());
 
                     for (size_t i = 0; i < data.length(); i++) {
                         char c = data[i];
