@@ -78,8 +78,7 @@ int main(int argc, char *argv[]) {
             }
             break;
         }
-        case 3:
-        {
+        case 3: {
             string line;
 
             while (getline(input, line)) {
@@ -108,7 +107,6 @@ int main(int argc, char *argv[]) {
                 PruningFilter filter;
                 Bracelet res = ej3.backtracking(filter);
                 output << res << endl;
-                //output << res.first << " " << res.second << endl;
             }
             break;
         }
