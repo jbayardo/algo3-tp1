@@ -1,5 +1,7 @@
 
 import random
+import string
+import itertools
 
 def generateEx1(length, bound):
 	output = set()
@@ -32,7 +34,22 @@ def generateEx2(length, bound):
 
 	return (m, list(output))
 
-def generateEx3():
-	pass
+def generateEx3(e, a):
+	res = ""
+	letters = list(string.ascii_lowercase[0:e])
+	relationships = {}
+	allrel = list(itertools.product(letters,letters))
+	for letter in letters:
+		relationships[letter] = set()
+	actualA = 0
+	while (actualA < a):
+		s = random.sample(allrel,1)[0]
+		if s[0] != s[1] and (s[1] not in relationships[s[0]]):
+			relationships[s[0]].add(s[1])
+			relationships[s[1]].add(s[0])
+			actualA += 1
+	for index in relationships:
+		res += index + " " +  "".join(str(r) for r in relationships[index]) + ";"
+	return res[:-1]
 
-print generateEx2(50, 500)
+print generateEx3(6, 10)
