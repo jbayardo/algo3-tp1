@@ -16,7 +16,7 @@ def generateEx1(length, bound):
 			if n > maximum:
 				maximum = n
 
-	return (random.randint(1, maximum), sorted(list(output)))
+	return str(random.randint(1, maximum)) + "\n" + " ".join(str(pito) for pito in sorted(list(output)))
 
 def generateEx2(length, bound):
 	output = set()
@@ -32,7 +32,7 @@ def generateEx2(length, bound):
 	else:
 		m = s[len(s)//2]
 
-	return (m, list(output))
+	return str(list(output))
 
 def generateEx3(e, a):
 	res = ""
@@ -52,4 +52,4 @@ def generateEx3(e, a):
 		res += index + " " +  "".join(str(r) for r in relationships[index]) + ";"
 	return res[:-1]
 
-print generateEx3(6, 10)
+print generateEx1(6, 100)

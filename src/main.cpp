@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
                 input.ignore();
                 cities.push_back(0);
 
-                while (input.peek() != char_traits<char>::to_int_type('\r') && !input.eof()) {
+				while (input.peek() != char_traits<char>::to_int_type('\n') && input.peek() != char_traits<char>::to_int_type('\n') && !input.eof()) {
                     int km;
                     input >> km;
                     cities.push_back(km);
