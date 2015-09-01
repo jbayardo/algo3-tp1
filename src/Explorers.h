@@ -48,20 +48,32 @@ public:
 
     /*! Devuelve true cuando el bracelet está completo y no hay nada más que agregar
      */
-    bool inline complete() const;
+    inline bool complete() const {
+        return this->left.length() == 0;
+    }
 
     /*! Devuelve una exploradora que falte insertar en el bracelet para ser completo. Además, de todas las que falten,
      * siempre es la menor lexicograficamente
      */
-    char missing();
+    inline char missing() const {
+        if (this->left.length() > 0) {
+            return this->left.back();
+        } else {
+            throw std::out_of_range("No more missing characters");
+        }
+    }
 
     /*! Devuelve la maxima distancia entre dos amistades
      */
-    std::size_t getDistance() const;
+    inline std::size_t getDistance() const {
+        return this->distance;
+    }
 
     /*! Devuelve la suma de las distancias entre todas las amistades
      */
-    std::size_t getSum() const;
+    inline std::size_t getSum() const {
+        return this->sum;
+    }
 
     virtual ~Bracelet() { }
 private:
@@ -146,8 +158,6 @@ public:
      */
     Bracelet backtracking(BraceletFilter keep);
 private:
-    std::pair<int, int> calculateDistance(const std::string &seats);
-
     /*! Mapa de relaciones. Guarda las exploradoras que hay que distribuir, y quiénes son sus amigas
      */
     std::map<char, std::set<char>> relations;

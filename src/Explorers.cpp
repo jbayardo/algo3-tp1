@@ -53,7 +53,7 @@ bool next_permutation(std::string &perm) {
     return true;
 }
 
-std::pair<int, int> Explorers::calculateDistance(const std::string &seats) {
+std::pair<int, int> calculateDistance(const std::map<char, std::set<char>> &relations, const std::string &seats) {
     int sumDistance = 0;
     int maxDistance = -1;
 
@@ -99,7 +99,7 @@ std::pair<int, std::string> Explorers::exhaustive() {
 	bool hasSolution = false;
 
 	do {
-		auto distances = calculateDistance(exploradores);
+		auto distances = calculateDistance(this->relations, exploradores);
 
         if (distances.first <= minSum && (hasSolution && (distances.second < maxDistance || (distances.second == maxDistance && exploradores < bestSeats)) || !hasSolution))
         {
@@ -231,26 +231,6 @@ bool Bracelet::operator<(const Bracelet &r) const {
         // Tamaños iguales, suma menor
         return false;
     }
-}
-
-inline bool Bracelet::complete() const {
-    return this->left.length() == 0;
-}
-
-char Bracelet::missing() {
-    if (this->left.length() > 0) {
-        return this->left.back();
-    } else {
-        throw std::out_of_range("No more missing characters");
-    }
-}
-
-std::size_t Bracelet::getDistance() const {
-    return this->distance;
-}
-
-std::size_t Bracelet::getSum() const {
-    return this->sum;
 }
 
 Bracelet Explorers::backtracking(BraceletFilter keep) {
