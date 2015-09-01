@@ -166,7 +166,8 @@ void Bracelet::insert(char c, std::size_t index) {
             }
         }
     }
-	this->sum /= 2;
+	//TODO: Ver si va, es lo mesmo
+	//this->sum /= 2;
 }
 
 Bracelet &Bracelet::operator=(const Bracelet &r) {
