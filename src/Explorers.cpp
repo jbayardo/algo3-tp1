@@ -135,6 +135,7 @@ void Bracelet::insert(char c, std::size_t index) {
     // ASSERT: index < size, index >= 0
 
     this->bracelet.insert(this->bracelet.begin() + index, c);
+    this->left.erase(std::remove(this->left.begin(), this->left.end(), c), this->left.end());
     this->distance = 0;
     this->sum = 0;
 
@@ -238,9 +239,7 @@ inline bool Bracelet::complete() const {
 
 char Bracelet::missing() {
     if (this->left.length() > 0) {
-        char r = this->left.back();
-        this->left.pop_back();
-        return r;
+        return this->left.back();
     } else {
         throw std::out_of_range("No more missing characters");
     }
