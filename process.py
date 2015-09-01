@@ -12,12 +12,26 @@ for fname in files:
     if fname[-2:] != 'in':
         continue
 
+    if not os.path.isfile(fname[:-2] + 'expected'):
+        print "Falta archivo de salida expected para " + fname
+        continue
+
     matches = re.match(r"^experiments\/test_([1-3])(.*)$", fname)
 
     method = matches.group(1).strip()
     outf = fname[:-2] + 'out'
 
     os.system('./tp1 {method} {fname} {outf}'.format(method=method, fname=fname, outf=outf))
+
+    with open(outf, 'r') as handle:
+        output = handle.read().strip()
+
+    with open(fname[:-2] + 'expected', 'r') as handle:
+        expected = handle.read().strip()
+
+    for line1, line2 in zip(output.split('\n'), expected.split('\n')):
+        if line1.strip() != line2.strip():
+            print "Failure: ", line1, line2
 
 for fname in files:
     if fname[-3:] != 'sts':
