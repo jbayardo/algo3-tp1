@@ -117,19 +117,6 @@ public:
     bool operator()(const Bracelet &b) noexcept {
         if (b.getSum() > this->sum) {
             return false;
-        } else if (b.getSum() == this->sum) {
-            if (b.getDistance() > this->distance) {
-                return false;
-            } else if (b.getDistance() < this->distance) {
-                if (b.complete()) {
-                    this->sum = b.getSum();
-                    this->distance = b.getDistance();
-                }
-
-                return true;
-            } else {
-                return true;
-            }
         } else {
             if (b.complete()) {
                 this->sum = b.getSum();

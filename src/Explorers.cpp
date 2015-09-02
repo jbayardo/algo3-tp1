@@ -208,25 +208,13 @@ bool Bracelet::operator<(const Bracelet &r) const {
     if (this->sum > r.sum) {
         // Tamaños iguales, suma mayor
         return true;
-    } else if (this->sum == r.sum) {
-        // Tamaños iguales, sumas iguales
-        if (this->distance > r.distance) {
-            // Tamaños iguales, sumas iguales, mayor distancia
-            return true;
-        } else if (this->distance == r.distance) {
-            // Tamaños iguales, sumas iguales, distancias iguales
-
-            if (this->bracelet < r.bracelet) {
-                return false;
-            } else if (this->bracelet != r.bracelet) {
-                return true;
-            }
-
+    } else if (this->sum == r.sum){
+        if (this->bracelet < r.bracelet) {
             return false;
-        } else {
-            // Tamaños iguales, sumas iguales, menor distancia
-            return false;
-        }
+		} else if (this->bracelet != r.bracelet) {
+			return true;
+		}
+        return false;
     } else {
         // Tamaños iguales, suma menor
         return false;
