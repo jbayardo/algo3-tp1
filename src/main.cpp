@@ -6,11 +6,21 @@
 #include "Explorers.h"
 #include "Statistics.h"
 
+/**
+ * Si recibimos la variable runs, se va a correr runs veces seguidas por caso de
+ * test. La única vez que se va a imprimir es la última. Esto quiere decir, el
+ * archivo de estadísticas va a contener runs veces las mediciones para cada test,
+ * uno atrás del otro.
+ *
+ * Por ejemplo, si tenemos runs=2, con 2 casos de test, los primeros 2 valores del
+ * medidor se van a corresponder con el primer caso, y los últimos 2 con el segundo
+ * caso.
+ */
 int main(int argc, char *argv[]) {
     using namespace std;
 
-    if (argc != 4) {
-        cout << "Usage: " << argv[0] << " problem input output" << endl;
+    if (argc < 4) {
+        cout << "Usage: " << argv[0] << " problem{1, 2, 3} input output [runs]{>0}" << endl;
         return 0;
     }
 
@@ -39,11 +49,14 @@ int main(int argc, char *argv[]) {
         case 1:
         {
             while (!input.eof()) {
+                // Leemos los datos del caso de test actual
                 int metros;
                 vector<int> cities;
 
                 input >> metros;
                 input.ignore();
+
+                // Esto es para que la capital sea considerada
                 cities.push_back(0);
 
 				while (input.peek() != char_traits<char>::to_int_type('\n') && input.peek() != char_traits<char>::to_int_type('\n') && !input.eof()) {
@@ -52,6 +65,14 @@ int main(int argc, char *argv[]) {
                     cities.push_back(km);
                 }
 
+                // Corremos el algoritmo la cantidad de veces que sea indicada por runs
+                if (argc >= 5) {
+                    for (int i = 0; i < atoi(argv[4]) - 1; ++i) {
+                        Path::greedy(metros, cities);
+                    }
+                }
+
+                // Corrida final
                 output << Path::greedy(metros, cities) << endl;
             }
             break;
@@ -61,7 +82,7 @@ int main(int argc, char *argv[]) {
 			string line;
 
 			while (getline(input, line)) {
-                Median ej2;
+                // Leemos los datos del caso de test actual
                 list<int> numbers;
 				istringstream stream(line);
 				string number;
@@ -70,7 +91,19 @@ int main(int argc, char *argv[]) {
                     numbers.push_back(stoi(number));
                 }
 
-                for (auto &it : ej2.insert(numbers)) {
+                // Corremos el algoritmo la cantidad de veces que sea indicada por runs
+                if (argc >= 5) {
+                    for (int i = 0; i < atoi(argv[4]) - 1; ++i) {
+                        Median temporal;
+                        temporal.insert(numbers);
+                    }
+                }
+
+                // Corrida final
+                Median run;
+                run.insert(numbers);
+
+                for (auto &it : run.insert(numbers)) {
                     output << it << ' ';
                 }
 
@@ -78,10 +111,12 @@ int main(int argc, char *argv[]) {
             }
             break;
         }
-        case 3: {
+        case 3:
+        {
             string line;
 
             while (getline(input, line)) {
+                // Leemos los datos del caso de test actual
                 map<char, set<char>> exploradoras;
                 istringstream stream(line);
                 string data;
@@ -102,10 +137,20 @@ int main(int argc, char *argv[]) {
                         exploradoras[data[i]].insert(exploradora);
                     }
                 }
-                Explorers ej3(exploradoras);
 
+                // Corremos el algoritmo la cantidad de veces que sea indicada por runs
+                if (argc >= 5) {
+                    for (int i = 0; i < atoi(argv[4]) - 1; ++i) {
+                        Explorers temporal(exploradoras);
+                        PruningFilter filter;
+                        temporal.backtracking(filter);
+                    }
+                }
+
+                // Corrida final
+                Explorers run(exploradoras);
                 PruningFilter filter;
-                Bracelet res = ej3.backtracking(filter);
+                Bracelet res = run.backtracking(filter);
                 output << res << endl;
             }
             break;
