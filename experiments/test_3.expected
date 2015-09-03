@@ -1,0 +1,35 @@
+#grafo completo
+1 abc
+2 abcd
+2 abcde
+4 abcdefgh
+
+#1 rel + 4 conexas, sin ciclos
+1 abcd
+1 abcdef
+1 abcdefgh
+
+#1 rel + 1 ciclo + 1 conexa
+1 abcd
+1 abcdef
+1 abcdefgh
+
+#2 rel + 2 ciclos + 2 comp conexas
+3 abcdefgh
+
+#3 rel + 2 conexas, sin ciclos
+1 abcde
+2 abcdfegh
+2 abcdgfeh
+
+#2 rel + 3 comp conexas
+1 abcdihefg
+
+#arbol binario
+2 abdehgcf
+
+#estrella
+4 abcdefgh
+
+2 abcde
+4 abcdefghi
