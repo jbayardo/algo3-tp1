@@ -3,6 +3,7 @@
 2 abcd
 2 abcde
 4 abcdefgh
+4 abcdefghi
 
 #1 rel + 4 conexas, sin ciclos
 1 abcd
@@ -28,8 +29,10 @@
 #arbol binario
 2 abdehgcf
 
-#estrella
+#1 estrella
 4 abcdefgh
 
-2 abcde
-4 abcdefghi
+#2 estrellas
+2 abedfgc
+
+

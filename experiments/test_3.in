@@ -1,9 +1,9 @@
 #grafo completo
-
 abc a bc;b ac;c ab
 abcd a bcd;b acd;c abd;d abc
 abcde a bcde;b acde;c abde;d abce;e abcd
 abcdefgh a bcdefgh;b acdefgh;c abdefgh;d abcefgh;e abcdfgh;f abcdegh;g abcdefh;h abcdefg
+abcdefghi a bcdefghi;b acdefghi;c abdefghi;d abcefghi;e abcdfghi;f abcdeghi;g abcdefhi;h abcdefgi;i abcdefgh
 
 #1 rel + 4 conexas, sin ciclos
 abcd a b;b a;c d;d c
@@ -29,14 +29,16 @@ abcdefghi a b;b ac;c b;d i;i hd;h i;e f;f eg;g f
 #arbol binario
 abcdefgh a bc;b ade;c afg;d b;e b;f c;g ch;h g
 
-#estrella, 2 estrellas
+#1 estrella
 abcdefgh a bcdefgh;b a;c a;d a;e a;f a;g a;h a
 
+#2 estrellas
+abcdefg a bc;b a;c a;d efg;e d;f d;g d
 
 
 
 
 
 
-abcde a bcde;b acde;c abde;d abce;e abcd
-abcdefghi a bcdefghi;b acdefghi;c abdefghi;d abcefghi;e abcdfghi;f abcdeghi;g abcdefhi;h abcdefgi;i abcdefgh
+
+
