@@ -101,8 +101,6 @@ int main(int argc, char *argv[]) {
 
                 // Corrida final
                 Median run;
-                run.insert(numbers);
-
                 for (auto &it : run.insert(numbers)) {
                     output << it << ' ';
                 }
