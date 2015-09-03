@@ -1,0 +1,19 @@
+a bc;b ac;c ab
+a bcd;b acd;c abd;d abc
+a bcde;b acde;c abde;d abce;e abcd
+a bcdefgh;b acdefgh;c abdefgh;d abcefgh;e abcdfgh;f abcdegh;g abcdefh;h abcdefg
+a bcdefghi;b acdefghi;c abdefghi;d abcefghi;e abcdfghi;f abcdeghi;g abcdefhi;h abcdefgi;i abcdefgh
+a b;b a;c d;d c
+a b;b a;c d;d c;e f;f e
+a b;b a;c d;d c;e f;f e;g h;h g
+a db;b ac;c bd;d ca
+a fb;b ac;c bd;d ce;e df;f ea
+a hb;b ac;c bd;d ce;e df;f ge;g hf;h ga
+a bd;b ac;c bd;d ac;e hf;f eg;g hf;h eg
+a b;b ac;c b;d e;e d
+a b;b a;c d;d ce;e fgh;f e;g e;h e
+a b;b adc;c b;d b;e hf;f eg;g f;h e
+a b;b ac;c b;d i;i hd;h i;e f;f eg;g f
+a bc;b ade;c afg;d b;e b;f c;g ch;h g
+a bcdefgh;b a;c a;d a;e a;f a;g a;h a
+a bc;b a;c a;d efg;e d;f d;g d

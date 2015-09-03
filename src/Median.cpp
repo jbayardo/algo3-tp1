@@ -6,8 +6,6 @@
 Median::Median() {  }
 
 int Median::get() {
-    Timer timer("Median Get Timer");
-
     if (left.size() == right.size()) {
         return (left.top() + right.top())/2;
     } else {
@@ -16,8 +14,6 @@ int Median::get() {
 }
 
 void Median::insertSingle(int x) {
-    Timer timer("Median Insert Simple Timer");
-
     if (left.size() == 0) {
         left.push(x);
     } else if (left.size() != right.size()) {

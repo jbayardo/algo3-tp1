@@ -137,10 +137,6 @@ public:
      */
     Explorers(const std::map<char, std::set<char>> &relations);
 
-    /*! Resolución utilizando el algoritmo de fuerza bruta
-     */
-    std::pair<int, std::string> exhaustive();
-
     /*! Resolución utilizando el algoritmo de backtracking
      */
     Bracelet backtracking(BraceletFilter keep);

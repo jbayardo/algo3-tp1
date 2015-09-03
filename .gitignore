@@ -25,3 +25,14 @@
 # Executables
 *.exe
 *.app
+
+Algo3Tp1/*
+CMakeFiles/*
+CMakeCache.txt
+*.sublime-*
+cmake_install.cmake
+Makefile
+*.out
+*.sts
+*.pdb
+*.pyc

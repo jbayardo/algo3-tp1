@@ -13,7 +13,7 @@ public:
 
     template<class Iterator>
     std::list<int> insert(Iterator elements) {
-        Timer timer("Median Insertion Timer");
+        Timer timer("Median Timer");
 
         std::list<int> output;
 
