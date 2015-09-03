@@ -9,12 +9,9 @@ int Path::greedy(int meters, const std::vector<int> &distances) {
     int start = 0; // Comienzo del camino actual
 
     for (int end = 0; end < distances.size(); ++end) {
-        if (distances[end] - distances[start] > meters) {
-            // Borro cualquier cantidad de greedy que sean necesarias para poder continuar buscando.
-            while (distances[end] - distances[start] > meters && start < end) {
-                ++start;
-            }
-
+        // Borro cualquier cantidad de greedy que sean necesarias para poder continuar buscando.
+        while (distances[end] - distances[start] > meters) {
+            ++start;
         }
 
         // Si este camino es mejor que el que ya teniamos, lo guardamos.

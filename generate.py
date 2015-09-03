@@ -66,21 +66,23 @@ if __name__ == '__main__':
     top = int(sys.argv[2])
     data = []
     gen = None
-    if problem == 1:
-        filename = "ex1.in"
-        gen = generateEx1
-    elif problem == 2:
-        filename = "ex2.in"
-        gen = generateEx2
-    else:
-        filename = "ex3.in"
+    filename = "ex%d.in"%(problem)
+
+    if problem == 3:
         gen = generateEx3
+        for e in xrange(3, top):
+            for a in xrange(1, e):
+                data.append(gen(e, a))
+    else:
+        if problem == 1:
+            gen = generateEx1
+        else:
+            gen = generateEx2
+        x = 10
+        while x < top:
+            data.append(gen(x, x*10))
+            x *= 10
 
-    print filename
-    x = 10
-    while x < top:
-        data.append(gen(x, x))
-        x *= 10
-
-    # top = 10 ** 8
     write_to_test_file(filename, "\n".join(data))
+
+    
