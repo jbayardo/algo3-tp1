@@ -4,6 +4,10 @@ import string
 import itertools
 import sys
 
+def write_to_test_file(fname, data):
+	with open(fname, 'w') as handle:
+		handle.write(data)
+
 def generateEx1(length, bound):
     output = set()
     maximum = -1
@@ -17,6 +21,13 @@ def generateEx1(length, bound):
 
     return str(random.randint(1, maximum)) + "\n" + " ".join(str(s) for s in sorted(list(output)))
 
+paramsEx1 = [(10 + x*5, 100*x) for x in range(1, 10)]
+
+output = ""
+for (length, bound) in paramsEx1:
+	output += generateEx1(length, bound)
+
+write_to_test_file("experiments/test_1_complejidad.in", output)
 
 def generateEx2(length, bound):
     output = []
@@ -25,15 +36,15 @@ def generateEx2(length, bound):
         n = random.randint(-bound, bound)
         output.append(n)
 
-    # s = sorted(output)
-
-    # if len(s) % 2 == 0:
-    #     m = (s[len(s)//2 + 1] + s[len(s)//2 - 1]) // 2
-    # else:
-    #     m = s[len(s)//2]
-
     return " ".join(str(output).strip("[").strip("]").split(", "))
 
+paramsEx2 = [(x, 3000) for x in range(10, 1000)]
+
+output = ""
+for (length, bound) in paramsEx2:
+	output += generateEx2(length, bound)
+
+write_to_test_file("experiments/test_2_complejidad.in", output)
 
 def generateEx3(e, a):
     res = ""
@@ -53,34 +64,10 @@ def generateEx3(e, a):
         res += index + " " + "".join(str(r) for r in relationships[index]) + ";"
     return res[:-1]
 
+paramsEx3 = [(e, a) for e in range(3, 100) for a in range(1, 2*e)]
 
-def write_to_test_file(filename, data):
-    with open(filename, "w") as file:
-        file.writelines(data)
+output = ""
+for (explorers, friendships) in paramsEx3:
+	output += generateEx3(explorers, friendships)
 
-if __name__ == '__main__':
-    if len(sys.argv) < 3:
-        print "Numero problema, max size"
-        exit()
-    problem = int(sys.argv[1])
-    top = int(sys.argv[2])
-    data = []
-    gen = None
-    if problem == 1:
-        filename = "ex1.in"
-        gen = generateEx1
-    elif problem == 2:
-        filename = "ex2.in"
-        gen = generateEx2
-    else:
-        filename = "ex3.in"
-        gen = generateEx3
-
-    print filename
-    x = 10
-    while x < top:
-        data.append(gen(x, x))
-        x *= 10
-
-    # top = 10 ** 8
-    write_to_test_file(filename, "\n".join(data))
+write_to_test_file("experiments/test_3_complejidad.in", output)
