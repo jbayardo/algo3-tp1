@@ -226,21 +226,28 @@ Finalmente, todos los demás casos estarán entre medio de estos dos. Es decir, 
 
 \subsection{Análisis}
 
-Al analizar este caso se nos presento el problema de que, al pertenecer a una complejidad del orden lineal, y al ser tan simple el algoritmo, no hay un peor caso "real" que se pueda analizar profundamente. Lo que queremos ver es si, en distintos casos con la misma cantidad de ciudades, el tiempo de computo del algoritmo se puede ver afectado ya sea por una distribución de distancias especificas junto a una longitud de cable especifica.
-Como se puede ver en el pseudocodigo, el ciclo principal del algoritmo va a realizar exactamente una iteración por ciudad que haya en el vector de entrada, por lo tanto no se vera afectada por ningún caso especifico. Donde si podremos notar cambios es dentro de este ciclo, ya que encontraremos:
+Al analizar este caso se nos presentó el problema de que, al pertenecer a una complejidad del orden lineal, y al ser tan simple el algoritmo, no hay un peor caso 'real' que se pueda analizar profundamente. Lo que queremos ver es si, en distintos casos con la misma cantidad de ciudades, el tiempo de computo del algoritmo se puede ver afectado ya sea por una distribución de distancias específicas junto a una longitud de cable específica.
+Como se puede ver en el pseudocódigo, el ciclo principal del algoritmo va a realizar exactamente una iteración por ciudad que haya en el vector de entrada, por lo tanto no se verá afectada por ningún caso especifico. Donde sí podremos notar cambios es dentro de este ciclo, ya que encontraremos:
 \begin{itemize}
 \item un ciclo condicional
-\item un bloque condiciona
+\item un bloque condicional
 \end{itemize}
-El primero, como vimos en el análisis de complejidad, realizara $\text{tamaño}(distances)$ iteraciones como máximo en toda la ejecución del algoritmo, por lo tanto un peor caso seria en el cual todas estas iteraciones se realicen, y hay muchas formas de que esto suceda, la mas simple es que la ultima ciudad se encuentre a mas de $meters$ distancia de la anteutima ciudad, en ese caso al llegar a la ultima estación el algoritmo ingresara a este ciclo y realizara las $\text{tamaño}(distances)$ iteraciones. Otra forma seria que todas las estaciones se encuentren a mas de $meters$ distancia de su anterior, y por lo tanto en cada iteración del ciclo principal se realizara una iteración del ciclo interno.
-Luego, el segundo, el bloque condicional, se ingresara solo si, en la iteración actual, el mejor camino obtenido hasta la iteración anterior junto con la ciudad actual forman un nuevo mejor camino (es decir, suman una mayor cantidad de ciudades mientras entran en la longitud del cable). Por lo tanto una entrada para la cual se busque entrar siempre en este bloque seria una en la cual la solución incluya a todas la ciudades, ya que en todas las iteraciones se actualizara el mejor camino para incluir una nueva ciudad.\par
-Una forma de complementar estos peores casos específicos seria lograr que se ingrese en el bloque condicional en la mayoría de las iteraciones, y que al mismo tiempo se realicen todas las iteraciones posibles del ciclo secundario. Una forma seria un caso en el que el mejor camino incluya a las ciudades desde la capital hasta la anteultima ciudad, y la ultima ciudad este a mas de $meters$ distancia de la anteultima, logrando en este caso:
+El primero, como vimos en el análisis de complejidad, realizará $\text{tamaño}(distances)$ iteraciones como máximo en toda la ejecución del algoritmo, por lo tanto un peor caso sería en el cual todas estas iteraciones se realicen, y hay muchas formas de que esto suceda. La más simple es que la última ciudad se encuentre a más de $meters$ distancia de la anteúltima ciudad, en ese caso al llegar a la última estación el algoritmo ingresará a este ciclo y realizará las $\text{tamaño}(distances)$ iteraciones. Otra forma sería que todas las estaciones se encuentren a más de $meters$ distancia de su anterior, y por lo tanto en cada iteración del ciclo principal se realizará una iteración del ciclo interno.
+Luego, el segundo, el bloque condicional, se ingresará sólo si, en la iteración actual, el camino histórico obtenido hasta la iteración anterior junto con la ciudad actual forman un nuevo camino histórico (es decir, suman una mayor cantidad de ciudades mientras entran en la longitud del cable). Por lo tanto, una entrada para la cual se busque entrar siempre en este bloque sería una en la cual la solución incluya a todas la ciudades, ya que en todas las iteraciones se actualizará el camino histórico para incluir una nueva ciudad.\par
+Una forma de complementar estos peores casos específicos sería lograr que se ingrese en el bloque condicional en la mayoría de las iteraciones, y que al mismo tiempo se realicen todas las iteraciones posibles del ciclo secundario. Una forma sería un caso en el que el mejor camino incluya a las ciudades desde la capital hasta la anteúltima ciudad, y la última ciudad esté a más de $meters$ distancia de la anteúltima, logrando en este caso:
 \begin{itemize}
 \item Ingresar $\text{tamaño}(distances)-1$ veces a al bloque condicional
 \item Relizar las $\text{tamaño}(distances)$ iteraciones disponibles del ciclo secundario.
 \end{itemize}
 \newline
-El mejor caso seria buscar lo contrario a lo anterior, minimizar la cantidad de veces en las que se ingresa al bloque condicional y al ciclo secundario. Pero es importante ver que no se puede evitar entrar en alguna de las dos partes, ya que si el $start$ no es aumentado por el ciclo secundario entonces, ya que el $end$ aumenta por el ciclo principal, el camino incluirá mas ciudades, y por lo tanto sera mejor y se entrara en el bloque condicional para actualizar el mejor camino. Por lo tanto necesitaremos elegir cual de los dos bloques costara menos realizar, si el ciclo o el condicional. En este caso, a simple vista se ve que el ciclo solo realiza una asignación, mientras que el condicional realiza dos. Por lo tanto lo mejor sera entrar siempre en el ciclo y realizar una iteración. Entonces el mejor caso se dará en el que todas las ciudades estén a mas de $meters$ distancia de la anterior.
+El mejor caso sería buscar lo contrario a lo anterior, minimizar la cantidad de veces en las que se ingresa al bloque condicional y al ciclo secundario. Pero es importante ver que no se puede evitar entrar en alguna de las dos partes, ya que si el $start$ no es aumentado por el ciclo secundario entonces, ya que el $end$ aumenta por el ciclo principal, el camino incluirá mas ciudades, y por lo tanto será más largo y se entrará en el bloque condicional para actualizar el camino histórico. Por lo tanto necesitaremos elegir cual de los dos bloques costará menos realizar, si el ciclo o el condicional. En este caso, a simple vista se ve que el ciclo solo realiza una asignación, mientras que el condicional realiza dos. Por lo tanto lo mejor será entrar siempre en el ciclo y realizar una iteración. Entonces el mejor caso se dará en el que todas las ciudades estén a más de $meters$ distancia de la anterior.
+
+Para comprobar estos casos realizamos 3 casos de test: peor caso, mejor caso y caso aleatorio. El script generador se puede encontrar en $generate.py$.
+
+Ahora veremos los datos recopilados sobre los alegados mejor y peor caso:
+%Inserte grafico de best y worst case aqui
+
+Como se puede ver, efectivamente la diferencia de complejidad es evidente entre estos casos. 
 
 \section{Problema 2}
 
@@ -453,25 +460,27 @@ Las funciones top, push y pop son funciones de la librería estándar, las cuale
 
 \subsection{Análisis}
 
-Para este algoritmo, el mejor caso se dará cuando los elementos de la secuencia de entrada estén distribuidos de forma tal que nunca tengamos que hacer intercambio de elementos entre los heaps, . Observando la figura \ref{grf:ex3-best}
+Para este algoritmo, el mejor caso se dará cuando los elementos de la secuencia de entrada estén distribuidos de forma tal que nunca tengamos que hacer intercambio de elementos entre los heaps. Un ejemplo de este caso, y de hecho la forma en la que generamos los casos, es tomando sucesiones de números tal que tomar la subsucesión de las posiciones impares (indexadas desde 1) sean crecientes, y la subsucesión de las posiciones pares sean decrecientes.
+
+Por otro lado, el peor caso va a suceder cuando en cada inserción tengamos que volver a balancear los heaps. Un ejemplo de este tipo es cuando la entrada está ordenada de forma estrictamente creciente.
+
+Finalmente, consideramos casos construidos de forma aleatoria, donde el procedimiento consiste en dada una longitud $l$ y una cota máxima $c > 0$ para los números, generar $l$ números aleatoriamente distribuidos en $\{-c, .., c\}$ y ponerlos en una lista.
 
 \begin{figure}[h!]
 \centering
 \label{grf:ex2-best}
 \includegraphics[width=8cm]{images/ex2-best}
-\caption{}
+\caption{Tiempos de mejor caso para el ejercicio 2. El tamaño de entrada es la longitud de la lista.}
 \end{figure}
+
+\ref{grf:ex2-worst}
 
 \begin{figure}[h!]
 \centering
 \label{grf:ex2-worst}
 \includegraphics[width=8cm]{images/ex2-worst}
-\caption{}
+\caption{Tiempos de peor caso para el ejercicio 2. El tamaño de entrada es la longitud de la lista.}
 \end{figure}
-
-\ref{grf:ex2-best}
-
-Finalmente, consideramos casos construidos de forma aleatoria, donde el procedimiento consiste en dada una longitud $l$ y una cota máxima $c > 0$ para los números, generar $l$ números aleatoriamente distribuidos en $\{-c, .., c\}$ y ponerlos en una lista. La figura \ref{grf:ex2-random} nos muestra, .
 
 \begin{figure}[h!]
 \centering
@@ -695,7 +704,11 @@ Cabe destacar que el menor o igual vale porque si $x \leq e$, $\frac{x}{e} \leq 
 
 \subsection{Análisis}
 
-El mejor caso del algoritmo es cuando obtenemos la suma óptima lo antes posible, ya que nos va a permitir podar la mayor cantidad de nodos en total. En nuestro caso, como la primer suma calculada se corresponde con la ronda $(z..a)$, por lo que tenemos que pedir que el representante de la clase de equivalencia ($(a z .. b)$) a la que pertenece la misma sea el óptimo (ya que esto nos va a permitir purgar la mayor cantidad de ramas posibles). Observando la figura \ref{grf:ex3-worst}
+El mejor caso del algoritmo es cuando obtenemos la suma óptima lo antes posible, ya que nos va a permitir podar la mayor cantidad de nodos en total. En nuestro caso, como la primer suma calculada se corresponde con la ronda $(z..a)$, por lo que tenemos que pedir que el representante de la clase de equivalencia ($(a z .. b)$) a la que pertenece la misma sea el óptimo (ya que esto nos va a permitir purgar la mayor cantidad de ramas posibles).
+
+En términos del peor caso, es claro que el mismo será cuando la poda sea mínima, es decir, cuando jamás logremos podar nodos. Observemos que esto se corresponde con que las rondas que vayan avanzando lexicográficamente vayan al mismo tiempo bajando el costo, por lo que es difícil poder construir explícitamente un peor caso. Sin embargo, podemos aproximarnos si consideramos no podar el árbol: borrar las podas se correspondería con un caso lo suficientemente malo como para que las mismas sean inaplicables. Si bien esto difícilmente suceda en un caso real, ya que al tener aunque sea un caso muy posiblemente logremos borrar algunas ramas, pensamos que es una buena forma de cuantificar cuánto estamos ganando con las podas.
+
+Finalmente, consideramos casos construidos de forma aleatoria, donde el procedimiento consiste en dada una cantidad de exploradoras $e$ y una cantidad de amistades $a \in \{1, .., \frac{e(e-1)}{2}\}$, generamos el producto cartesiano entre las exploradoras, filtramos los vértices inadmisibles (la relación diagonal y los simétricos), y tomamos una muestra de $a$ elementos uniformemente distribuidos entre los mismos.
 
 \begin{figure}[h!]
 \centering
@@ -704,16 +717,12 @@ El mejor caso del algoritmo es cuando obtenemos la suma óptima lo antes posible
 \caption{}
 \end{figure}
 
-En términos del peor caso, es claro darse cuenta que el mismo será cuando la poda sea mínima, es decir, cuando jamás logremos podar nodos. Observemos que esto se corresponde con que las rondas que vayan avanzando lexicográficamente vayan al mismo tiempo bajando el costo, por lo que es difícil poder construir explícitamente un peor caso. Sin embargo, podemos aproximarnos si consideramos no podar el árbol: borrar las podas se correspondería con un caso lo suficientemente malo como para que las mismas sean inaplicables. Si bien esto difícilmente suceda en un caso real, ya que al tener aunque sea un caso muy posiblemente logremos borrar algunas ramas, pensamos que es una buena forma de cuantificar cuánto estamos ganando con las podas. Como se ve en la figura \ref{grf:ex3-best}
-
 \begin{figure}[h!]
 \centering
 \label{grf:ex3-best}
 \includegraphics[width=8cm]{images/ex3-best}
 \caption{}
 \end{figure}
-
-Finalmente, consideramos casos construidos de forma aleatoria, donde el procedimiento consiste en dada una cantidad de exploradoras $e$ y una cantidad de amistades $a \in \{1, .., \frac{e(e-1)}{2}\}$, generamos el producto cartesiano entre las exploradoras, filtramos los vértices inadmisibles (la relación diagonal y los simétricos), y tomamos una muestra de $a$ elementos uniformemente distribuidos entre los mismos. Como podemos ver en la figura \ref{grf:ex3-random}
 
 \begin{figure}[h!]
 \centering
