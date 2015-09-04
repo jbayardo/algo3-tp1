@@ -1,22 +1,24 @@
+import scipy
 import os
 import re
 import pandas as pd
 # Este script larga output.csv, con el formato que buscamos para que lo tome
 # el software para graficar, Tableau.
 
-split = 1
+split = 100
 
 dataset = []
 
-files = map(lambda x: 'tests/'+x, os.listdir('tests'))
+files = map(lambda x: 'experiments/'+x, os.listdir('experiments'))
+files += map(lambda x: 'tests/'+x, os.listdir('tests'))
 
 for fname in files:
     if fname[-3:] != 'sts':
         continue
 
-    matches = re.match(r"^tests\/test_([1-3])_(.*)?\.sts$", fname)
-    method = int(matches.group(1).strip())
-    name = matches.group(2).strip()
+    matches = re.match(r"^(experiments|tests)\/test_([1-3])_(.*)?\.sts$", fname)
+    method = int(matches.group(2).strip())
+    name = matches.group(3).strip()
 
     with open(fname, 'r') as handle:
         data = handle.read()
@@ -32,6 +34,8 @@ for fname in files:
         line[1] = [line[1][i:i+split] for i in range(0, len(line[1]), split)]
 
         for case, measures in enumerate(line[1]):
+            measures = sorted(measures)[5:-5]
+
             for index, measure in enumerate(measures):
                 output = {
                     'name': name,
