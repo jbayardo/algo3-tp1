@@ -1,4 +1,4 @@
-
+import os
 import random
 import string
 import itertools
@@ -19,15 +19,20 @@ def generateEx1(length, bound):
         if n > maximum:
             maximum = n
 
-    return str(random.randint(1, maximum)) + "\n" + " ".join(str(s) for s in sorted(list(output)))
+    return str(random.randint(1, maximum)) + "\n" + " ".join(str(s) for s in sorted(list(output))) + "\n"
 
-paramsEx1 = [(10 + x*5, 100*x) for x in range(1, 10)]
+if not os.path.isfile("experiments/test_1_complejidad.in"):
+    print "Generating ex1.1"
 
-output = ""
-for (length, bound) in paramsEx1:
-	output += generateEx1(length, bound)
+    paramsEx1 = [(10 + x*5, 100*x) for x in range(1, 1000)]
 
-write_to_test_file("experiments/test_1_complejidad.in", output.strip())
+    print "Generating ex1.2"
+
+    output = ""
+    for (length, bound) in paramsEx1:
+    	output += generateEx1(length, bound)
+
+    write_to_test_file("experiments/test_1_complejidad.in", output.strip())
 
 def generateEx2(length, bound):
     output = []
@@ -38,13 +43,18 @@ def generateEx2(length, bound):
 
     return " ".join(str(output).strip("[").strip("]").split(", ")) + "\n"
 
-paramsEx2 = [(x, 3000) for x in range(10, 100)]
+if not os.path.isfile("experiments/test_2_complejidad.in"):
+    print "Generating ex2.1"
 
-output = ""
-for (length, bound) in paramsEx2:
-	output += generateEx2(length, bound)
+    paramsEx2 = [(x, 3*x) for x in range(10, 5000)]
 
-write_to_test_file("experiments/test_2_complejidad.in", output.strip())
+    print "Generating ex2.2"
+
+    output = ""
+    for (length, bound) in paramsEx2:
+    	output += generateEx2(length, bound)
+
+    write_to_test_file("experiments/test_2_complejidad.in", output.strip())
 
 def generateEx3(e, a):
     res = ""
@@ -64,11 +74,16 @@ def generateEx3(e, a):
         res += index + " " + "".join(str(r) for r in relationships[index]) + ";"
     return res[:-1] + "\n"
 
-paramsEx3 = [(e, a) for e in range(3, 25) for a in range(1, e*(e-1)/2)]
+if not os.path.isfile("experiments/test_3_complejidad.in"):
+    print "Generating ex3.1"
 
-output = ""
-for (explorers, friendships) in paramsEx3:
-	print "Generando ex3: ", explorers, friendships
-	output += generateEx3(explorers, friendships)
+    paramsEx3 = [(e, a) for e in range(3, 27) for a in range(1, e*(e-1)/2 + 1)]
 
-write_to_test_file("experiments/test_3_complejidad.in", output.strip())
+    print "Generating ex3.2"
+
+    output = ""
+    for (explorers, friendships) in paramsEx3:
+        print explorers, friendships
+    	output += generateEx3(explorers, friendships)
+
+    write_to_test_file("experiments/test_3_complejidad.in", output.strip())
