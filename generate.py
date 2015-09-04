@@ -130,3 +130,48 @@ if not os.path.isfile("experiments/test_3_complejidad.in"):
     	output += generateEx3(explorers, friendships)
 
     write_to_test_file("experiments/test_3_complejidad.in", output.strip())
+
+########################################################################~
+#Best and Worst cases###################################################~
+########################################################################~
+
+def generateBest1(cities,dis):
+	cable = dis
+	n = cable + 1
+	output = []
+	now = n
+	while len(output) < cities:
+		output.append(now)
+		now += n
+
+	return str(cable) + "\n" + " ".join(str(s) for s in output) + "\n"
+
+def generateWorst1(cities,dis):
+	distance = dis
+	cable = distance * cities
+	n = distance - 1
+	output = []
+	now = n
+	while len(output) < cities - 1:
+		output.append(now)
+		now += n
+	output.append(now + cable)
+
+	return str(cable) + "\n" + " ".join(str(s) for s in output) + "\n"
+
+if not os.path.isfile("experiments/test_1_complejidad_best.in") or not os.path.isfile("experiments/test_1_complejidad_worst.in"):
+	dis = random.randint(1, 500)
+	print "Generating WB1.1"
+
+	paramsEx1 = [(10 + x*5) for x in range(1, 1000)]
+
+	print "Generating WB1.2"
+
+	outputB = ""
+	outputW = ""
+	for (cities) in paramsEx1:
+		outputB += generateBest1(cities, dis)
+		outputW += generateWorst1(cities, dis)
+
+	write_to_test_file("experiments/test_1_complejidad_best.in", outputB.strip())
+	write_to_test_file("experiments/test_1_complejidad_worst.in", outputW.strip())
