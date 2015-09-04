@@ -55,13 +55,11 @@ def generateEx2Best(length, bound):
 
     toutput = []
 
-    for x in range(length):
-        if x % 2 == 0:
-            toutput.append(output[x//2])
-        else:
-            toutput.append(output[-((x//2) + 1)])
+    for x in range(length/2):
+        toutput.append(output[x])
+        toutput.append(output[-x+1])
 
-    return " ".join(str(output).strip("[").strip("]").split(", ")) + "\n"
+    return " ".join(str(x) for x in toutput) + "\n"
 
 ## Lista estrictamente ordenada
 def generateEx2Worst(length, bound):
@@ -73,7 +71,7 @@ def generateEx2Worst(length, bound):
 
     output = sorted(list(output))
 
-    return " ".join(str(output).strip("[").strip("]").split(", ")) + "\n"
+    return " ".join(str(x) for x in output) + "\n"
 
 print "Generating ex2.1"
 paramsEx2 = [(x, 5000) for x in range(1, 80000, 250)]
