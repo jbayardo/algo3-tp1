@@ -1,0 +1,60 @@
+case,method,name,run,timer,value
+1,3,catedra,1,Explorers Backtracking Search Timer,35
+2,3,catedra,1,Explorers Backtracking Search Timer,25
+3,3,catedra,1,Explorers Backtracking Search Timer,4860
+4,3,catedra,1,Explorers Backtracking Search Timer,4
+1,2,catedra,1,Median Timer,5
+2,2,catedra,1,Median Timer,1
+3,2,catedra,1,Median Timer,0
+4,2,catedra,1,Median Timer,1
+1,3,correctitud,1,Explorers Backtracking Search Timer,13
+2,3,correctitud,1,Explorers Backtracking Search Timer,10
+3,3,correctitud,1,Explorers Backtracking Search Timer,30
+4,3,correctitud,1,Explorers Backtracking Search Timer,7982
+5,3,correctitud,1,Explorers Backtracking Search Timer,70815
+6,3,correctitud,1,Explorers Backtracking Search Timer,7
+7,3,correctitud,1,Explorers Backtracking Search Timer,83
+8,3,correctitud,1,Explorers Backtracking Search Timer,3365
+9,3,correctitud,1,Explorers Backtracking Search Timer,8
+10,3,correctitud,1,Explorers Backtracking Search Timer,94
+11,3,correctitud,1,Explorers Backtracking Search Timer,3938
+12,3,correctitud,1,Explorers Backtracking Search Timer,3869
+13,3,correctitud,1,Explorers Backtracking Search Timer,19
+14,3,correctitud,1,Explorers Backtracking Search Timer,3764
+15,3,correctitud,1,Explorers Backtracking Search Timer,3727
+16,3,correctitud,1,Explorers Backtracking Search Timer,29710
+17,3,correctitud,1,Explorers Backtracking Search Timer,3943
+18,3,correctitud,1,Explorers Backtracking Search Timer,3980
+19,3,correctitud,1,Explorers Backtracking Search Timer,515
+1,1,catedra,1,Path Timer,0
+2,1,catedra,1,Path Timer,0
+3,1,catedra,1,Path Timer,0
+4,1,catedra,1,Path Timer,0
+5,1,catedra,1,Path Timer,0
+6,1,catedra,1,Path Timer,0
+7,1,catedra,1,Path Timer,0
+8,1,catedra,1,Path Timer,0
+9,1,catedra,1,Path Timer,0
+1,1,correctitud,1,Path Timer,0
+2,1,correctitud,1,Path Timer,0
+3,1,correctitud,1,Path Timer,0
+4,1,correctitud,1,Path Timer,0
+5,1,correctitud,1,Path Timer,0
+6,1,correctitud,1,Path Timer,0
+7,1,correctitud,1,Path Timer,0
+8,1,correctitud,1,Path Timer,0
+9,1,correctitud,1,Path Timer,0
+10,1,correctitud,1,Path Timer,0
+11,1,correctitud,1,Path Timer,0
+1,2,correctitud,1,Median Timer,4
+2,2,correctitud,1,Median Timer,1
+3,2,correctitud,1,Median Timer,1
+4,2,correctitud,1,Median Timer,1
+5,2,correctitud,1,Median Timer,1
+6,2,correctitud,1,Median Timer,1
+7,2,correctitud,1,Median Timer,0
+8,2,correctitud,1,Median Timer,0
+9,2,correctitud,1,Median Timer,0
+10,2,correctitud,1,Median Timer,1
+11,2,correctitud,1,Median Timer,1
+12,2,correctitud,1,Median Timer,1
