@@ -16,7 +16,7 @@ for fname in files:
     method = matches.group(1).strip()
     outf = fname[:-2] + 'out'
 
-    os.system('.\\tp1 {method} {fname} {outf}'.format(method=method, fname=fname, outf=outf))
+    os.system('./tp1 {method} {fname} {outf}'.format(method=method, fname=fname, outf=outf))
 
     with open(outf, 'r') as handle:
         output = handle.read().strip()
