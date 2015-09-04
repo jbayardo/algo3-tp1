@@ -1,3 +1,4 @@
+import scipy
 import os
 import re
 import pandas as pd
@@ -33,6 +34,8 @@ for fname in files:
         line[1] = [line[1][i:i+split] for i in range(0, len(line[1]), split)]
 
         for case, measures in enumerate(line[1]):
+            measures = sorted(measures)[5:-5]
+
             for index, measure in enumerate(measures):
                 output = {
                     'name': name,
