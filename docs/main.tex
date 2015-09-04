@@ -491,30 +491,20 @@ Finalmente, consideramos casos construidos de forma aleatoria, donde el procedim
 
 \begin{figure}[h!]
 \centering
-\label{grf:ex2-best}
-\includegraphics[width=8cm]{images/ex2-best}
-\caption{Tiempos de mejor caso para el ejercicio 2. El tamaño de entrada es la longitud de la lista.}
-\end{figure}
-
-\ref{grf:ex2-worst}
-
-\begin{figure}[h!]
-\centering
-\label{grf:ex2-worst}
-\includegraphics[width=8cm]{images/ex2-worst}
-\caption{Tiempos de peor caso para el ejercicio 2. El tamaño de entrada es la longitud de la lista.}
+\label{grf:ex2-best-worst}
+\includegraphics[width=15cm]{images/ex2-best-worst}
+\caption{Tiempos de mejor y peor caso para el ejercicio 2. El tamaño de entrada es la longitud de la lista.}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
 \label{grf:ex2-random}
-\includegraphics[width=8cm]{images/ex2-random}
-\caption{}
+\includegraphics[width=15cm]{images/ex2-random}
+\caption{Tiempos tomados por instancias generadas aleatoriamente para el ejercicio 2. El tamaño es la longitud de la lista.}
 \end{figure}
 
-%%% TODOOOOOOOOOOOOO
-
-En conclusión, .
+Observemos que la figura \ref{grf:ex2-best-worst} no muestra grandes diferencias, como esperábamos, sino que más bien es relativamente ininteligible.
+Realmente no pudimos llegar a concluir en una causa real por la que suceda esto.
 
 \pagebreak
 
@@ -735,17 +725,12 @@ En términos del peor caso, es claro que el mismo será cuando la poda sea míni
 
 Finalmente, consideramos casos construidos de forma aleatoria, donde el procedimiento consiste en dada una cantidad de exploradoras $e$ y una cantidad de amistades $a \in \{1, .., \frac{e(e-1)}{2}\}$, generamos el producto cartesiano entre las exploradoras, filtramos los vértices inadmisibles (la relación diagonal y los simétricos), y tomamos una muestra de $a$ elementos uniformemente distribuidos entre los mismos.
 
-\begin{figure}[h!]
-\centering
-\label{grf:ex3-worst}
-\includegraphics[width=15cm]{images/ex3-worst}
-\caption{}
-\end{figure}
+Dado que no logramos encontrar un algoritmo que genere un mejor caso para nuestro algoritmo, mostraremos la comparación entre el algoritmo sin podas, contra el algoritmo con podas. Esto nos permitirá cuantificar, de alguna forma, cuanto estamos ganando con las mismas (a pesar de que no va a ser muy .
 
 \begin{figure}[h!]
 \centering
-\label{grf:ex3-best}
-\includegraphics[width=15cm]{images/ex3-best}
+\label{grf:ex3-best-worst}
+\includegraphics[width=15cm]{images/ex3-best-worst}
 \caption{}
 \end{figure}
 
@@ -757,6 +742,8 @@ Finalmente, consideramos casos construidos de forma aleatoria, donde el procedim
 \end{figure}
 
 Observemos que la figura \ref{grf:ex3-random} nos muestra que el variar la cantidad de amistades provoca un crecimiento cuadrático, mientras que variar la cantidad de exploradoras muestra el crecimiento esperado.
+
+Por otro lado, comparar el mejor y 
 
 \pagebreak
 
