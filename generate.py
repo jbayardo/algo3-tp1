@@ -43,18 +43,61 @@ def generateEx2(length, bound):
 
     return " ".join(str(output).strip("[").strip("]").split(", ")) + "\n"
 
+## Lista ordenada de forma alternada
+def generateEx2Best(length, bound):
+    output = set()
+
+    while len(output) < length+1:
+        n = random.randint(-bound, bound)
+        output.append(n)
+
+    output = sorted(list(output))
+
+    toutput = []
+
+    for x in range(length):
+        if x % 2 == 0:
+            toutput.append(output[x//2])
+        else:
+            toutput.append(output[-((x//2) + 1)])
+
+    return " ".join(str(output).strip("[").strip("]").split(", ")) + "\n"
+
+## Lista estrictamente ordenada
+def generateEx2Worst(length, bound):
+    output = set()
+
+    while len(output) < length:
+        n = random.randint(-bound, bound)
+        output.append(n)
+
+    output = sorted(list(output))
+
+    return " ".join(str(output).strip("[").strip("]").split(", ")) + "\n"
+
+print "Generating ex2.1"
+paramsEx2 = [(x, 3*x) for x in range(10, 5000)]
+
 if not os.path.isfile("experiments/test_2_complejidad.in"):
-    print "Generating ex2.1"
-
-    paramsEx2 = [(x, 3*x) for x in range(10, 5000)]
-
     print "Generating ex2.2"
 
     output = ""
     for (length, bound) in paramsEx2:
-    	output += generateEx2(length, bound)
+        output += generateEx2(length, bound)
 
-    write_to_test_file("experiments/test_2_complejidad.in", output.strip())
+    write_to_test_file("experiments/test_2_complejidad_random.in", output.strip())
+
+    output = ""
+    for (length, bound) in paramsEx2:
+        output += generateEx2Best(length, bound)
+
+    write_to_test_file("experiments/test_2_complejidad_best.in", output.strip())
+
+    output = ""
+    for (length, bound) in paramsEx2:
+        output += generateEx2Worst(length, bound)
+
+    write_to_test_file("experiments/test_2_complejidad_worst.in", output.strip())
 
 def generateEx3(e, a):
     res = ""
