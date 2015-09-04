@@ -24,7 +24,7 @@ def generateEx1(length, bound):
 if not os.path.isfile("experiments/test_1_complejidad.in"):
     print "Generating ex1.1"
 
-    paramsEx1 = [(10 + x*5, 100*x) for x in range(1, 1000)]
+    paramsEx1 = [(x, 100*x) for x in range(1, 80000,250)]
 
     print "Generating ex1.2"
 
@@ -49,7 +49,7 @@ def generateEx2Best(length, bound):
 
     while len(output) < length+1:
         n = random.randint(-bound, bound)
-        output.append(n)
+        output.add(n)
 
     output = sorted(list(output))
 
@@ -69,7 +69,7 @@ def generateEx2Worst(length, bound):
 
     while len(output) < length:
         n = random.randint(-bound, bound)
-        output.append(n)
+        output.add(n)
 
     output = sorted(list(output))
 
@@ -78,7 +78,7 @@ def generateEx2Worst(length, bound):
 print "Generating ex2.1"
 paramsEx2 = [(x, 3*x) for x in range(10, 5000)]
 
-if not os.path.isfile("experiments/test_2_complejidad.in"):
+if not os.path.isfile("experiments/test_2_complejidad.in") and not os.path.isfile("experiments/test_2_complejidad_worst.in") and not os.path.isfile("experiments/test_2_complejidad_best.in"):
     print "Generating ex2.2"
 
     output = ""
@@ -126,8 +126,7 @@ if not os.path.isfile("experiments/test_3_complejidad.in"):
 
     output = ""
     for (explorers, friendships) in paramsEx3:
-        print explorers, friendships
-    	output += generateEx3(explorers, friendships)
+        output += generateEx3(explorers, friendships)
 
     write_to_test_file("experiments/test_3_complejidad.in", output.strip())
 
@@ -159,11 +158,11 @@ def generateWorst1(cities,dis):
 
 	return str(cable) + "\n" + " ".join(str(s) for s in output) + "\n"
 
-if not os.path.isfile("experiments/test_1_complejidad_best.in") or not os.path.isfile("experiments/test_1_complejidad_worst.in"):
+if True or not os.path.isfile("experiments/test_1_complejidad_best.in") or not os.path.isfile("experiments/test_1_complejidad_worst.in"):
 	dis = random.randint(1, 500)
 	print "Generating WB1.1"
 
-	paramsEx1 = [(10 + x*5) for x in range(1, 1000)]
+	paramsEx1 = list(range(1, 80000,250))
 
 	print "Generating WB1.2"
 
