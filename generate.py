@@ -174,3 +174,18 @@ if not os.path.isfile("experiments/test_1_complejidad_best.in") or not os.path.i
 
 	write_to_test_file("experiments/test_1_complejidad_best.in", outputB.strip())
 	write_to_test_file("experiments/test_1_complejidad_worst.in", outputW.strip())
+
+
+if not os.path.isfile("experiments/test_3_complejidad_worst.in"):
+    print "Generating ex3.1W"
+
+    paramsEx3 = [(e, a) for e in range(3, 15) for a in range(1, e*(e-1)/2 + 1)]
+
+    print "Generating ex3.2W"
+
+    output = ""
+    for (explorers, friendships) in paramsEx3:
+        print explorers, friendships
+    	output += generateEx3(explorers, friendships)
+
+    write_to_test_file("experiments/test_3_complejidad_worst.in", output.strip())
