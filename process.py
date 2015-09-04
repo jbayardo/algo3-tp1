@@ -5,12 +5,18 @@ import pandas as pd
 # Este script larga output.csv, con el formato que buscamos para que lo tome
 # el software para graficar, Tableau.
 
-split = 100
+split = {
+    'complejidad_best': 10,
+    'complejidad_worst': 10,
+    'default': 100
+}
+
+sizes3 = [(e, a) for e in xrange(3, 12) for a in xrange(1, e*(e-1)/2 + 1)]
 
 dataset = []
 
 files = map(lambda x: 'experiments/'+x, os.listdir('experiments'))
-files += map(lambda x: 'tests/'+x, os.listdir('tests'))
+#files += map(lambda x: 'tests/'+x, os.listdir('tests'))
 
 for fname in files:
     if fname[-3:] != 'sts':
@@ -31,22 +37,54 @@ for fname in files:
 
         line = line.strip().split('\t\t\t')
         line[1] = line[1].strip().split(',')
-        line[1] = [line[1][i:i+split] for i in range(0, len(line[1]), split)]
 
-        for case, measures in enumerate(line[1]):
-            measures = sorted(measures)[5:-5]
+        try:
+            spl = split[name]
+        except:
+            spl = split['default']
+        
+        line[1] = [line[1][i:i+spl] for i in range(0, len(line[1]), spl)]
 
-            for index, measure in enumerate(measures):
-                output = {
-                    'name': name,
-                    'method': method,
-                    'case': case + 1,
-                    'run': index + 1,
-                    'timer': line[0],
-                    'value': int(measure),
-                }
+        if method == 3:
+            for case, measures in enumerate(line[1]):
+                (explorers, friendships) = sizes3[case]
 
-                dataset.append(output)
+                measures = sorted(measures)
+
+                # Podo un 10% de las muestras
+                if len(measures) == 100:
+                    measures = measures[10:-10]
+                elif len(measures) == 10:
+                    measures = measures[1:-1]
+
+                for index, measure in enumerate(measures):
+                    output = {
+                        'name': name,
+                        'method': method,
+                        'case': case + 1,
+                        'run': index + 1,
+                        'explorers': explorers,
+                        'friendships': friendships,
+                        'timer': line[0],
+                        'value': int(measure),
+                    }
+
+                    dataset.append(output)
+        else:
+            for case, measures in enumerate(line[1]):
+                measures = sorted(measures)
+
+                for index, measure in enumerate(measures):
+                    output = {
+                        'name': name,
+                        'method': method,
+                        'case': case + 1,
+                        'run': index + 1,
+                        'timer': line[0],
+                        'value': int(measure),
+                    }
+
+                    dataset.append(output)
 
 df = pd.DataFrame(dataset)
 df.to_csv('output.csv', index=False)
