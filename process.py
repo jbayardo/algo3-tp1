@@ -6,8 +6,6 @@ import pandas as pd
 # el software para graficar, Tableau.
 
 split = {
-    'complejidad_best': 10,
-    'complejidad_worst': 10,
     'default': 100
 }
 
@@ -52,10 +50,7 @@ for fname in files:
                 measures = sorted(measures)
 
                 # Podo un 10% de las muestras
-                if len(measures) == 100:
-                    measures = measures[10:-10]
-                elif len(measures) == 10:
-                    measures = measures[1:-1]
+                measures = measures[10:-10]
 
                 for index, measure in enumerate(measures):
                     output = {
@@ -73,6 +68,9 @@ for fname in files:
         else:
             for case, measures in enumerate(line[1]):
                 measures = sorted(measures)
+
+                # Podo un 10% de las muestras
+                measures = measures[10:-10]
 
                 for index, measure in enumerate(measures):
                     output = {
