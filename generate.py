@@ -76,7 +76,7 @@ def generateEx2Worst(length, bound):
     return " ".join(str(output).strip("[").strip("]").split(", ")) + "\n"
 
 print "Generating ex2.1"
-paramsEx2 = [(x, 3*x) for x in range(10, 5000)]
+paramsEx2 = [(x, 5000) for x in range(1, 80000, 250)]
 
 if not os.path.isfile("experiments/test_2_complejidad.in") and not os.path.isfile("experiments/test_2_complejidad_worst.in") and not os.path.isfile("experiments/test_2_complejidad_best.in"):
     print "Generating ex2.2"
