@@ -247,23 +247,30 @@ Para comprobar estos casos realizamos 3 casos de test: peor caso, mejor caso y c
 
 Ahora veremos los datos recopilados sobre los alegados mejor y peor caso:
 
-\begin{figure}[]
+\begin{figure}[h!]
 \centering
-\includegraphics[scale=0.5]{docs/images/ex1-best-worst.png}
+\includegraphics[width=15cm]{docs/images/ex1-best-worst.png}
 \caption{Medición de tiempos para los mejores y peores casos de test}
 \label{exp1plot}
 \end{figure}
 
-Como se puede ver, efectivamente la diferencia de complejidad es evidente entre estos casos. Aunque no es una diferencia mayor, se ve que acertamos en los casos específicos.
+Como se puede ver, efectivamente la diferencia de complejidad es evidente entre estos casos. Aunque no es una diferencia mayor, se ve que acertamos en los casos específicos.\\
 
 Ahora veamos las medidas de tiempo para los casos aleatorios:
 
-%Inserte pene aqui
+\begin{figure}[h!]
+\centering
+\includegraphics[width=15cm]{docs/images/ex1-random.png}
+\caption{Medición de tiempos para casos aleatorios de test}
+\label{exp1plot}
+\end{figure}
 
 Los resultados de este caso, aunque se nota que la complejidad es lineal, en un principio nos sorprendieron y asustaron por la distribución y diferencia de complejidades tan amplia, pero luego de un análisis mas profundo del código, y como ya cursamos Organización del computador 2 llegamos a la siguiente conclusión: En los casos de test para el peor y mejor caso, los metros de cable tenían que encontrarse dentro de cierto rango controlable para asegurar las condiciones para que justamente concuerden con el peor y mejor caso propuesto. Pero en el caso aleatorio se elige una longitud de cable al azar entre 1 y la distancia de la ciudad mas lejana, entonces se tiene un rango muy grande de posibles valores, por lo que es posible que en un caso se elija una longitud corta, y en la siguiente una muy larga. Esto hará una diferencia muy grande a la hora de realizar las comparaciones, esto se vería explícitamente reflejado en un análisis de complejidad logarítmico, o eso es lo que sospechamos. Hay que tener en cuenta que dentro de las operaciones básicas que se realizan dentro del ciclo principal se encuentran:
 Para el ciclo secundario: una resta y una comparación, y luego si se cumple, una asignación.
 Para el bloque condicional: dos restas, y una comparación, y si se cumple, dos asignaciones.
 Por lo tanto las restas y comparaciones son las que siempre, en todas las iteraciones, se van a realizar, y estas ultimas van a ser muy costosas cuando los valores sean muy grandes en si.
+
+\pagebreak
 
 \section{Problema 2}
 
@@ -509,6 +516,8 @@ Finalmente, consideramos casos construidos de forma aleatoria, donde el procedim
 
 En conclusión, .
 
+\pagebreak
+
 \section{Problema 3}
 
 \subsection{Enunciado}
@@ -745,23 +754,27 @@ Finalmente, consideramos casos construidos de forma aleatoria, donde el procedim
 \label{grf:ex3-random}
 \includegraphics[width=15cm]{images/ex3-random}
 \caption{El estadístico que tomamos es la media alfa podada con $\alpha = 0.10$, que nos permite evitar algunos outliers. La línea gris corresponde a un polinomio de grado 2 buscado a través de cuadrados mínimos.}
+\end{figure}
 
 Observemos que la figura \ref{grf:ex3-random} nos muestra que el variar la cantidad de amistades provoca un crecimiento cuadrático, mientras que variar la cantidad de exploradoras muestra el crecimiento esperado.
 
-\end{figure}
-
-%%% TODOOOOOOOOOOOOO
-
-En conclusión, .
+\pagebreak
 
 \section{Código fuente}
 
+\subsection{Main}
 \lstinputlisting[language=C++]{../src/main.cpp}
-\lstinputlisting[language=C++]{../src/Path.cpp}
+
+\subsection{Ejercicio 1}
 \lstinputlisting[language=C++]{../src/Path.h}
-\lstinputlisting[language=C++]{../src/Median.cpp}
+\lstinputlisting[language=C++]{../src/Path.cpp}
+
+\subsection{Ejercicio 2}
 \lstinputlisting[language=C++]{../src/Median.h}
-\lstinputlisting[language=C++]{../src/Explorers.cpp}
+\lstinputlisting[language=C++]{../src/Median.cpp}
+
+\subsection{Ejercicio 3}
 \lstinputlisting[language=C++]{../src/Explorers.h}
+\lstinputlisting[language=C++]{../src/Explorers.cpp}
 
 \end{document}
