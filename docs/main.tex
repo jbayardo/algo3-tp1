@@ -59,6 +59,8 @@
 
 \pagebreak
 
+\section{Introducción}
+
 \section{Problema 1}
 
 \subsection{Enunciado}
@@ -451,7 +453,14 @@ Las funciones top, push y pop son funciones de la librería estándar, las cuale
 
 \subsection{Análisis}
 
-Para este algoritmo, el mejor caso se dará cuando los elementos de la secuencia de entrada estén distribuidos de forma tal que nunca tengamos que hacer intercambio de elementos entre los heaps, . Observando la figura \ref{grf:ex3-worst}
+Para este algoritmo, el mejor caso se dará cuando los elementos de la secuencia de entrada estén distribuidos de forma tal que nunca tengamos que hacer intercambio de elementos entre los heaps, . Observando la figura \ref{grf:ex3-best}
+
+\begin{figure}[h!]
+\centering
+\label{grf:ex2-best}
+\includegraphics[width=8cm]{images/ex2-best}
+\caption{}
+\end{figure}
 
 \begin{figure}[h!]
 \centering
@@ -461,13 +470,6 @@ Para este algoritmo, el mejor caso se dará cuando los elementos de la secuencia
 \end{figure}
 
 \ref{grf:ex2-best}
-
-\begin{figure}[h!]
-\centering
-\label{grf:ex2-best}
-\includegraphics[width=8cm]{images/ex2-best}
-\caption{}
-\end{figure}
 
 Finalmente, consideramos casos construidos de forma aleatoria, donde el procedimiento consiste en dada una longitud $l$ y una cota máxima $c > 0$ para los números, generar $l$ números aleatoriamente distribuidos en $\{-c, .., c\}$ y ponerlos en una lista. La figura \ref{grf:ex2-random} nos muestra, .
 
