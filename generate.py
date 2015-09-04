@@ -24,7 +24,7 @@ def generateEx1(length, bound):
 if not os.path.isfile("experiments/test_1_complejidad.in"):
     print "Generating ex1.1"
 
-    paramsEx1 = [(x, 100*x) for x in range(1, 80000,250)]
+    paramsEx1 = [(x, 2*x) for x in range(1, 80000,250)]
 
     print "Generating ex1.2"
 
@@ -158,7 +158,7 @@ def generateWorst1(cities,dis):
 
 	return str(cable) + "\n" + " ".join(str(s) for s in output) + "\n"
 
-if True or not os.path.isfile("experiments/test_1_complejidad_best.in") or not os.path.isfile("experiments/test_1_complejidad_worst.in"):
+if not os.path.isfile("experiments/test_1_complejidad_best.in") or not os.path.isfile("experiments/test_1_complejidad_worst.in"):
 	dis = random.randint(1, 500)
 	print "Generating WB1.1"
 
