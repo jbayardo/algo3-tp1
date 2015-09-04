@@ -10,6 +10,7 @@
 \usepackage{algpseudocode}
 \usepackage{amsmath}
 \usepackage{amsthm}
+\usepackage{float}
 \usepackage{geometry}
 \usepackage{fixltx2e}
 \usepackage{wrapfig}
@@ -42,11 +43,7 @@
 \materia{Algorítmos y Estructuras de Datos III} % obligatorio
 
 \titulo{Trabajo Práctico 1}
-\subtitulo{"Knock, knock".- \\
-"Who's there?".- \\
-$\cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot$ \\
-$\cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot$ \\
-"Java".-}
+\subtitulo{}
 \grupo{}
 
 \integrante{Bayardo Julián}{850/13}{julian@bayardo.com.ar} % obligatorio
@@ -61,8 +58,6 @@ $\cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \cdot \
 \tableofcontents
 
 \pagebreak
-
-\section{Introducción}
 
 \section{Problema 1}
 
@@ -87,7 +82,7 @@ Dado un natural (Meters) y una lista de distancias entre ciudades (Distances), d
 \State $bestEnd\gets 0$\Comment{$O(1)$}
 \State $start\gets 0$\Comment{$O(1)$}
 \State $end\gets 0$\Comment{$O(1)$}
-\State \textbf{\textit{mientras}} $end < tamaño(distances)$
+\State \textbf{\textit{mientras}} $end < tamano(distances)$
 %\For {$end = 0$ , $end < tamaño(distances)$ , $end = end + 1$}
 \State \qquad \textbf{\textit{mientras}} $distances[end] - distances[start] > meters$
 \State \qquad \qquad start++\Comment{$O(1)$}
@@ -207,27 +202,43 @@ Por ambas demostraciones, probamos que el algoritmo genera un camino válido en 
 
 \subsection{Complejidad}
 Como el algoritmo descripto es el único utilizado en la resolución del problema, y como pueden apreciarse las complejidades de las operaciones en el pseudocódigo, lo único que queda por analizar son los ciclos que contiene. \\
-Se puede ver que el algoritmo contiene un ciclo principal, el cual siempre realizará $tamaño(distancia)$ iteraciones. Luego, dentro de este ciclo hay otro ciclo y un condicional, el cuál ignoraremos porque que toma tiempo constante. Finalmente veremos cuál es la complejidad del ciclo secundario, y concluiremos que en peor caso, la complejidad del ciclo principal es $O(tamaño(distancia))$. \\ 
+Se puede ver que el algoritmo contiene un ciclo principal, el cual siempre realizará tamaño$(distancia)$ iteraciones. Luego, dentro de este ciclo hay otro ciclo y un condicional, el cuál ignoraremos porque que toma tiempo constante. Finalmente veremos cuál es la complejidad del ciclo secundario, y concluiremos que en peor caso, la complejidad del ciclo principal es $O(\text{tamaño}(distancia))$. \\ 
 Primero tomemos el caso en que, en cada iteración se cumple la guarda del ciclo .
 Como podemos ver, el ciclo chequea que:
 \begin{enumerate}
 \item Es posible cubrir la sub-secuencia actual de ciudades con el cable dado, puesto que éste es más largo.
 \end{enumerate}
 
-Veamos que si la condición del ciclo se cumple en cada iteración del ciclo principal, eso significa que la cantidad de metros de cable es menor a toda distancia entre cualquier par de ciudades, y más aún, esto también vale para todo par de ciudades adyacentes. Con lo cual, en cada iteración del ciclo principal, el ciclo secundario se ejecutará una sola vez, y luego se romperá su guarda. Esto es porque cada vez que se aumenta $end$, se cumple la guarda del ciclo secundario, con lo cuál aumenta $start$, luego $start$ y $end$ valen lo mismo, y por eso se rompe la guarda. Habiendo dicho esto, podemos ver que: dado que el ciclo secundario se ejecuta una sola vez, y que cada ejecución del mismo cuesta $O(1)$, el ciclo mismo cuesta $O(1)$; con lo cual el ciclo principal cuesta $O(tamaño(distancia))$.
+Veamos que si la condición del ciclo se cumple en cada iteración del ciclo principal, eso significa que la cantidad de metros de cable es menor a toda distancia entre cualquier par de ciudades, y más aún, esto también vale para todo par de ciudades adyacentes. Con lo cual, en cada iteración del ciclo principal, el ciclo secundario se ejecutará una sola vez, y luego se romperá su guarda. Esto es porque cada vez que se aumenta $end$, se cumple la guarda del ciclo secundario, con lo cuál aumenta $start$, luego $start$ y $end$ valen lo mismo, y por eso se rompe la guarda. Habiendo dicho esto, podemos ver que: dado que el ciclo secundario se ejecuta una sola vez, y que cada ejecución del mismo cuesta $O(1)$, el ciclo mismo cuesta $O(1)$; con lo cual el ciclo principal cuesta $O(\text{tamaño}(distancia))$.
 
 Veamos otro caso, en el que el ciclo secundario puede ser más costoso. \\
-Tomemos el caso en el que el ciclo itera la mayor cantidad de veces posible (dado que la instrucción dentro del mismo es constante, y no hace falta tomarla en cuenta). Notemos que esto sucede cuando $start$ y $end$ están lo más distanciados posible, y además se cumple que la diferencia entre ellos es mayor a los metros de cable. Es claro que esto se da cuando $start$ es la primera ciudad, y $end$ es la última, y además la diferencia entre la última ciudad y la anteúltima es más grande que la cantidad de metros de cable (esto fuerza a que necesariamente el ciclo itere hasta que $start$ sea igual a $end$). En este caso podemos ver que el ciclo secundario itera $tamaño(distancia)$ veces, pero veamos que en todas las iteraciones del ciclo principal necesariamente ésta es la primera y única vez que se ejecuta este ciclo secundario. Esto es porque asumimos que $start$ debía estar al principio, y por eso es que el ciclo secundario no podría haberse ejecutado hasta este momento. Con lo cual vemos que para todas las iteraciones del ciclo principal exceptuando la última, el ciclo toma $O(1)$ y en la última toma $O(tamaño(distancia))$. Entonces se tiene que la complejidad es $O(tamaño(distancia) - 1)$ + $O(tamaño(distancia))$ = $O(tamaño(distancia))$ \\
-Finalmente, todos los demás casos estarán entre medio de estos dos. Es decir, entre correr en todas las iteraciones del ciclo principal con costo $O(1)$, y correr una sola vez con costo $O(tamaño(distancia))$. Y por eso podemos decir que el costo del algoritmo en peor caso es $O(tamaño(distancia))$.
+Tomemos el caso en el que el ciclo itera la mayor cantidad de veces posible (dado que la instrucción dentro del mismo es constante, y no hace falta tomarla en cuenta). Notemos que esto sucede cuando $start$ y $end$ están lo más distanciados posible, y además se cumple que la diferencia entre ellos es mayor a los metros de cable. Es claro que esto se da cuando $start$ es la primera ciudad, y $end$ es la última, y además la diferencia entre la última ciudad y la ante-última es más grande que la cantidad de metros de cable (esto fuerza a que necesariamente el ciclo itere hasta que $start$ sea igual a $end$). En este caso podemos ver que el ciclo secundario itera $\text{tamaño}(distancia)$ veces, pero veamos que en todas las iteraciones del ciclo principal necesariamente ésta es la primera y única vez que se ejecuta este ciclo secundario. Esto es porque asumimos que $start$ debía estar al principio, y por eso es que el ciclo secundario no podría haberse ejecutado hasta este momento. Con lo cual vemos que para todas las iteraciones del ciclo principal exceptuando la última, el ciclo toma $O(1)$ y en la última toma $O(\text{tamaño}(distancia))$. Entonces se tiene que la complejidad es $O(\text{tamaño}(distancia) - 1)$ + $O(\text{tamaño}(distancia))$ = $O(\text{tamaño}(distancia))$ \\
+Finalmente, todos los demás casos estarán entre medio de estos dos. Es decir, entre correr en todas las iteraciones del ciclo principal con costo $O(1)$, y correr una sola vez con costo $O(\text{tamaño}(distancia))$. Y por eso podemos decir que el costo del algoritmo en peor caso es $O(\text{tamaño}(distancia))$.
 
 
 %La primera condición es mas débil que la segunda, por lo tanto va a volverse $falsa$ antes o al mismo tiempo que la segunda sin excepción. Por lo tanto podemos descartarla a la hora de analizar la cota superior de complejidad. 
 %La segunda condición va a volverse $falsa$ en el momento que $start$ sea igual a $end$, ya que en cualquier estado del programa al que se pueda llegar desde el estado inicial, $start$ nunca sera mayor a $end$.
 %Lo importante de esta condición, al contemplarse dentro del contexto en el que se encuentra, es que, como $end$ siempre incrementa en 1 en cada iteración del $for$ y $start$ nunca decrementa, e incrementa solo cuando se haga una iteración de este ciclo $while$, y como este se ingresa a este ciclo solo mientras $start < end$, este ciclo solo hará $tamaño(distance)$ iteraciones en toda la ejecucion de este algoritmo, ya que $tamaño(distance)$ es el valor máximo que puede tomar $end$ y por lo tanto también $start$.
 
-%Por lo tanto, teniendo en cuenta que todas las operaciones realizadas además de los ciclos son operaciones básicas con complejidad uniforme $\theta(1)$, todo el algoritmo pertenece a $O(tamaño(distances))$
+%Por lo tanto, teniendo en cuenta que todas las operaciones realizadas además de los ciclos son operaciones básicas con complejidad uniforme $\theta(1)$, todo el algoritmo pertenece a $O(\text{tamaño}(distances))$
 
 \subsection{Análisis}
+
+Al analizar este caso se nos presento el problema de que, al pertenecer a una complejidad del orden lineal, y al ser tan simple el algoritmo, no hay un peor caso "real" que se pueda analizar profundamente. Lo que queremos ver es si, en distintos casos con la misma cantidad de ciudades, el tiempo de computo del algoritmo se puede ver afectado ya sea por una distribución de distancias especificas junto a una longitud de cable especifica.
+Como se puede ver en el pseudocodigo, el ciclo principal del algoritmo va a realizar exactamente una iteración por ciudad que haya en el vector de entrada, por lo tanto no se vera afectada por ningún caso especifico. Donde si podremos notar cambios es dentro de este ciclo, ya que encontraremos:
+\begin{itemize}
+\item un ciclo condicional
+\item un bloque condiciona
+\end{itemize}
+El primero, como vimos en el análisis de complejidad, realizara $\text{tamaño}(distances)$ iteraciones como máximo en toda la ejecución del algoritmo, por lo tanto un peor caso seria en el cual todas estas iteraciones se realicen, y hay muchas formas de que esto suceda, la mas simple es que la ultima ciudad se encuentre a mas de $meters$ distancia de la anteutima ciudad, en ese caso al llegar a la ultima estación el algoritmo ingresara a este ciclo y realizara las $\text{tamaño}(distances)$ iteraciones. Otra forma seria que todas las estaciones se encuentren a mas de $meters$ distancia de su anterior, y por lo tanto en cada iteración del ciclo principal se realizara una iteración del ciclo interno.
+Luego, el segundo, el bloque condicional, se ingresara solo si, en la iteración actual, el mejor camino obtenido hasta la iteración anterior junto con la ciudad actual forman un nuevo mejor camino (es decir, suman una mayor cantidad de ciudades mientras entran en la longitud del cable). Por lo tanto una entrada para la cual se busque entrar siempre en este bloque seria una en la cual la solución incluya a todas la ciudades, ya que en todas las iteraciones se actualizara el mejor camino para incluir una nueva ciudad.\par
+Una forma de complementar estos peores casos específicos seria lograr que se ingrese en el bloque condicional en la mayoría de las iteraciones, y que al mismo tiempo se realicen todas las iteraciones posibles del ciclo secundario. Una forma seria un caso en el que el mejor camino incluya a las ciudades desde la capital hasta la anteultima ciudad, y la ultima ciudad este a mas de $meters$ distancia de la anteultima, logrando en este caso:
+\begin{itemize}
+\item Ingresar $\text{tamaño}(distances)-1$ veces a al bloque condicional
+\item Relizar las $\text{tamaño}(distances)$ iteraciones disponibles del ciclo secundario.
+\end{itemize}
+\newline
+El mejor caso seria buscar lo contrario a lo anterior, minimizar la cantidad de veces en las que se ingresa al bloque condicional y al ciclo secundario. Pero es importante ver que no se puede evitar entrar en alguna de las dos partes, ya que si el $start$ no es aumentado por el ciclo secundario entonces, ya que el $end$ aumenta por el ciclo principal, el camino incluirá mas ciudades, y por lo tanto sera mejor y se entrara en el bloque condicional para actualizar el mejor camino. Por lo tanto necesitaremos elegir cual de los dos bloques costara menos realizar, si el ciclo o el condicional. En este caso, a simple vista se ve que el ciclo solo realiza una asignación, mientras que el condicional realiza dos. Por lo tanto lo mejor sera entrar siempre en el ciclo y realizar una iteración. Entonces el mejor caso se dará en el que todas las ciudades estén a mas de $meters$ distancia de la anterior.
 
 \section{Problema 2}
 
@@ -237,16 +248,16 @@ La mediana de un conjunto ordenado de $n$ números se define como $x_{(n+1)/2}$ 
 Resolver en una complejidad estrictamente mejor que $O(n^2)$ donde $n$ es el número total de enteros de entrada.
 
 \subsection{Breve descripción del algoritmo}
-En este problema decidimos insertar uno por uno los elementos de entrada en una estructura especifica tal que los elementos queden ordenados y los datos necesarios para calcular la mediana se encuentren siempre a mano. Para esto decidimos utilizar un max-heap y un min-heap. Al ingresar nuevos elementos a nuestra estructura se va a hacer de forma tal que la cantidad de elementos que tiene cada heap difieran a lo sumo en 1, y que la cabeza del max-heap sea menor a la cabeza del min-heap. En otras palabras, el conjunto de elementos estará dividido en dos, quedando los elementos mas pequeños en el max-heap, y los mas grandes en el min-heap.\par
-El objetivo de esta estructura es que, en cada paso, los elementos necesarios para calcular la mediana se encuentren en las cabezas de los heaps. 
-Sabiendo que la inserción en un heap cuesta $O(log n)$ siendo $n$ la cantidad de elementos en el heap, al igual que eliminar la cabeza. 
-Nuestro algoritmo insertara todos los elementos de entrada en el heap que corresponda, que serán siempre de tamaño como mucho $n/2$, este proceso provocara como mucho dos inserciones en heap y una quita de cabeza para mantener el invariante de la estructura (se vera mas claramente en el Algoritmo).
 
+En este problema decidimos insertar uno por uno los elementos de entrada en una estructura especifica tal que los elementos queden ordenados y los datos necesarios para calcular la mediana se encuentren siempre a mano. Para esto decidimos utilizar un max-heap y un min-heap. Al ingresar nuevos elementos a nuestra estructura se va a hacer de forma tal que la cantidad de elementos que tiene cada heap difieran a lo sumo en 1, y que la cabeza del max-heap sea menor a la cabeza del min-heap. En otras palabras, el conjunto de elementos estará dividido en dos, quedando los elementos mas pequeños en el max-heap, y los mas grandes en el min-heap.
 
+La elección de estructuras nos asegura que, luego de cada inserción, los elementos necesarios para calcular la mediana de los elementos vistos hasta el momento se encuentran en las cabezas de los heaps, que podemos obtener en $O(1)$.
+
+Sabiendo que la inserción en un heap cuesta $O(\log(n))$ siendo $n$ la cantidad de elementos en el heap, al igual que eliminar la cabeza. Nuestro algoritmo insertará todos los elementos de entrada en el heap que corresponda, que serán siempre de tamaño como mucho $\frac{n}{2}$, este proceso provocara como mucho dos inserciones en heap y una quita de cabeza para mantener el invariante de la estructura (se vera mas claramente en el algoritmo).
 
 \subsection{Correctitud}
 
-Consideramos a los conjuntos que vamos a usar como conjuntos que aceptan repeticiones, y definimos las siguientes funciones: \\
+Consideramos a los conjuntos que vamos a usar como conjuntos que aceptan repeticiones, y definimos las siguientes funciones:
 
 \newcommand{\twopartdef}[4]
 {
@@ -314,7 +325,7 @@ Mediana(Agregar(L, R, x)) =
 Mediana(Agregar(\{\}, \{\}, x)) =
 Mediana(\{\} $\cup$ \{x\}, \{\}) $\rightarrow$ \\ 
 \#(\{\} $\cup$ \{x\}) = 1 $>$ 0 = \#(\{\}) $\rightarrow$
-Mediana(\{x\}, \{\}) = Max(\{x\}) = x $\rightarrow$ x es la mediana por ser único elemento \\ \\
+Mediana(\{x\}, \{\}) = Max(\{x\}) = x $\rightarrow$ x es la mediana por ser único elemento
 
 \textbf{Paso Inductivo} \\
 
@@ -390,16 +401,14 @@ Mediana(L, R) devuelve la mediana de un conjunto ordenado resultado de la unión
 
 \subsection{Complejidad}
 
-Definimos una estructura Median = (left: max-heap$<$int$>$, right: min-heap$<$int$>$, output: list$<$int$>$), y la siguientes funciones: \\ 
-
-Las funciones top, push y pop son funciones de la librería estándar, las cuales devuelven el tope de un heap, agregan un elemento al heap, y eliminan la cabeza del heap respectivamente. \\ \\ \\
+Definimos una estructura Median = (left: max-heap$<$int$>$, right: min-heap$<$int$>$, output: list$<$int$>$), junto con las siguientes funciones:
 
 \begin{algorithmic}
 \Procedure{get}{m: Median}
 \If{tamaño(m.left) = tamaño(m.right)}\Comment{$O(1)$}
-\State \textbf{return} (top(m.left) + top(m.right))/2 \Comment{$O(log(n))$}
+\State \textbf{return} (top(m.left) + top(m.right))/2 \Comment{$O(1)$}
 \Else
-\State \textbf{return} top(m.left) \Comment{$O(log(n))$}
+\State \textbf{return} top(m.left) \Comment{$O(1)$}
 \EndIf
 \EndProcedure \\
 \end{algorithmic}
@@ -438,13 +447,50 @@ Las funciones top, push y pop son funciones de la librería estándar, las cuale
 \EndProcedure \\ \\
 \end{algorithmic}
 
-Como las operaciones push y pop tienen complejidad O(log(n)) por ser left y right heaps, la complejidad de get así como la de insertSingle es O(log(n)), siendo n = tamaño(left) + tamaño(right). \\
-La complejidad de insert, por otro lado, es O(n*log(n)), ya que se inserta cada elemento de elements en m, siendo n el tamaño de elements. Debido a que cada vez que se inserta un elemento, el tamaño de left o right crece en 1, y cada inserción cuesta O(log(i)), siendo i el tamaño del heap en particular, para cuando se inserte el último elemento, el costo de haber insertado todos los elementos en los heaps es O(2*($\frac{n}{2} * log(\frac{n}{2}$)) = O(n*log(n)). 
-El costo de la función push\_back es O(1), ya que output es una lista.
+Las funciones top, push y pop son funciones de la librería estándar, las cuales devuelven el tope de un heap, agregan un elemento al heap, y eliminan la cabeza del heap respectivamente. Las complejidades son $O(1), O(\log(n))$ y $O(\log(n))$, respectivamente. Es claro, entonces, que la complejidad de get debe ser $O(1)$, mientras que la de insertSingle es $O(\log(n))$, con $n = \max\{\text{tamaño}(left), \text{tamaño}(right)\}$. Por lo tanto, la complejidad de insert es $O(n \log(n))$, ya que se inserta cada elemento de elements en $m$, siendo $n$ el tamaño de elements. Debido a que cada vez que se inserta un elemento, el tamaño de left o right crece en 1, y cada inserción cuesta $O(\log(i))$, siendo $i$ el tamaño del heap en particular, para cuando se inserte el último elemento, el costo de haber insertado todos los elementos en los heaps es $O(2(\frac{n}{2} log(\frac{n}{2})) = O(nlog(n))$. El costo de la función push\_back es $O(1)$, ya que output es una lista.
 
 \subsection{Análisis}
 
+Para este algoritmo, el mejor caso se dará cuando los elementos de la secuencia de entrada estén distribuidos de forma tal que nunca tengamos que hacer intercambio de elementos entre los heaps, . Observando la figura \ref{grf:ex3-worst}
+
+\begin{figure}[h!]
+\centering
+\label{grf:ex2-worst}
+\includegraphics[width=8cm]{images/ex2-worst}
+\caption{}
+\end{figure}
+
+\ref{grf:ex2-best}
+
+\begin{figure}[h!]
+\centering
+\label{grf:ex2-best}
+\includegraphics[width=8cm]{images/ex2-best}
+\caption{}
+\end{figure}
+
+Finalmente, consideramos casos construidos de forma aleatoria, donde el procedimiento consiste en dada una longitud $l$ y una cota máxima $c > 0$ para los números, generar $l$ números aleatoriamente distribuidos en $\{-c, .., c\}$ y ponerlos en una lista. La figura \ref{grf:ex2-random} nos muestra, .
+
+\begin{figure}[h!]
+\centering
+\label{grf:ex2-random}
+\includegraphics[width=8cm]{images/ex2-random}
+\caption{}
+\end{figure}
+
+%%% TODOOOOOOOOOOOOO
+
+En conclusión, .
+
 \section{Problema 3}
+
+\subsection{Enunciado}
+
+El capitán de Las Girasoles quiere evitar los problemas en el fogón del año anterior cuando las pequeñas exploradoras rompieron en llanto por no poder sentarse en la ronda junto a sus mejores amigas. En secreto les asignó una letra a cada niña y relevó quién se llevaba con quién.
+
+Su idea es organizar la ronda de manera que exista la menor distancia posible entre cada amistad (Sí, mi querido computador minimizando la suma de las distancias entre todos los pares de amigas).
+
+Resolver en una complejidad estrictamente mejor que $O(e^e a^2)$. Donde $e$ es la cantidad de exploradoras en cada grupo, y $a$ la cantidad de amistades.
 
 \subsection{Resolución y Correctitud}
 
@@ -454,11 +500,8 @@ Fundamentalmente, la idea se basa en que podemos utilizar la técnica de backtra
 
 Para comenzar, cabe destacar que si tenemos el conjunto de posibles soluciones (es decir, todas las permutaciones) para $e$ exploradoras, es muy fácil construir el conjunto de posibles soluciones para $e+1$ exploradoras: basta con simplemente insertar la exploradora faltante entre medio de todas las que ya tenemos para cada permutación. Más formalmente:
 
-%% TODO: insertar un grafico explicativo
-
 \begin{lemma}
 El algoritmo expuesto genera todas las permutaciones de $n$ elementos, a partir de todas las permutaciones de $n-1$ elementos.
-\label{ej3:generador}
 \end{lemma}
 
 \begin{proof}
@@ -491,15 +534,8 @@ Sean $\sigma, \alpha \in S_n$ permutaciones. Decimos que $\sigma \equiv \alpha \
 Llamaremos a $\hat{\sigma}$ al representante de la clase de equivalencia a la que pertenece $\sigma$, donde elegimos al mismo como la permutación que sea menor lexicográficamente de todo el conjunto.
 \end{definition}
 
-%% TODO: proof
-
-\begin{lemma}
-Sea $\sigma$ una permutación, entonces $c(\sigma) = c(\alpha) \forall \alpha \in \hat{\sigma}$.
-\end{lemma}
-
 \begin{corollary}
 Insertar en las ultimas $n-1$ posiciones no borra soluciones posibles
-\label{ej3:poda1}
 \end{corollary}
 
 \begin{proof}
@@ -507,18 +543,21 @@ Es claro que insertar adelante es lo mismo que insertar al final, ya que como ro
 
 $$(i_1, .., i_n, n+1) \equiv (n+1, i_1, .., i_n)$$
 
-Con $i_j$ un ordenamiento arbitrario de los números en $M_n$. Además, $i_1 < n+1$ por lo que la primer alternativa es estrictamente menor lexicográficamente que la segunda, implicando que como solución es mejor (por los parámetros determinados por la cátedra) y, por lo tanto, la primer alternativa siempre debería ser elegida antes que la segunda.
+Con $i_j$ un ordenamiento arbitrario de los números en $M_n$. Además, $i_1 < n+1$ por lo que la primer alternativa es estrictamente menor lexicográficamente que la segunda, implicando que como solución es mejor (por los parámetros determinados por la cátedra, dado que la suma de distancias entre los pares de amistades se va a preservar) y, por lo tanto, la primer alternativa siempre debería ser elegida antes que la segunda.
 \end{proof}
 
 Entonces, podemos explorar el espacio de soluciones en forma de árbol, donde la cabeza es la permutación con un solo elemento, y cada nivel está definido en términos del anterior como aplicar la función $g$ del lema \ref{ej3:generador} a todos los nodos del nivel anterior, utilizando cada uno de los $n-1$ valores más grandes de $M_n$. Observemos, además, que podemos explorar el árbol de forma tal que las permutaciones de menor orden lexicográfico sean exploradas antes, simplemente eligiendo los índices para la inserción de mayor a menor.
 
-%% TODO: insertar imagen del arbol
+\begin{figure}[h!]
+\centering
+\includegraphics[width=8cm]{images/treeEvolution}
+\caption{Ejemplo de generación del espacio de soluciones, en el orden de recorrida, para un caso con exploradoras a, b, c y d.}
+\end{figure}
 
 La próxima pregunta natural a realizarse es cual es el tamaño del árbol de búsqueda, que es lo que nos va a permitir estimar la complejidad esperada de nuestra solución:
 
 \begin{lemma}
 El árbol de soluciones tiene a lo sumo $(n-1)!$ nodos en cada nivel $n$. Además, cada uno de los nodos en el nivel tiene exactamente $n$ exploradoras.
-\label{ej3:arbol-nodos}
 \end{lemma}
 
 \begin{proof}
@@ -533,7 +572,6 @@ Además, cada uno de los $(n-1)!$ nodos de la ya explorados tiene exactamente $n
 
 \begin{corollary}
 La cantidad de nodos explorados es $O(e!)$.
-\label{ej3:arbol-total}
 \end{corollary}
 
 \begin{proof}
@@ -551,7 +589,11 @@ Cabe destacar que, de cualquier forma, las cotas aplicadas en este corolario no 
 \end{proof}
 
 \begin{definition}
-Dadas $\sigma, \alpha$ permutaciones, decimos que $\sigma < \alpha$ si $|\sigma| < |\alpha|$ o, en caso de que sean iguales, si la suma de las amistades de $\sigma$ es menor que la de $\alpha$ o, en caso de que estas sean iguales, si $\hat{\sigma} < \hat{\alpha}$ lexicográficamente.
+Si $\sigma \in S_n$, decimos que el tamaño de $\sigma$, notado $|\sigma|$, es $n$.
+\end{definition}
+
+\begin{definition}
+Dadas $\sigma \in S_n, \alpha \in S_m$ permutaciones, decimos que $\sigma < \alpha$ si $|\sigma| < |\alpha|$ o, en caso de que sean iguales, si la suma de las amistades de $\sigma$ es menor que la de $\alpha$ o, en caso de que estas sean iguales, si $\hat{\sigma} < \hat{\alpha}$ lexicográficamente.
 \end{definition}
 
 \begin{definition}
@@ -563,7 +605,7 @@ Dada una permutación completa al problema, cualquier permutación parcial mayor
 \end{lemma}
 
 \begin{proof}
-Observemos que al insertar un nuevo elemento, la suma de las distancias entre amistades de la solución parcial solo puede aumentar, llegando entonces a una permutación cuya suma de distancias va a ser mayor estricta que la que ya tenemos, y que por lo tanto no puede ser la solución del problema.
+Observemos que al insertar un nuevo elemento, la suma de las distancias entre amistades de la solución parcial solo puede aumentar (ya que a lo sumo separamos amistades, pero nunca las juntamos más), llegando entonces a una permutación cuya suma de distancias va a ser mayor estricta que la que ya tenemos, y que por lo tanto no puede ser la solución del problema.
 \end{proof}
 
 Es decir, una vez que tenemos una permutación completa generada podemos comenzar a purgar todas las ramas que generen alguna permutación mayor a la que ya tenemos, y esa purga no va a borrar ninguna solución valida. Con esto, tenemos todas las ideas fundamentales para construir nuestro algoritmo de backtracking: comenzando con la solución para una sola exploradora, podemos ir generando las soluciones para cada vez más exploradoras, hasta llegar al final del árbol de estados. Más todavía, podemos comenzar con una primera solución completa al problema, por más mala que sea, y utilizarla como cota superior para purgar ramas del espacio de soluciones, mejorándola a medida que vamos descubriendo nuevas soluciones completas. Pensando en esto, proponemos el siguiente algoritmo como solución al problema:
@@ -636,16 +678,51 @@ Observemos que
 
 \begin{equation}
 \begin{aligned}
-\lim_{e \to +\infty} \frac{e! e^2 a}{e^e a^2} &= \frac{1}{a} \lim_{e \to +\infty} \frac{e!}{e^{e-2}} \\
-&\leq \frac{1}{a} \lim_{e \to +\infty} \frac{1}{e} \\
+\lim_{e \to +\infty} \frac{e! e^2 a}{e^e a^2} &= \frac{1}{a} \lim_{e \to +\infty} \frac{(e-1)!}{e^{e-3}} \\
+&= \lim_{e \to +\infty} \frac{\prod_{i=1}^{e-1} i}{e^{e-3}} \\
+&= \lim_{e \to +\infty} (\prod_{i=5}^{e-1} \frac{i}{e}) \frac{4}{e} 3 2 1 \\
+&\leq \lim_{e \to +\infty} \frac{4}{e} 6 \\
 &= 0
 \end{aligned}
 \end{equation}
 
 Además, claramente ambos elementos del cociente son positivos, por lo que están acotados inferiormente por 0. Es decir, no queda otra más que el límite sea 0 (por la propiedad del sandwich). Por lo tanto, tenemos que $O(e! e^2 a) \subset O(e^e a^2)$ y $O(e^e a^2) \nsubseteq O(e! e^2 a)$, dado que el límite inverso se va a infinito.
+
+Cabe destacar que el menor o igual vale porque si $x \leq e$, $\frac{x}{e} \leq 1$, y cada uno de los factores del producto cumple con la propiedad.
 \end{proof}
 
 \subsection{Análisis}
+
+El mejor caso del algoritmo es cuando obtenemos la suma óptima lo antes posible, ya que nos va a permitir podar la mayor cantidad de nodos en total. En nuestro caso, como la primer suma calculada se corresponde con la ronda $(z..a)$, por lo que tenemos que pedir que el representante de la clase de equivalencia ($(a z .. b)$) a la que pertenece la misma sea el óptimo (ya que esto nos va a permitir purgar la mayor cantidad de ramas posibles). Observando la figura \ref{grf:ex3-worst}
+
+\begin{figure}[h!]
+\centering
+\label{grf:ex3-worst}
+\includegraphics[width=8cm]{images/ex3-worst}
+\caption{}
+\end{figure}
+
+En términos del peor caso, es claro darse cuenta que el mismo será cuando la poda sea mínima, es decir, cuando jamás logremos podar nodos. Observemos que esto se corresponde con que las rondas que vayan avanzando lexicográficamente vayan al mismo tiempo bajando el costo, por lo que es difícil poder construir explícitamente un peor caso. Sin embargo, podemos aproximarnos si consideramos no podar el árbol: borrar las podas se correspondería con un caso lo suficientemente malo como para que las mismas sean inaplicables. Si bien esto difícilmente suceda en un caso real, ya que al tener aunque sea un caso muy posiblemente logremos borrar algunas ramas, pensamos que es una buena forma de cuantificar cuánto estamos ganando con las podas. Como se ve en la figura \ref{grf:ex3-best}
+
+\begin{figure}[h!]
+\centering
+\label{grf:ex3-best}
+\includegraphics[width=8cm]{images/ex3-best}
+\caption{}
+\end{figure}
+
+Finalmente, consideramos casos construidos de forma aleatoria, donde el procedimiento consiste en dada una cantidad de exploradoras $e$ y una cantidad de amistades $a \in \{1, .., \frac{e(e-1)}{2}\}$, generamos el producto cartesiano entre las exploradoras, filtramos los vértices inadmisibles (la relación diagonal y los simétricos), y tomamos una muestra de $a$ elementos uniformemente distribuidos entre los mismos. Como podemos ver en la figura \ref{grf:ex3-random}
+
+\begin{figure}[h!]
+\centering
+\label{grf:ex3-random}
+\includegraphics[width=8cm]{images/ex3-random}
+\caption{}
+\end{figure}
+
+%%% TODOOOOOOOOOOOOO
+
+En conclusión, .
 
 \section{Código fuente}
 
