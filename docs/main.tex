@@ -205,12 +205,8 @@ Por ambas demostraciones, probamos que el algoritmo genera un camino válido en 
 
 \subsection{Complejidad}
 Como el algoritmo descripto es el único utilizado en la resolución del problema, y como pueden apreciarse las complejidades de las operaciones en el pseudocódigo, lo único que queda por analizar son los ciclos que contiene. \\
-Se puede ver que el algoritmo contiene un ciclo principal, el cual siempre realizará tamaño$(distancia)$ iteraciones. Luego, dentro de este ciclo hay otro ciclo y un condicional, el cuál ignoraremos porque que toma tiempo constante. Finalmente veremos cuál es la complejidad del ciclo secundario, y concluiremos que en peor caso, la complejidad del ciclo principal es $O(\text{tamaño}(distancia))$. \\ 
-Primero tomemos el caso en que, en cada iteración se cumple la guarda del ciclo .
-Como podemos ver, el ciclo chequea que:
-\begin{enumerate}
-\item Es posible cubrir la sub-secuencia actual de ciudades con el cable dado, puesto que éste es más largo.
-\end{enumerate}
+Se puede ver que el algoritmo contiene un ciclo principal, el cual siempre realizará tamaño$(distancia)$ iteraciones. Luego, dentro de este ciclo hay otro ciclo y un condicional, el cuál ignoraremos porque toma tiempo constante. Finalmente veremos cuál es la complejidad del ciclo secundario, y concluiremos que en peor caso, la complejidad del ciclo principal es $O(\text{tamaño}(distancia))$. \\ 
+Primero tomemos el caso en que, en cada iteración se cumple la guarda del ciclo; como podemos ver, el ciclo chequea que es posible cubrir la sub-secuencia actual de ciudades con el cable dado, puesto que éste es más largo.
 
 Veamos que si la condición del ciclo se cumple en cada iteración del ciclo principal, eso significa que la cantidad de metros de cable es menor a toda distancia entre cualquier par de ciudades, y más aún, esto también vale para todo par de ciudades adyacentes. Con lo cual, en cada iteración del ciclo principal, el ciclo secundario se ejecutará una sola vez, y luego se romperá su guarda. Esto es porque cada vez que se aumenta $end$, se cumple la guarda del ciclo secundario, con lo cuál aumenta $start$, luego $start$ y $end$ valen lo mismo, y por eso se rompe la guarda. Habiendo dicho esto, podemos ver que: dado que el ciclo secundario se ejecuta una sola vez, y que cada ejecución del mismo cuesta $O(1)$, el ciclo mismo cuesta $O(1)$; con lo cual el ciclo principal cuesta $O(\text{tamaño}(distancia))$.
 
@@ -265,7 +261,7 @@ Ahora veamos las medidas de tiempo para los casos aleatorios:
 \label{exp1plot}
 \end{figure}
 
-Los resultados de este caso, aunque se nota que la complejidad es lineal, en un principio nos sorprendieron y asustaron por la distribución y diferencia de complejidades tan amplia, pero luego de un análisis mas profundo del código, y como ya cursamos Organización del computador 2 llegamos a la siguiente conclusión: En los casos de test para el peor y mejor caso, los metros de cable tenían que encontrarse dentro de cierto rango controlable para asegurar las condiciones para que justamente concuerden con el peor y mejor caso propuesto. Pero en el caso aleatorio se elige una longitud de cable al azar entre 1 y la distancia de la ciudad mas lejana, entonces se tiene un rango muy grande de posibles valores, por lo que es posible que en un caso se elija una longitud corta, y en la siguiente una muy larga. Esto hará una diferencia muy grande a la hora de realizar las comparaciones, esto se vería explícitamente reflejado en un análisis de complejidad logarítmico, o eso es lo que sospechamos. Hay que tener en cuenta que dentro de las operaciones básicas que se realizan dentro del ciclo principal se encuentran:
+Los resultados de este caso, aunque se nota que la complejidad es lineal, en un principio nos sorprendieron y asustaron por la distribución y diferencia de complejidades tan amplia, pero luego de un análisis mas profundo del código, y como ya cursamos Organización del Computador 2 llegamos a la siguiente conclusión: En los casos de test para el peor y mejor caso, los metros de cable tenían que encontrarse dentro de cierto rango controlable para asegurar las condiciones para que justamente concuerden con el peor y mejor caso propuesto. Pero en el caso aleatorio se elige una longitud de cable al azar entre 1 y la distancia de la ciudad mas lejana, entonces se tiene un rango muy grande de posibles valores, por lo que es posible que en un caso se elija una longitud corta, y en la siguiente una muy larga. Esto hará una diferencia muy grande a la hora de realizar las comparaciones, esto se vería explícitamente reflejado en un análisis de complejidad logarítmico, o eso es lo que sospechamos. Hay que tener en cuenta que dentro de las operaciones básicas que se realizan dentro del ciclo principal se encuentran:
 Para el ciclo secundario: una resta y una comparación, y luego si se cumple, una asignación.
 Para el bloque condicional: dos restas, y una comparación, y si se cumple, dos asignaciones.
 Por lo tanto las restas y comparaciones son las que siempre, en todas las iteraciones, se van a realizar, y estas ultimas van a ser muy costosas cuando los valores sean muy grandes en si.
@@ -491,20 +487,11 @@ Finalmente, consideramos casos construidos de forma aleatoria, donde el procedim
 
 \begin{figure}[h!]
 \centering
-\label{grf:ex2-best-worst}
 \includegraphics[width=15cm]{images/ex2-best-worst}
-\caption{Tiempos de mejor y peor caso para el ejercicio 2. El tamaño de entrada es la longitud de la lista.}
+\caption{Tiempos para el ejercicio 2. El estadístico utilizado es la media alfa podada, con $\alpha = 0.10$. El tamaño de entrada es la longitud de la lista. \label{grf:ex2-best-worst}}
 \end{figure}
 
-\begin{figure}[h!]
-\centering
-\label{grf:ex2-random}
-\includegraphics[width=15cm]{images/ex2-random}
-\caption{Tiempos tomados por instancias generadas aleatoriamente para el ejercicio 2. El tamaño es la longitud de la lista.}
-\end{figure}
-
-Observemos que la figura \ref{grf:ex2-best-worst} no muestra grandes diferencias, como esperábamos, sino que más bien es relativamente ininteligible.
-Realmente no pudimos llegar a concluir en una causa real por la que suceda esto.
+Observemos que la figura \ref{grf:ex2-best-worst} muestra una diferencia clara entre los tres casos de test, si bien la diferencia no es realmente importante se puede ver que acertamos en cuales serian los casos adecuados. Sospechamos que aumentar la cantidad de elementos nos permitiría encontrar una mayor diferencia. Nos llamó particularmente la atención que el caso aleatorio haya quedado tan bien acotado por los otros dos, sospechamos que es posible que tengamos algún tipo de error en el generador de casos de test aleatorios, ya que no podemos explicar de otra forma el fenómeno. De cualquier forma, en términos generales los resultados son efectivamente los esperados.
 
 \pagebreak
 
@@ -572,7 +559,7 @@ $$(i_1, .., i_n, n+1) \equiv (n+1, i_1, .., i_n)$$
 Con $i_j$ un ordenamiento arbitrario de los números en $M_n$. Además, $i_1 < n+1$ por lo que la primer alternativa es estrictamente menor lexicográficamente que la segunda, implicando que como solución es mejor (por los parámetros determinados por la cátedra, dado que la suma de distancias entre los pares de amistades se va a preservar) y, por lo tanto, la primer alternativa siempre debería ser elegida antes que la segunda.
 \end{proof}
 
-Entonces, podemos explorar el espacio de soluciones en forma de árbol, donde la cabeza es la permutación con un solo elemento, y cada nivel está definido en términos del anterior como aplicar la función $g$ del lema \ref{ej3:generador} a todos los nodos del nivel anterior, utilizando cada uno de los $n-1$ valores más grandes de $M_n$. Observemos, además, que podemos explorar el árbol de forma tal que las permutaciones de menor orden lexicográfico sean exploradas antes, simplemente eligiendo los índices para la inserción de mayor a menor.
+Entonces, podemos explorar el espacio de soluciones en forma de árbol, donde la cabeza es la permutación con un solo elemento, y cada nivel está definido en términos del anterior como aplicar la función $g$ del primer lema a todos los nodos del nivel anterior, utilizando cada uno de los $n-1$ valores más grandes de $M_n$. Observemos, además, que podemos explorar el árbol de forma tal que las permutaciones de menor orden lexicográfico sean exploradas antes, simplemente eligiendo los índices para la inserción de mayor a menor.
 
 \begin{figure}[h!]
 \centering
@@ -723,27 +710,25 @@ El mejor caso del algoritmo es cuando obtenemos la suma óptima lo antes posible
 
 En términos del peor caso, es claro que el mismo será cuando la poda sea mínima, es decir, cuando jamás logremos podar nodos. Observemos que esto se corresponde con que las rondas que vayan avanzando lexicográficamente vayan al mismo tiempo bajando el costo, por lo que es difícil poder construir explícitamente un peor caso. Sin embargo, podemos aproximarnos si consideramos no podar el árbol: borrar las podas se correspondería con un caso lo suficientemente malo como para que las mismas sean inaplicables. Si bien esto difícilmente suceda en un caso real, ya que al tener aunque sea un caso muy posiblemente logremos borrar algunas ramas, pensamos que es una buena forma de cuantificar cuánto estamos ganando con las podas.
 
+Dado que no logramos encontrar un algoritmo que genere un mejor caso para nuestro algoritmo, mostraremos la comparación entre el algoritmo sin podas, contra el algoritmo con podas. Esto nos permitirá cuantificar cuanto estamos ganando con las mismas.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=15cm]{images/ex3-best-worst}
+\caption{El estadístico que tomamos es la media alfa podada con $\alpha = 0.10$, que nos permite evitar algunos outliers. \label{grf:ex3-best-worst}}
+\end{figure}
+
 Finalmente, consideramos casos construidos de forma aleatoria, donde el procedimiento consiste en dada una cantidad de exploradoras $e$ y una cantidad de amistades $a \in \{1, .., \frac{e(e-1)}{2}\}$, generamos el producto cartesiano entre las exploradoras, filtramos los vértices inadmisibles (la relación diagonal y los simétricos), y tomamos una muestra de $a$ elementos uniformemente distribuidos entre los mismos.
 
-Dado que no logramos encontrar un algoritmo que genere un mejor caso para nuestro algoritmo, mostraremos la comparación entre el algoritmo sin podas, contra el algoritmo con podas. Esto nos permitirá cuantificar, de alguna forma, cuanto estamos ganando con las mismas (a pesar de que no va a ser muy .
-
 \begin{figure}[h!]
 \centering
-\label{grf:ex3-best-worst}
-\includegraphics[width=15cm]{images/ex3-best-worst}
-\caption{}
-\end{figure}
-
-\begin{figure}[h!]
-\centering
-\label{grf:ex3-random}
 \includegraphics[width=15cm]{images/ex3-random}
-\caption{El estadístico que tomamos es la media alfa podada con $\alpha = 0.10$, que nos permite evitar algunos outliers. La línea gris corresponde a un polinomio de grado 2 buscado a través de cuadrados mínimos.}
+\caption{El estadístico que tomamos es la media alfa podada con $\alpha = 0.10$, que nos permite evitar algunos outliers. La línea gris corresponde a un polinomio de grado 2 buscado a través de cuadrados mínimos. \label{grf:ex3-random}}
 \end{figure}
 
-Observemos que la figura \ref{grf:ex3-random} nos muestra que el variar la cantidad de amistades provoca un crecimiento cuadrático, mientras que variar la cantidad de exploradoras muestra el crecimiento esperado.
+Observemos que la figura \ref{grf:ex3-random} nos muestra que el variar la cantidad de amistades provoca un crecimiento cuadrático, mientras que variar la cantidad de exploradoras muestra el crecimiento esperado. Por otro lado, comparar el mejor y peor caso en la figura \ref{grf:ex3-best-worst} nos da un resultado ligeramente ambiguo: estábamos esperando una mayor ganancia al utilizar podas. De cualquier forma, queda claro que el uso de podas mejora la complejidad temporal, y en ese sentido los resultados apoyan la intuición.
 
-Por otro lado, comparar el mejor y 
+Sospechamos, sin embargo, que las situaciones que testeamos no son las mejores para ver la diferencia entre los dos algoritmos, en el sentido que probablemente el beneficio de utilizar podas se vea más claramente en instancias con una mayor cantidad de exploradoras, donde el árbol a explorar sería notoriamente más grande y tengamos una mayor oportunidad de cortar ramas.
 
 \pagebreak
 
